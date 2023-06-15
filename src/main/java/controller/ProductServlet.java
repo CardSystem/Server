@@ -1,70 +1,54 @@
 package controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import domain.ProductDTO;
+import service.ProductService;
 
-import dao.ProductDAO;
-import domain.Product;
-
-/**
- * Servlet implementation class ProductServlet
- */
-@WebServlet("/ProductServlet")
+@WebServlet("/product")
 public class ProductServlet extends HttpServlet {
+
 	private static final long serialVersionUID = 1L;
+	ProductService productService = new ProductService();
 
-	private ProductDAO productDao = new ProductDAO();
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-		String order = request.getParameter("action");
-		String url;
-		switch (order) {
-		case "insert":
-			url = doInsert(request, response);
-			response.sendRedirect(url);
-			break;
-		}
-
-		// TODO Auto-generated method stub
-		// response.getWriter().append("Served at: ").append(request.getContextPath());
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		request.setCharacterEncoding("utf-8");
-		doGet(request, response);
+		doRegister(request, response);
 	}
 
-	private String doInsert(HttpServletRequest request, HttpServletResponse response) {
-		Product product = new Product();
-		product.setCardName(request.getParameter("name"));
-		product.setCardType(request.getParameter("type"));
-		product.setCardLimit(Long.parseLong(request.getParameter("limit")));
-		product.setCategoryId(Long.parseLong(request.getParameter("category")));
+	public void doRegister(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		final String name = request.getParameter("name");
+		final String type = request.getParameter("type");
+		final Long limit = Long.parseLong(request.getParameter("limit"));
+		final Long categoryId = Long.parseLong(request.getParameter("category"));
+
+		ProductDTO.RequestProduct dto = ProductDTO.RequestProduct
+				.builder()
+				.cardName(name)
+				.cardType(type)
+				.cardLimit(limit)
+				.categoryId(categoryId)
+				.build();
+
 		try {
-			productDao.insertProduct(product);
-		} catch (SQLException e) {
+			productService.registerProduct(dto);
+		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("insert 에러!");
+			System.out.println("카드 등록 에러!"); // 예외 처리 로직 처리 필요!
 		}
+
 		System.out.println("성공 성공 성공");
-		return "success.jsp";
+		response.sendRedirect("success.jsp");
 	}
 }

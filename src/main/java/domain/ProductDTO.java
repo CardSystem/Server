@@ -16,6 +16,14 @@ public class ProductDTO {
 		private String cardType;
 		private Long cardLimit;
 		private Long categoryId;
+	
+	public Product toEntity() {
+		return Product.builder()
+				.cardName(cardName)
+				.cardLimit(cardLimit)
+				.cardType(cardType)
+				.categoryId(categoryId)
+				.build();
+		}
 	}
-
 }
