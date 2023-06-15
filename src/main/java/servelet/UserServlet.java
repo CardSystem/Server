@@ -16,6 +16,7 @@ import dao.UserDAO;
 public class UserServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	public static String id;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -37,7 +38,7 @@ public class UserServlet extends HttpServlet {
 	}
 	
 	private String doLogin(HttpServletRequest request, HttpServletResponse response) {
-		String id = request.getParameter("id");
+		id = request.getParameter("id");
 	    String birth = request.getParameter("userBirth");
 		
 	    try {
@@ -55,6 +56,6 @@ public class UserServlet extends HttpServlet {
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
-		return "DepositAccount.jsp";
+		return "ShowMyAccount.jsp";
 	}
 }
