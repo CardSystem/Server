@@ -5,9 +5,8 @@ public class UserDTO {
 	private String userName;
 	private String userBirth;
 	private int credit;
-	private int isBlocked;
+	private Integer isBlocked;
 	private String gender;
-	
 	public Long getId() {
 		return id;
 	}

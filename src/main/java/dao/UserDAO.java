@@ -14,6 +14,7 @@ public class UserDAO {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
+	    
 	    try {
 	        conn = dbUtil.getConnection();
 	        pstmt = conn.prepareStatement("SELECT user_birth FROM user WHERE id = ?");

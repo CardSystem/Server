@@ -40,10 +40,14 @@ public class UserServlet extends HttpServlet {
 	private String doLogin(HttpServletRequest request, HttpServletResponse response) {
 		id = request.getParameter("id");
 	    String birth = request.getParameter("userBirth");
-		
 	    try {
 	        int loginResult = UserDAO.login(id, birth);
 	        if (loginResult == 1) {
+	        	if(id.contains("Admin")) {
+	        		request.getSession().setAttribute("adminId", id);
+		            request.getSession().setAttribute("adminBirth", birth);
+		            return "SearchButton.jsp";
+	        	}
 	            // 로그인 성공 시 사용자 정보를 세션에 저장
 	            request.getSession().setAttribute("userId", id);
 	            request.getSession().setAttribute("userBirth", birth);
@@ -51,6 +55,8 @@ public class UserServlet extends HttpServlet {
 	            // 로그인 실패한 경우 세션에서 사용자 정보를 제거
 	            request.getSession().removeAttribute("userId");
 	            request.getSession().removeAttribute("userBirth");
+	            request.getSession().removeAttribute("adminId");
+	            request.getSession().removeAttribute("adminBirth");
 	            return "User.jsp";
 	        }
 	    } catch (SQLException e) {
