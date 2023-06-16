@@ -33,6 +33,7 @@
 			ArrayList<CardIssueHistoryDTO> list = (ArrayList<CardIssueHistoryDTO>) request.getAttribute("list");
 			for (CardIssueHistoryDTO data : list) {
 			%>
+			
 			<tr>
 				<td><%=data.getId()%></td>
 				<td><%=data.getCardName()%></td>
@@ -48,7 +49,8 @@
 						<input type="hidden" name="id" value="<%=data.getId()%>" />
 						<input type="hidden" name="is_stopped" value="<%=data.getIsStopped()%>" />
 						<input type="submit" value="변경" />
-					</form></td>
+					</form>
+				</td>
 			</tr>
 			<%
 			}

@@ -52,7 +52,6 @@ public class CardIssueHistoryServlet extends HttpServlet {
 	private String doChangeIsStop(HttpServletRequest request, HttpServletResponse response) {
 	    long id = Long.parseLong(request.getParameter("id"));
 	    int isStop = Integer.parseInt(request.getParameter("is_stopped"));
-
 	    try {
 	    	if(isStop == 1) {
 	    		isStop = 0;
@@ -63,8 +62,7 @@ public class CardIssueHistoryServlet extends HttpServlet {
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
-
-	    // 변경 후 다시 목록으로 돌아갈 수 있도록 Redirect URL을 설정합니다.
+	    // 변경 후 다시 목록으로 돌아갈 수 있도록 Redirect URL을 설정
 	    String redirectUrl = request.getContextPath() + "/CardIssueHistoryServlet?action=list";
 	    return redirectUrl;
 	}

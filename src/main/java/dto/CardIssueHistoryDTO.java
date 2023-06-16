@@ -9,9 +9,8 @@ public class CardIssueHistoryDTO {
 	private String validity;
 	private String agency;
 	private String issuer;
-	private int isStopped;
+	private Integer isStopped;
 	private String cardNum;
-	
 	public long getId() {
 		return id;
 	}

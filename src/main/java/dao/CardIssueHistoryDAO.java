@@ -17,7 +17,6 @@ public class CardIssueHistoryDAO {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         ArrayList<CardIssueHistoryDTO> cardList = new ArrayList<>();
-
         try {
             conn = dbUtil.getConnection();
             pstmt = conn.prepareStatement("SELECT * FROM cards");
