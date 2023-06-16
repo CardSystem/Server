@@ -2,7 +2,6 @@
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,14 +9,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>해당 고객 카드 결제 내역</h1>
+<h1>월별 결제 내역</h1>
 
-	<form action="CardControllerServlet" method="GET">
-	  <input type="text" name="keyword" placeholder="카드ID를 입력하세요.">
-	  <input type="hidden" name="action" value="searchUserCardId" />
-	  <input type="submit" value="검색">
-	</form>
-	
 	<table border="1">
 	<tr>
 			<td>카드ID</td>
@@ -32,7 +25,7 @@
 			<td>신용/체크</td>
 		</tr>
 		<%
-		ArrayList<CardHistoryDTO> list = (ArrayList<CardHistoryDTO>)request.getAttribute("searchId");
+		ArrayList<CardHistoryDTO> list = (ArrayList<CardHistoryDTO>)request.getAttribute("searchPeriod");
 				for(CardHistoryDTO data : list){
 		%>
 		<tr>
@@ -51,5 +44,6 @@
 		}
 		%>
 	</table>
+
 </body>
 </html>
