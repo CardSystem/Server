@@ -17,6 +17,7 @@ public class AccountDAO {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         ArrayList<AccountDTO> accountList = new ArrayList<>();
+        
         try {
             conn = dbUtil.getConnection();
             pstmt = conn.prepareStatement("SELECT * FROM account WHERE user_id = ?");
@@ -55,5 +56,4 @@ public class AccountDAO {
             dbUtil.close(pstmt, conn);
         }
     }
-
 }

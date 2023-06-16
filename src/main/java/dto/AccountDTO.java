@@ -6,8 +6,7 @@ public class AccountDTO {
 	private String AccountNum;
 	private long balance;
 	private String bankName;
-	private int isStopped;
-	
+	private Integer isStopped;
 	public long getId() {
 		return id;
 	}

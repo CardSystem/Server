@@ -62,16 +62,15 @@ public class AccountServlet extends HttpServlet {
     }
     
     private String doDepositAccount(HttpServletRequest request, HttpServletResponse response) {
-        String accountNum = request.getParameter("accountNum"); // 수정: "accountNum"으로 변경
-        long balance = Long.parseLong(request.getParameter("balance")); // 수정: Integer.parseInt() 대신 Long.parseLong() 사용
-
+        String accountNum = request.getParameter("accountNum");
+        long balance = Long.parseLong(request.getParameter("balance"));
+        
         try {
-            AccountDAO.depositAccount(accountNum, balance); // 수정: dipositAccount() 대신 depositAccount()로 변경
+            AccountDAO.depositAccount(accountNum, balance);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        // 변경 후 다시 목록으로 돌아갈 수 있도록 Redirect URL을 설정합니다.
         String redirectUrl = request.getContextPath() + "/AccountServlet?action=list";
         return redirectUrl;
     }

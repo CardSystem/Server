@@ -7,9 +7,11 @@
 <title>Insert title here</title>
 </head>
 <body>
+
 	<form method="GET" action="AccountServlet">
 		<input type="hidden" name="action" value="list" />
 		<input type="submit" value="계좌보기" />
 	</form>
+	
 </body>
 </html>
