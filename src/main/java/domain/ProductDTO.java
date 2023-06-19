@@ -12,6 +12,7 @@ public class ProductDTO {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	public static class RequestProduct {
+		private Long productId;
 		private String cardName;
 		private String cardType;
 		private Long cardLimit;
@@ -25,5 +26,16 @@ public class ProductDTO {
 				.categoryId(categoryId)
 				.build();
 		}
+	}
+	@Data
+	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class UpdateProduct{
+		private Long productId;
+		private String cardName;
+		private String cardType;
+		private Long cardLimit;
+		private Long categoryId;
 	}
 }
