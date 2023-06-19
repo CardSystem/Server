@@ -11,7 +11,7 @@
 <body>
 <h1>월별 결제 내역</h1>
 
-	<table border="1">
+	<table class="table table-hover">
 	<tr>
 			<td>카드ID</td>
 			<td>사용자ID</td>

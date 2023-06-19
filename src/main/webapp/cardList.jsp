@@ -8,14 +8,20 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
+
 <title>카드 사용 내역 조회</title>
+
 </head>
 <body>
+<%@ include file="menu.jsp" %>
+
+<div class="result_table" style="width:80%;float: right;">
 	<h1>카드 결제 내역</h1>
 
 	<form method="GET" action="CardControllerServlet">
 		<input type="hidden" name="action" value="recentlist" />
-		<input type="submit" value="최근 결제 일 순" />
+		<input type="submit" class="btn btn-secondary" value="최근 결제 일 순" />
 	</form>
 	
 	<form  method="GET" action="CardControllerServlet">
@@ -45,7 +51,7 @@
 	  	</div>
 	</form>
 	
-	<table border="1">
+	<table class="table table-hover">
 	<tr>
 			<td>카드ID</td>
 			<td>사용자ID</td>
@@ -78,6 +84,7 @@
 		}
 		%>
 	</table>
+	</div>
 	
 	<script>
 	function handlePeriodChange(selectedValue) {
@@ -102,5 +109,6 @@
 		}
 	</script>
 	
+
 </body>
 </html>

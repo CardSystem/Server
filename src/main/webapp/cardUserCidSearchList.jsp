@@ -10,10 +10,12 @@
 <title>Insert title here</title>
 </head>
 <body>
+<%@ include file="menu.jsp" %>
+
+
+<div class="result_table" style="width:80%;float: right;">
 <h1>해당 고객 카드별 결제 내역</h1>
-
-
-	<table border="1">
+	<table class="table table-hover">
 	<tr>
 			<td>카드ID</td>
 			<td>사용자ID</td>
@@ -46,5 +48,7 @@
 		}
 		%>
 	</table>
+	</div>
+	
 </body>
 </html>

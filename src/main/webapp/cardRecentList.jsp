@@ -9,10 +9,12 @@
 <title>카드 사용 내역 조회</title>
 </head>
 <body>
+<%@ include file="menu.jsp" %>
+<div class="result_table" style="width:80%;float: right;">
 	<h1>카드 결제 내역</h1>
 	<form method="GET" action="CardControllerServlet">
 		<input type="hidden" name="action" value="list" />
-		<input type="submit" value="오래 된 순" />
+		<input type="submit" class="btn btn-secondary" value="오래 된 순" />
 	</form>
 	<form action="CardControllerServlet" method="GET">
 	  <input type="text" name="keyword" placeholder="고객ID를 입력하세요.">
@@ -24,7 +26,7 @@
 	  <input type="hidden" name="action" value="searchCardId" />
 	  <input type="submit" value="검색">
 	</form>
-	<table border="1">
+	<table class="table table-hover">
 	<tr>
 			<td>카드ID</td>
 			<td>사용자ID</td>
@@ -57,5 +59,6 @@
 		}
 		%>
 	</table>
+	</div>
 </body>
 </html>
