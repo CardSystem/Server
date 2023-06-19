@@ -2,13 +2,16 @@ package controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import domain.ProductDTO;
+import domain.ProductResponseDTO;
 import service.ProductService;
 
 @WebServlet("/product")
@@ -19,7 +22,14 @@ public class ProductServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		List<ProductResponseDTO> list = productService.getProduct().orElseGet(()-> null);
+		
+		
+		request.setAttribute("productList", list);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("productList.jsp");
+	    dispatcher.forward(request, response);
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
 
 	}
 
@@ -61,7 +71,7 @@ public class ProductServlet extends HttpServlet {
 		}
 
 		System.out.println("성공 성공 성공");
-		response.sendRedirect("success.jsp");
+		response.sendRedirect("productList.jsp");
 	}
 
 	public void doUpdate(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -72,7 +82,7 @@ public class ProductServlet extends HttpServlet {
 		final Long limit = Long.parseLong(request.getParameter("limit"));
 		final Long categoryId = Long.parseLong(request.getParameter("category"));
 
-		ProductDTO.UpdateProduct dto = ProductDTO.UpdateProduct
+		ProductDTO.RequestProduct dto = ProductDTO.RequestProduct
 				.builder()
 				.cardName(name)
 				.cardType(type)
@@ -88,7 +98,7 @@ public class ProductServlet extends HttpServlet {
 		}
 
 		System.out.println("성공 성공 성공");
-		response.sendRedirect("success.jsp");
+		response.sendRedirect("productList.jsp");
 
 	}
 
@@ -105,6 +115,6 @@ public class ProductServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		System.out.println("성공 성공 성공");
-		response.sendRedirect("success.jsp");
+		response.sendRedirect("productList.jsp");
 	}
 }
