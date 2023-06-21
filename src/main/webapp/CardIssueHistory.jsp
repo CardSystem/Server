@@ -18,7 +18,7 @@
 		<thead>
 			<tr>
 				<th width="5%">번호</th>
-				<th width="15%">카드이름</th>
+				<th width="15%">카드ID</th>
 				<th width="20%">카드번호</th>
 				<th width="15%">발급일</th>
 				<th width="10%">발급지점</th>
@@ -36,7 +36,7 @@
 			
 			<tr>
 				<td><%=data.getId()%></td>
-				<td><%=data.getCardName()%></td>
+				<td><%=data.getCardId()%></td>
 				<td><%=data.getCardNum()%></td>
 				<td><%=data.getIssuedDate()%></td>
 				<td><%=data.getAgency()%></td>

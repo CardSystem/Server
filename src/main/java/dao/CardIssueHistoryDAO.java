@@ -25,7 +25,7 @@ public class CardIssueHistoryDAO {
             while (rs.next()) {
                 CardIssueHistoryDTO card = new CardIssueHistoryDTO();
                 card.setId(rs.getLong("id"));
-                card.setCardName(rs.getString("card_name"));
+                card.setCardId(rs.getLong("card_id"));
                 card.setCardNum(rs.getString("card_num"));
                 card.setIssuedDate(rs.getString("issued_date"));
                 card.setAgency(rs.getString("agency"));

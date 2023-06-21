@@ -3,7 +3,7 @@ package dto;
 public class CardIssueHistoryDTO {
 	private long id;
 	private long accountId;
-	private String cardName;
+	private long cardId;
 	private String issuedDate;
 	private String cardType;
 	private String validity;
@@ -23,11 +23,11 @@ public class CardIssueHistoryDTO {
 	public void setAccountId(long accountId) {
 		this.accountId = accountId;
 	}
-	public String getCardName() {
-		return cardName;
+	public long getCardId() {
+		return cardId;
 	}
-	public void setCardName(String cardName) {
-		this.cardName = cardName;
+	public void setCardId(long cardId) {
+		this.cardId = cardId;
 	}
 	public String getIssuedDate() {
 		return issuedDate;
@@ -59,10 +59,10 @@ public class CardIssueHistoryDTO {
 	public void setIssuer(String issuer) {
 		this.issuer = issuer;
 	}
-	public int getIsStopped() {
+	public Integer getIsStopped() {
 		return isStopped;
 	}
-	public void setIsStopped(int isStopped) {
+	public void setIsStopped(Integer isStopped) {
 		this.isStopped = isStopped;
 	}
 	public String getCardNum() {
