@@ -1,10 +1,14 @@
 package domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Cards {
 
 	private Long cardId;
@@ -19,6 +23,5 @@ public class Cards {
 	private String issuer;
 	private Integer isStopped;
 	private String cardNum;
-
 
 }

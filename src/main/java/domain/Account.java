@@ -1,14 +1,15 @@
 package domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Account {
-
-
-
 
 	private Long id;
 	private Cards card;
@@ -16,10 +17,9 @@ public class Account {
 	private Long balance;
 	private String bankName;
 	private Integer isStopped;
-	
 
-		public void makeBalance(Long payment)
-	{
-		this.balance+=payment;
+	public void makeBalance(Long payment) {
+		this.balance += payment;
 	}
+
 }

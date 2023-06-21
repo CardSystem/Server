@@ -11,16 +11,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.CheckCardHistoryDao;
 import dto.CheckCardRequestDto;
+import lombok.RequiredArgsConstructor;
 import service.CheckCardService;
 
 /**
  * Servlet implementation class NewServelet
  */
+@RequiredArgsConstructor
 @WebServlet("/card/check")
 public class CheckCardHistoryServelet extends HttpServlet {
 	private static final long serialVersionUID1 = 1L;
        
-	public final CheckCardService checkCardService = new CheckCardService();
+	public final CheckCardService checkCardService;
 	private static final long serialVersionUID = 1L;
 	public static CheckCardHistoryDao dao=new CheckCardHistoryDao();
 
