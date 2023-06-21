@@ -15,24 +15,6 @@ public class CheckCardService {
 
 	public final CheckCardHistoryDao checkcarddao;
 
-	public Boolean isStoppedCard(Long cardId) {
-		CheckCardDaoToServiceDto card = checkcarddao.selectCardByCardId(cardId);
-		if (card.getIsStopped() == 1)
-			return false;
-
-		else
-			return true;
-	}
-
-	public Boolean isStoppedAccount(Long cardId) {
-		AccountDto account = checkcarddao.selectAccountByCardId(cardId);
-
-		if (account.getIsStopped() == 1)
-			return false;
-		else
-			return true;
-	}
-
 	public CheckCardResponseDto checkCardPayment(CheckCardRequestDto dto) throws Exception {
 		CheckCardHistoryDto historydto = null;
 		Long cardId = dto.getCardId();
@@ -46,10 +28,10 @@ public class CheckCardService {
 
 		try {
 			Long payment = dto.getPayment();
-			if (!isStoppedCard(cardId)) {
+			if (carddto.getIsStopped() == 1) {
 				throw new BusinessException(ErrorCode.STOPPED_CARD, "정지된 카드입니다");
 			}
-			if (!isStoppedAccount(cardId)) {
+			if (accountdto.getIsStopped() == 1) {
 				throw new BusinessException(ErrorCode.STOPPED_ACCOUNT, "정지된 계좌입니다");
 			}
 			if (accountdto.getBalance() < payment) {

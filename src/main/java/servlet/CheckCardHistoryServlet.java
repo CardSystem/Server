@@ -3,6 +3,7 @@ package servlet;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,7 +21,6 @@ import service.CheckCardService;
 
 @WebServlet("/card/check")
 public class CheckCardHistoryServlet extends HttpServlet {
-	private static final long serialVersionUID1 = 1L;
 
 	private final CheckCardService checkCardService;
 	public static CheckCardHistoryDao dao = new CheckCardHistoryDao();
@@ -33,8 +33,6 @@ public class CheckCardHistoryServlet extends HttpServlet {
 	public CheckCardHistoryServlet(CheckCardService checkCardService) {
 		this.checkCardService = checkCardService;
 	}
-
-	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -55,6 +53,9 @@ public class CheckCardHistoryServlet extends HttpServlet {
 		CheckCardRequestDto dto = new CheckCardRequestDto(cardId, userId, franchisee, payment, fCategory, date);
 		try {
 			CheckCardResponseDto responseDto = checkCardService.checkCardPayment(dto);
+			request.setAttribute("data", responseDto);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/CheckCardResponse.jsp");
+			dispatcher.forward(request, response);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
