@@ -80,7 +80,6 @@ public class CheckCardHistoryDao {
 
 	// 카드아이디로 계좌찾기
 	public AccountDto selectAccountByCardId(Long cardId) {
-		System.out.println("dao 진입");
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		Account account = null;
@@ -124,7 +123,6 @@ public class CheckCardHistoryDao {
 
 	// 카드아이디로 카드, 팔인율 찾기
 	public CheckCardDaoToServiceDto selectCardByCardId(Long cardId) {
-		System.out.println("카드찾기 dao 진입");
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		Cards card = null;

@@ -63,8 +63,4 @@ public class CheckCardHistoryServlet extends HttpServlet {
 
 	}
 
-	public static void main(String[] args) {
-
-	}
-
 }
