@@ -8,9 +8,9 @@ import dto.CheckCardRequestDto;
 import dto.CheckCardResponseDto;
 import exception.BusinessException;
 import exception.ErrorCode;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class CheckCardService {
 
 	public final CheckCardHistoryDao checkcarddao;

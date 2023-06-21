@@ -59,7 +59,6 @@ class CheckCardServiceTest {
 		Account account = new Account(id, null, "11111111", balance, "하나은행", isStopped);
 		CheckCardDaoToServiceDto cardDtoMock = new CheckCardDaoToServiceDto(card, accountId, discount);
 		AccountDto accountDtoMock = new AccountDto(account);
-
 		CheckCardRequestDto request = new CheckCardRequestDto(cardId, userId, franchisee, payment, fCategory,
 				LocalDateTime.now());
 

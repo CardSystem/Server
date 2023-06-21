@@ -80,6 +80,7 @@ public class CheckCardHistoryDao {
 
 	// 카드아이디로 계좌찾기
 	public AccountDto selectAccountByCardId(Long cardId) {
+		System.out.println("dao 진입");
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		Account account = null;
@@ -100,6 +101,7 @@ public class CheckCardHistoryDao {
 				account.setBalance(rs.getLong("balance"));
 				account.setBankName(rs.getString("bank_name"));
 				account.setIsStopped(rs.getInt("is_stopped"));
+				System.out.println("계좌번호:" + account.getAccountNum());
 				dto = new AccountDto(account);
 
 			}
