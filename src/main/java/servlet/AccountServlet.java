@@ -1,4 +1,4 @@
-package servelet;
+package servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -57,7 +57,7 @@ public class AccountServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", "데이터베이스 오류가 발생했습니다."); // 오류 메시지 설정
-            return "User.jsp"; // 오류 페이지로 이동
+            return "Login.jsp"; // 오류 페이지로 이동
         }
     }
     

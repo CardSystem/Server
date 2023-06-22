@@ -13,8 +13,8 @@ public class DBUtil {
 	private static DBUtil instance = new DBUtil();
 	
 	private DBUtil(){
-		//1. DB Driver를 로딩
 		try {
+			//1. DB Driver를 로딩
 			Class.forName(driverName);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

@@ -1,5 +1,10 @@
 package dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class CardIssueHistoryDTO {
 	private long id;
 	private long accountId;
@@ -12,6 +17,7 @@ public class CardIssueHistoryDTO {
 	private int isStopped;
 	private String cardNum;
 	
+<<<<<<< Updated upstream
 	public long getId() {
 		return id;
 	}
@@ -72,4 +78,7 @@ public class CardIssueHistoryDTO {
 	public void setCardNum(String cardNum) {
 		this.cardNum = cardNum;
 	}
+=======
+	public CardIssueHistoryDTO() {}
+>>>>>>> Stashed changes
 }
