@@ -44,7 +44,7 @@
 			<td><%= data.getPayment() %></td>
 			<td><%= data.getBalance() %></td>
 			<td><%= data.getDate() %></td>
-			<td><%= data.getfCategory() %></td>
+			<td><%= data.getFCategory() %></td>
 			<td><%= data.getIsIns() %></td>
 			<td><%= data.getInsMonth() %></td>
 			<td><%= data.getCardType() %></td>
