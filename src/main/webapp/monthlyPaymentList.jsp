@@ -9,6 +9,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<%@ include file="menu.jsp" %>
 <h1>월별 결제 내역</h1>
 
 	<table class="table table-hover">

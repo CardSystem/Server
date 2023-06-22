@@ -69,8 +69,7 @@ public class CardControllerServlet extends HttpServlet {
 					dispatcherSearchCardId.forward(request, response);
 					break;
 				case "searchPeriod":
-					String optionValue = request.getParameter("period");
-					url = doPeriodSearchList(request, response,optionValue);
+					url = doPeriodSearchList(request, response,keyword);
 					RequestDispatcher dispatcherSearchPeriod = request.getRequestDispatcher(url);
 					dispatcherSearchPeriod.forward(request, response);
 					break;
@@ -79,7 +78,7 @@ public class CardControllerServlet extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");//한글깨짐 방지
+		request.setCharacterEncoding("utf-8");//�븳湲�源⑥쭚 諛⑹�
 		doGet(request, response);
 	}
 
@@ -137,7 +136,7 @@ public class CardControllerServlet extends HttpServlet {
 	
 	private String doPeriodSearchList(HttpServletRequest request, HttpServletResponse response, String option) {
 		try {
-			request.setAttribute("searchCardId", CardDAO.showMonthlyCardList(option));
+			request.setAttribute("searchPeriod", CardDAO.showMonthlyCardList(option));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

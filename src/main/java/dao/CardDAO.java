@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import dbutil.DBUtil;
+import db.DBUtil;
 import dto.CardHistoryDTO;
 
 public class CardDAO {
@@ -30,7 +30,7 @@ public class CardDAO {
 				data.setPayment(rs.getInt("payment"));
 				data.setBalance(rs.getInt("balance"));
 				data.setDate(rs.getString("date"));
-				data.setfCategory(rs.getInt("f_category"));
+				data.setFCategory(rs.getInt("f_category"));
 				data.setIsIns(rs.getInt("is_ins")); 
 				data.setInsMonth(rs.getInt("ins_month"));
 				data.setCardType(rs.getString("card_type"));
@@ -45,7 +45,7 @@ public class CardDAO {
         return cardPayList;
     }
 	
-	// 최근 결제순 
+	// 理쒓렐 寃곗젣�닚 
 	public static ArrayList<CardHistoryDTO> showRecentPayCardList() throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -65,7 +65,7 @@ public class CardDAO {
 				data.setPayment(rs.getInt("payment"));
 				data.setBalance(rs.getInt("balance"));
 				data.setDate(rs.getString("date"));
-				data.setfCategory(rs.getInt("f_category"));
+				data.setFCategory(rs.getInt("f_category"));
 				data.setIsIns(rs.getInt("is_ins"));
 				data.setInsMonth(rs.getInt("ins_month"));
 				data.setCardType(rs.getString("card_type"));
@@ -80,7 +80,7 @@ public class CardDAO {
         return recentCardPayList;
     }
 	
-	//한 user가 소유한카드 결제내역조회
+	//�븳 user媛� �냼�쑀�븳移대뱶 寃곗젣�궡�뿭議고쉶
 	public static ArrayList<CardHistoryDTO> showSearchUidCardList(String keyword) throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -101,7 +101,7 @@ public class CardDAO {
 				data.setPayment(rs.getInt("payment"));
 				data.setBalance(rs.getInt("balance"));
 				data.setDate(rs.getString("date"));
-				data.setfCategory(rs.getInt("f_category"));
+				data.setFCategory(rs.getInt("f_category"));
 				data.setIsIns(rs.getInt("is_ins"));
 				data.setInsMonth(rs.getInt("ins_month"));
 				data.setCardType(rs.getString("card_type"));
@@ -116,7 +116,7 @@ public class CardDAO {
         return searchUidCardPayList;
     }
 	
-	//한 user가 소유한카드 결제내역조회
+	//�븳 user媛� �냼�쑀�븳移대뱶 寃곗젣�궡�뿭議고쉶
 		public static ArrayList<CardHistoryDTO> showSearchUserCardList(String userId, String keyword) throws SQLException {
 	        Connection conn = null;
 	        PreparedStatement pstmt = null;
@@ -138,7 +138,7 @@ public class CardDAO {
 					data.setPayment(rs.getInt("payment"));
 					data.setBalance(rs.getInt("balance"));
 					data.setDate(rs.getString("date"));
-					data.setfCategory(rs.getInt("f_category"));
+					data.setFCategory(rs.getInt("f_category"));
 					data.setIsIns(rs.getInt("is_ins"));
 					data.setInsMonth(rs.getInt("ins_month"));
 					data.setCardType(rs.getString("card_type"));
@@ -154,7 +154,7 @@ public class CardDAO {
 	    }
 		
 		
-	//카드상품별 결제내역조회
+	//移대뱶�긽�뭹蹂� 寃곗젣�궡�뿭議고쉶
 	public static ArrayList<CardHistoryDTO> showSearchCardList(long keyword) throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -177,7 +177,7 @@ public class CardDAO {
 				data.setPayment(rs.getInt("payment"));
 				data.setBalance(rs.getInt("balance"));
 				data.setDate(rs.getString("date"));
-				data.setfCategory(rs.getInt("f_category"));
+				data.setFCategory(rs.getInt("f_category"));
 				data.setIsIns(rs.getInt("is_ins"));
 				data.setInsMonth(rs.getInt("ins_month"));
 				data.setCardType(rs.getString("card_type"));
@@ -194,19 +194,19 @@ public class CardDAO {
 	
 
 	
-	//월별 결제내역조회(1개월,3개월,직접입력)
+	//�썡蹂� 寃곗젣�궡�뿭議고쉶(1媛쒖썡,3媛쒖썡,吏곸젒�엯�젰)
 		public static ArrayList<CardHistoryDTO> showMonthlyCardList(String option) throws SQLException {
 	        Connection conn = null;
 	        PreparedStatement pstmt = null;
 	        ResultSet rs = null;
 	        
-	        String searchPeriod = option;
+	        int searchPeriod = -(Integer.parseInt(option));
 	        
 	        ArrayList<CardHistoryDTO> monthlyCardPayList = new ArrayList<>();
 	        
 	        try {
 	            conn = dbUtil.getConnection();
-	            pstmt = conn.prepareStatement("select card_id, user_id, franchisee, payment, balance ,date, f_category, is_ins,ins_month,card_type from card_history where date <= date_add(now(),interval '"+ searchPeriod + "' month) order by date desc;");
+	            pstmt = conn.prepareStatement("select card_id, user_id, franchisee, payment, balance ,date, f_category, is_ins,ins_month,card_type from card_history where date <= date_add(now(),interval "+ searchPeriod +" month) order by date desc;");
 
 	            rs = pstmt.executeQuery();
 	            while (rs.next()) {
@@ -217,7 +217,7 @@ public class CardDAO {
 					data.setPayment(rs.getInt("payment"));
 					data.setBalance(rs.getInt("balance"));
 					data.setDate(rs.getString("date"));
-					data.setfCategory(rs.getInt("f_category"));
+					data.setFCategory(rs.getInt("f_category"));
 					data.setIsIns(rs.getInt("is_ins"));
 					data.setInsMonth(rs.getInt("ins_month"));
 					data.setCardType(rs.getString("card_type"));
