@@ -10,9 +10,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.redisson.api.RedissonClient;
+
 import dao.CheckCardHistoryDao;
 import dto.CheckCardRequestDto;
 import dto.CheckCardResponseDto;
+import redis.RedissonExam;
 import service.CheckCardService;
 
 /**
@@ -22,15 +25,25 @@ import service.CheckCardService;
 @WebServlet("/card/check")
 public class CheckCardHistoryServlet extends HttpServlet {
 
+	private final RedissonClient redissonClient;
+
+	private final RedissonExam redissonExam;
+
 	private final CheckCardService checkCardService;
 	public static CheckCardHistoryDao dao = new CheckCardHistoryDao();
 
 	public CheckCardHistoryServlet() {
+		this.redissonClient = null;
 		// 기본 생성자
 		this.checkCardService = new CheckCardService(dao);
+		this.redissonExam = new RedissonExam(checkCardService, redissonClient);
+
 	}
 
-	public CheckCardHistoryServlet(CheckCardService checkCardService) {
+	public CheckCardHistoryServlet(CheckCardService checkCardService, RedissonExam redissonExam,
+			RedissonClient redissonClient) {
+		this.redissonClient = redissonClient;
+		this.redissonExam = redissonExam;
 		this.checkCardService = checkCardService;
 	}
 

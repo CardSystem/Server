@@ -18,7 +18,7 @@ public class Account {
 	private String bankName;
 	private Integer isStopped;
 
-	public void makeBalance(Long payment) {
+	public synchronized void makeBalance(Long payment) {
 		this.balance += payment;
 	}
 
