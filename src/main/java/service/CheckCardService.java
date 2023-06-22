@@ -43,7 +43,7 @@ public class CheckCardService {
 			accountdto.makeBalance((new Double(paymentReal)).longValue());
 
 			checkcarddao.updateBalance(accountdto.getId(), accountdto.getBalance());
-			System.out.println("결재후 잔액은: " + accountdto.getBalance());
+//			System.out.println("결재후 잔액은: " + accountdto.getBalance());
 			historydto = new CheckCardHistoryDto(dto.getCardId(), dto.getUserId(), dto.getFranchisee(),
 					dto.getPayment(), accountdto.getBalance(), 1, dto.getDate(), dto.getFCategory(), 0, 0,
 					carddto.getCardType());
