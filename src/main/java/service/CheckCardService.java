@@ -51,7 +51,6 @@ public class CheckCardService {
 			checkcarddao.insertData(historydto);
 			statusCode = 200;
 			statusMsg = "결제성공";
-//			System.out.println("남은금액:" + checkcarddao.selectAccountByCardId(cardId).getBalance());
 
 		} catch (BusinessException e) {
 			System.out.println("에러발생: " + e.getMessage());
