@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import dbutil.DBUtil;
+import db.DBUtil;
 
 public class UserDAO {
 	static DBUtil dbUtil = DBUtil.getInstance();

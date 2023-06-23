@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import dbutil.DBUtil;
+import db.DBUtil;
 import dto.AccountDTO;
 
 public class AccountDAO {

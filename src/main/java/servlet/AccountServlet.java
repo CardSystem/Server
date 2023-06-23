@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import dao.AccountDAO;
 import dto.AccountDTO;
+import service.AccountService;
 
 @WebServlet("/AccountServlet")
 public class AccountServlet extends HttpServlet {
@@ -66,12 +67,13 @@ public class AccountServlet extends HttpServlet {
         long balance = Long.parseLong(request.getParameter("balance"));
         
         try {
-            AccountDAO.depositAccount(accountNum, balance);
-        } catch (SQLException e) {
+        	return AccountService.checkMoney(request, accountNum, balance);
+//            AccountDAO.depositAccount(accountNum, balance);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        String redirectUrl = request.getContextPath() + "/AccountServlet?action=list";
-        return redirectUrl;
+        return null;
+//        String redirectUrl = request.getContextPath() + "/AccountServlet?action=list";
+//        return redirectUrl;
     }
 }
