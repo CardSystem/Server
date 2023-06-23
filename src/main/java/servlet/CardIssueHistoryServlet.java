@@ -14,7 +14,6 @@ import dao.CardIssueHistoryDAO;
 
 @WebServlet("/CardIssueHistoryServlet")
 public class CardIssueHistoryServlet extends HttpServlet {
-
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

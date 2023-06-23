@@ -18,5 +18,4 @@ public class CardIssueHistoryDTO {
 	private String cardNum;
 
 	public CardIssueHistoryDTO() {}
-
 }
