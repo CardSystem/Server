@@ -8,7 +8,7 @@ import lombok.Setter;
 public class CardIssueHistoryDTO {
 	private long id;
 	private long accountId;
-	private String cardName;
+	private String cardId;
 	private String issuedDate;
 	private String cardType;
 	private String validity;

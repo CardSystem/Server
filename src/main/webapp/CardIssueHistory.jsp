@@ -35,7 +35,7 @@
 			%>
 			<tr>
 				<td><%=data.getId()%></td>
-				<td><%=data.getCardName()%></td>
+				<td><%=data.getCardId()%></td>
 				<td><%=data.getCardNum()%></td>
 				<td><%=data.getIssuedDate()%></td>
 				<td><%=data.getAgency()%></td>
