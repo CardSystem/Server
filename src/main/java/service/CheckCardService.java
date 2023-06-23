@@ -25,7 +25,6 @@ public class CheckCardService {
 		CheckCardDaoToServiceDto carddto = checkcarddao.selectCardByCardId(cardId);
 		AccountDto accountResponseDto=null;
 		Account account=new Account(accountdto);
-//		System.out.println("현재금액: " + accountdto.getBalance());
 		int statusCode = 0;
 		String statusMsg = null;
 
@@ -42,9 +41,6 @@ public class CheckCardService {
 			}
 
 			Double paymentReal = dto.getPayment() * (-1) * ((100 - carddto.getDiscount()) * 0.01);
-
-			
-			//accuontDto를 account 객체로 바꿔서 그 안에서 makebalance 하기
 			
 			account.makeBalance((new Double(paymentReal)).longValue());
 

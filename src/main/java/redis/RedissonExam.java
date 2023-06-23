@@ -63,11 +63,3 @@ public class RedissonExam {
 	   }
 
 
-
-	
-//	public static void main(String[]args)
-//	{
-//		cardLock();
-//	}
-
-

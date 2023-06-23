@@ -102,13 +102,6 @@ public class CheckCardHistoryDao {
 						.isStopped(rs.getInt("is_stopped"))
 						.build();
 
-//				account = new Account();
-//				account.setId(rs.getLong("id"));
-//				account.setAccountNum(rs.getString("account_num"));
-//				account.setBalance(rs.getLong("balance"));
-//				account.setBankName(rs.getString("bank_name"));
-//				account.setIsStopped(rs.getInt("is_stopped"));
-//				System.out.println("계좌번호:" + account.getAccountNum());
 				dto = new AccountDto(account);
 
 			}
@@ -154,14 +147,6 @@ public class CheckCardHistoryDao {
 						.issuer(rs.getString("issuer"))
 						.isStopped(rs.getInt("is_stopped"))
 						.build();
-//				card.setId(rs.getLong("id"));
-//				card.setCardId(rs.getLong("card_id"));
-//				card.setCardType(rs.getString("card_type"));
-//				card.setValidity(rs.getString("validity"));
-//				card.setAgency(rs.getString("agency"));
-//				card.setIssuer(rs.getString("issuer"));
-//				card.setIsStopped(rs.getInt("is_stopped"));
-//				card.setCardNum(rs.getString("card_num"));
 
 				dto = new CheckCardDaoToServiceDto(card, rs.getLong("account_id"), rs.getLong("discount"));
 

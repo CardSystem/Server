@@ -18,9 +18,7 @@ public class AccountDto {
 	private String bankName;
 	private Integer isStopped;
 
-//	public void makeBalance(Long payment) {
-//			this.balance += payment;
-//	}
+
 	@Builder
 	public AccountDto(Account account) {
 		this.id = account.getId();

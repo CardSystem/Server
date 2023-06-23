@@ -57,11 +57,9 @@ public class CheckCardHistoryServlet extends HttpServlet {
 		CheckCardRequestDto dto = new CheckCardRequestDto(cardId, userId, franchisee, payment, fCategory, date);
 		try {
 			CheckCardResponseDto responseDto=RedissonExam.cardLock(dto);
-			
-//			CheckCardResponseDto responseDto = checkCardService.checkCardPayment(dto);
-//			request.setAttribute("data", responseDto);
-//			RequestDispatcher dispatcher = request.getRequestDispatcher("/CheckCardResponse.jsp");
-//			dispatcher.forward(request, response);
+						request.setAttribute("data", responseDto);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/CheckCardResponse.jsp");
+			dispatcher.forward(request, response);
 			System.out.println(responseDto.getCardType());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

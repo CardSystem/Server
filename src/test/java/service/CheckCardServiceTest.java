@@ -133,6 +133,36 @@ class CheckCardServiceTest {
 		}
 
 	}
+	
+	
+	@Test
+	@DisplayName("체크카드 결제 실패 - 정지된 카드")
+	void 정지된카드() throws Exception {
+
+		// given
+		isStopped = 1;
+		payment1 = 1000L;
+		CheckCardRequestDto request = new CheckCardRequestDto(cardId1, userId, franchisee, payment1, fCategory,
+				LocalDateTime.now());
+		Double paymentReal = payment1 * (-1) * ((100 - discount) * 0.01);
+		Long totalBalance = balance + (new Double(paymentReal)).longValue();
+		Cards card = new Cards(cardId1, id1, null, "2023-06-21", cardType, validity, agency, issuer, isStopped, cardNum);
+		CheckCardDaoToServiceDto cardDtoMock1 = new CheckCardDaoToServiceDto(card1, accountId, discount);
+
+		// when
+		when(dao.selectCardByCardId(cardId1)).thenReturn(cardDtoMock1);
+		when(dao.selectAccountByCardId(cardId1)).thenReturn(accountDtoMock);
+
+		// then
+		try {
+			CheckCardResponseDto responseDto = service.checkCardPayment(request);
+		} catch (BusinessException e) {
+			System.out.println(e.getMessage() + " " + e.getErrorCode());
+
+			assertEquals("정지된 카드입니다.", e.getMessage());
+		}
+
+	}
 
 	@Test
 	@DisplayName("락 걸지 않았을 때 동시성 테스트")
@@ -260,8 +290,10 @@ class CheckCardServiceTest {
 				} catch (RuntimeException e) {
 					e.printStackTrace();
 				}
+				
+				
+				
 				// then
-
 				System.out.println("테스트 토탈 남은금액: " + dao.selectAccountByCardId(cardId1).getBalance());
 
 	}
