@@ -7,9 +7,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 </head>
 <body>
 <%@ include file="menu.jsp" %>
+<div class="result_table" style="width:80%;float: right;">
 <h1>월별 결제 내역</h1>
 
 	<table class="table table-hover">
@@ -36,7 +38,7 @@
 			<td><%= data.getPayment() %></td>
 			<td><%= data.getBalance() %></td>
 			<td><%= data.getDate() %></td>
-			<td><%= data.getfCategory() %></td>
+			<td><%= data.getFCategory() %></td>
 			<td><%= data.getIsIns() %></td>
 			<td><%= data.getInsMonth() %></td>
 			<td><%= data.getCardType() %></td>

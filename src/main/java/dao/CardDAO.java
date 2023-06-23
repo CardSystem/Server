@@ -199,37 +199,38 @@ public class CardDAO {
 	        Connection conn = null;
 	        PreparedStatement pstmt = null;
 	        ResultSet rs = null;
-	        
-	        int searchPeriod = -(Integer.parseInt(option));
-	        
 	        ArrayList<CardHistoryDTO> monthlyCardPayList = new ArrayList<>();
 	        
-	        try {
-	            conn = dbUtil.getConnection();
-	            pstmt = conn.prepareStatement("select card_id, user_id, franchisee, payment, balance ,date, f_category, is_ins,ins_month,card_type from card_history where date <= date_add(now(),interval "+ searchPeriod +" month) order by date desc;");
-
-	            rs = pstmt.executeQuery();
-	            while (rs.next()) {
-	            	CardHistoryDTO data = new CardHistoryDTO();
-	            	data.setCardId(rs.getLong("card_id"));
-					data.setUserId(rs.getString("user_id"));
-					data.setFranchisee(rs.getString("franchisee"));
-					data.setPayment(rs.getInt("payment"));
-					data.setBalance(rs.getInt("balance"));
-					data.setDate(rs.getString("date"));
-					data.setFCategory(rs.getInt("f_category"));
-					data.setIsIns(rs.getInt("is_ins"));
-					data.setInsMonth(rs.getInt("ins_month"));
-					data.setCardType(rs.getString("card_type"));
-	               
-					monthlyCardPayList.add(data);
-	            }
-	        } catch(Exception e) {
-	            e.printStackTrace();
-	        } finally {
-	            dbUtil.close(rs, pstmt, conn);
-	        }
-	        return monthlyCardPayList;
-	    }
+	        if (!option.isEmpty()) { 
+		        int searchPeriod = -(Integer.parseInt(option));
+		        
+		        try {
+		            conn = dbUtil.getConnection();
+		            pstmt = conn.prepareStatement("select card_id, user_id, franchisee, payment, balance ,date, f_category, is_ins,ins_month,card_type from card_history where date between date_add(now(),interval "+searchPeriod +" month) and now() order by date desc;");
 	
+		            rs = pstmt.executeQuery();
+		            while (rs.next()) {
+		            	CardHistoryDTO data = new CardHistoryDTO();
+		            	data.setCardId(rs.getLong("card_id"));
+						data.setUserId(rs.getString("user_id"));
+						data.setFranchisee(rs.getString("franchisee"));
+						data.setPayment(rs.getInt("payment"));
+						data.setBalance(rs.getInt("balance"));
+						data.setDate(rs.getString("date"));
+						data.setFCategory(rs.getInt("f_category"));
+						data.setIsIns(rs.getInt("is_ins"));
+						data.setInsMonth(rs.getInt("ins_month"));
+						data.setCardType(rs.getString("card_type"));
+		               
+						monthlyCardPayList.add(data);
+		            }
+		        } catch(Exception e) {
+		            e.printStackTrace();
+		        } finally {
+		            dbUtil.close(rs, pstmt, conn);	
+		        }
+		    }
+	        return monthlyCardPayList;
+		}
+		
 }
