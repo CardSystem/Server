@@ -48,6 +48,38 @@ public class InsertCardDao {
 		return cardType;
 	}
 
+	public Long countCardNum(Long accountId) throws SQLException {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		ResultSet rs = null;
+		Long cardNum = 0L;
+
+		try {
+			System.out.println("insert 시작");
+			conn = dbUtil.getConnection();
+			pstmt = conn.prepareStatement("select count(account_id) from cards where account_id=?;");
+			pstmt.setLong(1, accountId);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				cardNum=rs.getLong("count(account_id)");
+			}
+			System.out.println("카드 갯수:"+cardNum);
+			
+		}  catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("존재하지않는 계좌 아이디입니다.");
+		}finally {
+			try {
+				dbUtil.close(rs);
+				dbUtil.close(pstmt);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return cardNum;
+	}
+	
 	public void insertData(CardInsertDto data) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -56,8 +88,7 @@ public class InsertCardDao {
 			System.out.println("insert 시작");
 			conn = dbUtil.getConnection();
 			StringBuilder d = new StringBuilder();
-			d.append(
-					"insert into cards(card_id,issued_date,card_type,validity,agency,issuer,is_stopped,card_num,account_id) \n");
+			d.append("insert into cards(card_id,issued_date,card_type,validity,agency,issuer,is_stopped,card_num,account_id) \n");
 			d.append("values(?,?,?,?,?,?,?,?,?)");
 			pstmt = conn.prepareStatement(d.toString());
 			pstmt.setLong(1, data.getCardId());
@@ -77,5 +108,7 @@ public class InsertCardDao {
 			dbUtil.close(pstmt, conn);
 		}
 	}
+	
+	
 
 }
