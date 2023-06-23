@@ -1,10 +1,11 @@
 package domain;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor
 public class Product {
 
 	private Long id;
@@ -20,5 +21,13 @@ public class Product {
 //	private Integer isStopped;
 //	private String cardNum;
 //	private Long accountId;
-
+	
+	@Builder
+	public Product(Long id, String cardName, String cardType, Long cardLimit, Long categoryId) {
+		this.id = id;
+		this.cardName = cardName;
+		this.cardType = cardType;
+		this.cardLimit = cardLimit;
+		this.categoryId = categoryId;
+	}
 }
