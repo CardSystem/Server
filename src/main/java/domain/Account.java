@@ -1,6 +1,9 @@
 package domain;
 
+import domain.Cards.CardsBuilder;
+import dto.AccountDto;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +12,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Account {
 
 	private Long id;
@@ -21,5 +25,15 @@ public class Account {
 	public synchronized void makeBalance(Long payment) {
 		this.balance += payment;
 	}
+
+	public Account(AccountDto dto)
+	{
+		this.id=dto.getId();
+		this.accountNum=dto.getAccountNum();
+		this.balance=dto.getBalance();
+		this.bankName=dto.getBankName();
+		this.isStopped=dto.getIsStopped();
+	}
+
 
 }

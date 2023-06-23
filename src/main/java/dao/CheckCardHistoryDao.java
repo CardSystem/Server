@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+
 import db.DBUtil;
 import domain.Account;
 import domain.Cards;
@@ -53,7 +55,6 @@ public class CheckCardHistoryDao {
 	public void updateBalance(Long accountId, Long money) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		Account account = null;
 		int rs = 0;
 		try {
 			conn = dbUtil.getConnection();
@@ -93,14 +94,21 @@ public class CheckCardHistoryDao {
 
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
+				account=new Account().builder()
+						.id(rs.getLong("id"))
+						.accountNum(rs.getString("account_num"))
+						.balance(rs.getLong("balance"))
+						.bankName(rs.getString("bank_name"))
+						.isStopped(rs.getInt("is_stopped"))
+						.build();
 
-				account = new Account();
-				account.setId(rs.getLong("id"));
-				account.setAccountNum(rs.getString("account_num"));
-				account.setBalance(rs.getLong("balance"));
-				account.setBankName(rs.getString("bank_name"));
-				account.setIsStopped(rs.getInt("is_stopped"));
-				System.out.println("계좌번호:" + account.getAccountNum());
+//				account = new Account();
+//				account.setId(rs.getLong("id"));
+//				account.setAccountNum(rs.getString("account_num"));
+//				account.setBalance(rs.getLong("balance"));
+//				account.setBankName(rs.getString("bank_name"));
+//				account.setIsStopped(rs.getInt("is_stopped"));
+//				System.out.println("계좌번호:" + account.getAccountNum());
 				dto = new AccountDto(account);
 
 			}
@@ -136,15 +144,24 @@ public class CheckCardHistoryDao {
 
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
-				card = new Cards();
-				card.setId(rs.getLong("id"));
-				card.setCardId(rs.getLong("card_id"));
-				card.setCardType(rs.getString("card_type"));
-				card.setValidity(rs.getString("validity"));
-				card.setAgency(rs.getString("agency"));
-				card.setIssuer(rs.getString("issuer"));
-				card.setIsStopped(rs.getInt("is_stopped"));
-				card.setCardNum(rs.getString("card_num"));
+				card = new Cards().builder()
+						.id(rs.getLong("id"))
+						.cardId(rs.getLong("card_id"))
+						.cardNum(rs.getString("card_num"))
+						.cardType(rs.getString("card_type"))
+						.validity(rs.getString("validity"))
+						.agency(rs.getString("agency"))
+						.issuer(rs.getString("issuer"))
+						.isStopped(rs.getInt("is_stopped"))
+						.build();
+//				card.setId(rs.getLong("id"));
+//				card.setCardId(rs.getLong("card_id"));
+//				card.setCardType(rs.getString("card_type"));
+//				card.setValidity(rs.getString("validity"));
+//				card.setAgency(rs.getString("agency"));
+//				card.setIssuer(rs.getString("issuer"));
+//				card.setIsStopped(rs.getInt("is_stopped"));
+//				card.setCardNum(rs.getString("card_num"));
 
 				dto = new CheckCardDaoToServiceDto(card, rs.getLong("account_id"), rs.getLong("discount"));
 
