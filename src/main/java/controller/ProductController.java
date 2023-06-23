@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.ProductDao;
 import domain.Product;
+import dto.ProductCreateDto;
 
 //카드 상품 추가
 
@@ -26,21 +27,21 @@ public class ProductController extends HttpServlet {
 	public static ProductDao dao=new ProductDao();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		String order = request.getParameter("action");
-//		String url;
-//		switch(order) {
-//		case "insert":
-//			url = 
-			doInsert(request, response);
+		String order = request.getParameter("action");
+		String url;
+		switch(order) {
+		case "insert":
+			url = doInsert(request, response);
 			System.out.println("get처리 성공");
-//			response.sendRedirect(url);
-//
-//		case "list":
-//			url = doList(request, response);
-//			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-//			dispatcher.forward(request, response);
-//			break;
-//		}
+			response.sendRedirect(url);
+			break;
+
+		case "productList":
+			url = doList(request, response);
+			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+			dispatcher.forward(request, response);
+			break;
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -48,30 +49,31 @@ public class ProductController extends HttpServlet {
 		doGet(request, response);
 	}
 	
-	private void doInsert(HttpServletRequest request, HttpServletResponse response) {
-		Product data = new Product();
-		data.setCardName(request.getParameter("card_name").toString());
-		data.setCardType(request.getParameter("card_type").toString());
-		data.setCardLimit(Long.parseLong(request.getParameter("card_limit")));
-		data.setCategoryId(Long.parseLong(request.getParameter("category_id")));
-
-		
+	private String doInsert(HttpServletRequest request, HttpServletResponse response) {
+		ProductCreateDto productCreateDto = ProductCreateDto.builder()
+				.cardName(request.getParameter("card_name").toString())
+				.cardType(request.getParameter("card_type").toString())
+				.cardLimit(Long.parseLong(request.getParameter("card_limit")))
+				.categoryId(Long.parseLong(request.getParameter("category_id")))
+				.build();
+			
 		try {
-			dao.insertData(data);
+			dao.insertData(productCreateDto);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("db insert중 에러!");
 		}
 		System.out.print( "success");
+		return "product?action=productList";
 	}
 	
 	private String doList(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.setAttribute("list", dao.selectAllData());
+			request.setAttribute("productList", dao.selectAllData());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return "list.jsp";
+		return "ProductList.jsp";
 	}
 
 }

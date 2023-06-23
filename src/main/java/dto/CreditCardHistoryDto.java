@@ -16,7 +16,7 @@ public class CreditCardHistoryDto {
 	private Long payment;
 	private Long balance;
 	private Integer isSuccess;
-	private LocalDateTime date=LocalDateTime.now();
+	private LocalDateTime date;
 	private Long fCategory;
 	private Integer isIns;
 	private int insMonth;

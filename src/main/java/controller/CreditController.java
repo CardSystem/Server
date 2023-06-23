@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -29,7 +30,7 @@ public class CreditController extends HttpServlet {
 			url = doInsert(request, response);
 			response.sendRedirect(url);
 			break;
-		case "list":
+		case "monthlyCreditList":
 			url = doList(request, response);
 			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 			dispatcher.forward(request, response);
@@ -53,23 +54,30 @@ public class CreditController extends HttpServlet {
 		monthlyCreditCreateDto.setIsPayed(Integer.parseInt(request.getParameter("is_payed")));
 		monthlyCreditCreateDto.setDelayDays(Integer.parseInt(request.getParameter("delay_days")));
 		monthlyCreditCreateDto.setDelayPrice(Long.parseLong(request.getParameter("delay_price")));
+		monthlyCreditCreateDto.setStartDate(LocalDate.parse(request.getParameter("start_date")));
+		monthlyCreditCreateDto.setEndDate(LocalDate.parse(request.getParameter("end_date")));
+		monthlyCreditCreateDto.setTitle(request.getParameter("title"));
+		
+		
+		System.out.println("doInsert 지입 후 LocalDate 확인!");
+		System.out.println(monthlyCreditCreateDto.getStartDate());
 		try {
 			dao.insertMonthlyCredit(monthlyCreditCreateDto);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("db insert중 에러!");
 		}
-		return "CreditServlet?action=list";
+		return "CreditServlet?action=monthlyCreditList";
 	}
 	
 	private String doList(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.setAttribute("list", dao.selectAllMonthlyCrdit());
+			request.setAttribute("monthlyCreditList", dao.selectAllMonthlyCrdit());
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return "list.jsp";
+		return "MonthlyCreditList.jsp";
 	}
 	
 }

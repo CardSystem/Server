@@ -9,16 +9,17 @@ import domain.CreditCardHistory;
 
 @Getter
 @Setter
-public class CreditCardPaymentDto {
+public class CreditCardRequestDto {
 	private Long cardId;
 	private String userId;
 	private String franchisee;
 	private Long payment;
 	private Long fCategory;
 	private int insMonth;
+	private LocalDateTime date;
 	
 	
-	public CreditCardPaymentDto(Long cardId,String userId,String franchisee,Long payment,Long fCategory, int insMonth) {
+	public CreditCardRequestDto(Long cardId,String userId,String franchisee,Long payment,Long fCategory, int insMonth, LocalDateTime date) {
 	
 		this.cardId = cardId;
 		this.userId = userId;
@@ -26,5 +27,6 @@ public class CreditCardPaymentDto {
 		this.payment = payment;
 		this.fCategory = fCategory;	
 		this.insMonth = insMonth;
+		this.date = date;
 	}
 }

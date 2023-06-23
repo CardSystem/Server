@@ -22,22 +22,38 @@ public class CreditCardHistoryCreateDto {
 	private int insMonth;
 	private String cardType;
 	
+	public CreditCardHistoryCreateDto(Long cardId,String userId,String franchisee,Long payment,Long balance,
+			Integer isSuccess,LocalDateTime date,Long fCategory,Integer isIns,int insMonth,String cardType)
+	{
+		this.cardId=cardId;
+		this.userId=userId;
+		this.franchisee=franchisee;
+		this.payment=payment;
+		this.balance=balance;
+		this.isSuccess=isSuccess;
+		this.date=date;
+		this.fCategory=fCategory;
+		this.isIns=isIns;
+		this.insMonth=insMonth;
+		this.cardType=cardType;
+	}
+	
 	
 	public CreditCardHistory toEntity() {
 	
 		return CreditCardHistory.builder()
 				.id(null)
-				.cardId(cardId)
-				.userId(userId)
-				.franchisee(franchisee)
-				.payment(payment)
-				.balance(balance)
-				.isSuccess(isSuccess)
-				.date(date)
-				.fCategory(fCategory)
-				.isIns(isIns)
-				.insMonth(insMonth)
-				.cardType(cardType)
+				.cardId(this.cardId)
+				.userId(this.userId)
+				.franchisee(this.franchisee)
+				.payment(this.payment)
+				.balance(this.balance)
+				.isSuccess(this.isSuccess)
+				.date(this.date)
+				.fCategory(this.fCategory)
+				.isIns(this.isIns)
+				.insMonth(this.insMonth)
+				.cardType(this.cardType)
 				.build();
 	}
 }

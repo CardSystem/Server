@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,9 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.CreditCardHistoryDao;
-import dao.productDao;
-import dto.CreditCardPaymentDto;
 import dto.CreditCardRequestDto;
+import dto.CreditCardResponseDto;
 import service.CreditCardService;
 
 
@@ -41,9 +41,17 @@ import service.CreditCardService;
 @WebServlet("/card/credit")
 public class CreditCardHistoryController extends HttpServlet {
 	
-	public final CreditCardService creditCardService = new CreditCardService();
+	public final CreditCardService creditCardService;
 	private static final long serialVersionUID = 1L;
 	public static CreditCardHistoryDao dao=new CreditCardHistoryDao();
+	
+	public CreditCardHistoryController() {
+		this.creditCardService = new CreditCardService(dao);
+	}
+	
+	public CreditCardHistoryController(CreditCardService creditCardService) {
+		this.creditCardService = creditCardService;
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
@@ -55,20 +63,25 @@ public class CreditCardHistoryController extends HttpServlet {
 	//service로 전달
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		System.out.println("서블릿 접근");
+		
 		Long cardId=Long.parseLong(request.getParameter("card_id"));
 		String userId=request.getParameter("user_id");
 		Long payment=Long.parseLong(request.getParameter("payment"));
 		String franchisee=request.getParameter("franchisee");
 		Long fCategory=Long.parseLong(request.getParameter("f_category"));
 		int insMonth=Integer.parseInt(request.getParameter("ins_month"));
+		LocalDateTime date = LocalDateTime.now();
 		
 		System.out.println("서블릿 post 메소드 진입");
 		
-		CreditCardPaymentDto creditCardPaymentDto = new CreditCardPaymentDto(cardId,userId,franchisee,payment,fCategory,insMonth);
+		CreditCardRequestDto creditCardRequestDto = new CreditCardRequestDto(cardId,userId,franchisee,payment,fCategory,insMonth,date);
 		
 		try {
-			creditCardService.payCreditCard(creditCardPaymentDto);
-		} catch (Exception e) {
+			CreditCardResponseDto creditCardResponseDto = creditCardService.payCreditCard(creditCardRequestDto);
+			request.setAttribute("data", creditCardResponseDto);
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/CreditCardResponse.jsp");
+		} catch (Exception e) { 
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -76,14 +89,14 @@ public class CreditCardHistoryController extends HttpServlet {
 		
 	}
 	
-	private String doList(HttpServletRequest request, HttpServletResponse response) {
-		try {
-			request.setAttribute("list", dao.selectAllData());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return "list.jsp";
-	}
+//	private String doList(HttpServletRequest request, HttpServletResponse response) {
+//		try {
+//			request.setAttribute("list", dao.selectAllData());
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return "list.jsp";
+//	}
 //	
 //	private String doList(HttpServletRequest request, HttpServletResponse response) {
 //		try {

@@ -1,5 +1,7 @@
 package dto;
 
+import java.time.LocalDate;
+
 import domain.MonthlyCredit;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +18,9 @@ public class MonthlyCreditDto {
 	private Integer isPayed;
 	private int delayDays;
 	private Long delayPrice;
+	private LocalDate startDate;
+	private LocalDate endDate;
+	private String title;
 	
 	
 	public MonthlyCreditDto(MonthlyCredit entity) {
@@ -28,5 +33,8 @@ public class MonthlyCreditDto {
 		this.isPayed = entity.getIsPayed();
 		this.delayDays = entity.getDelayDays();
 		this.delayPrice = entity.getDelayPrice();
+		this.startDate = entity.getStartDate();
+		this.endDate = entity.getEndDate();
+		this.title = entity.getTitle();
 	}
 }

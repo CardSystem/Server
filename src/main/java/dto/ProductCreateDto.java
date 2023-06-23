@@ -1,4 +1,4 @@
-package domain;
+package dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,18 +7,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Card {
-	private Long id;
-	private Account account;
+public class ProductCreateDto {
+
 	private String cardName;
-	private String issuedDate;
 	private String cardType;
-	private String validity;
-	private String agency;
-	private String issuer;
-	private Boolean isStopped;
-	private String cardNum;
+	private Long cardLimit;
+	private Long categoryId;
+	
 }

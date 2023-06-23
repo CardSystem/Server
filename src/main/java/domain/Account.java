@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 public class Account {
 	
 	private Long id;
-	private Card card;
+	private Cards card;
 	private String accountNum;
 	private Long balance;
 	private String bankName;
-	private Boolean isStopped;
+	private Integer isStopped;
 }
