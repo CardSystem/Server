@@ -22,7 +22,7 @@ public class Account {
 	private String bankName;
 	private Integer isStopped;
 
-	public synchronized void makeBalance(Long payment) {
+	public void makeBalance(Long payment) {
 		this.balance += payment;
 	}
 

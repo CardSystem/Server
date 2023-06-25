@@ -108,6 +108,8 @@ class CheckCardServiceTest {
 		assertEquals(responseDto.getBalance(), totalBalance);
 	}
 
+	
+	
 	@Test
 	@DisplayName("체크카드 결제 실패 - 잔액부족")
 	void 잔액부족실패() throws Exception {
@@ -163,6 +165,42 @@ class CheckCardServiceTest {
 		}
 
 	}
+	
+	
+	
+	
+	@Test
+	@DisplayName("체크카드 결제 실패 - 정지된 계좌")
+	void 정지된계좌() throws Exception {
+
+		// given
+		isStopped = 1;
+		payment1 = 1000L;
+		CheckCardRequestDto request = new CheckCardRequestDto(cardId1, userId, franchisee, payment1, fCategory,
+				LocalDateTime.now());
+		Double paymentReal = payment1 * (-1) * ((100 - discount) * 0.01);
+		Long totalBalance = balance + (new Double(paymentReal)).longValue();
+		
+		Account account= new Account(id1, null, "11111111", balance, "하나은행", 1);
+		
+		AccountDto accountmock= new AccountDto(account);
+
+		// when
+		when(dao.selectCardByCardId(cardId1)).thenReturn(cardDtoMock1);
+		when(dao.selectAccountByCardId(cardId1)).thenReturn(accountmock);
+
+		// then
+		try {
+			CheckCardResponseDto responseDto = service.checkCardPayment(request);
+		} catch (BusinessException e) {
+			System.out.println(e.getMessage() + " " + e.getErrorCode());
+
+			assertEquals("정지된 계좌입니다", e.getMessage());
+		}
+
+	}
+	
+	
 
 	@Test
 	@DisplayName("락 걸지 않았을 때 동시성 테스트")
@@ -235,10 +273,10 @@ class CheckCardServiceTest {
 	@DisplayName("레디스로 락 잡기")
 	void 레디스락() throws Exception {
 		// given
-				payment1 = 1000L;
-				payment2 = 3000L;
-				CheckCardRequestDto request = new CheckCardRequestDto(cardId2, userId, franchisee, payment1, fCategory,
-						LocalDateTime.now());
+		payment1 = 1000L;
+		payment2 = 3000L;
+		CheckCardRequestDto request = new CheckCardRequestDto(cardId2, userId, franchisee, payment1, fCategory,
+		LocalDateTime.now());
 				Double paymentReal1 = payment1 * (-1) * ((100 - discount) * 0.01);
 				Double paymentReal2 = payment2 * (-1) * ((100 - discount) * 0.01);
 				Double paymentReal3 = 2000L * (-1) * ((100 - discount) * 0.01);

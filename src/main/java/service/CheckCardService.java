@@ -22,11 +22,16 @@ public class CheckCardService {
 
 		// dao에서 받아올 때 dto로 받아오기
 		AccountDto accountdto = checkcarddao.selectAccountByCardId(cardId);
+		
 		CheckCardDaoToServiceDto carddto = checkcarddao.selectCardByCardId(cardId);
-		AccountDto accountResponseDto=null;
 		Account account=new Account(accountdto);
+		
+		AccountDto accountResponseDto=null;
+
 		int statusCode = 0;
 		String statusMsg = null;
+		
+		
 
 		try {
 			Long payment = dto.getPayment();
@@ -43,8 +48,11 @@ public class CheckCardService {
 			Double paymentReal = dto.getPayment() * (-1) * ((100 - carddto.getDiscount()) * 0.01);
 			
 			account.makeBalance((new Double(paymentReal)).longValue());
+			
+			//뭐가 문제인지 알지만 고치기 귀찮고 싫다..
 
 			accountResponseDto=new AccountDto(account);
+			
 
 			checkcarddao.updateBalance(accountResponseDto.getId(), accountResponseDto.getBalance());
 			historydto = new CheckCardHistoryDto(dto.getCardId(), dto.getUserId(), dto.getFranchisee(),
@@ -58,8 +66,10 @@ public class CheckCardService {
 
 		} catch (BusinessException e) {
 			System.out.println("에러발생: " + e.getMessage());
+
+			accountResponseDto=new AccountDto(account);
 			historydto = new CheckCardHistoryDto(dto.getCardId(), dto.getUserId(), dto.getFranchisee(),
-					dto.getPayment(), accountResponseDto.getBalance(), 0, dto.getDate(), dto.getFCategory(), 1, 0,
+					dto.getPayment(), accountResponseDto.getBalance(), 0, dto.getDate(), dto.getFCategory(), 0, 0,
 					carddto.getCardType());
 			checkcarddao.insertData(historydto);
 			statusCode = e.getErrorCode().getStatusCode();

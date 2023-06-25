@@ -62,7 +62,6 @@ public class CheckCardHistoryServlet extends HttpServlet {
 			dispatcher.forward(request, response);
 			System.out.println(responseDto.getCardType());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
