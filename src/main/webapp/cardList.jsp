@@ -9,6 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <title>카드 사용 내역 조회</title>
+<link href="css/lookup.css" rel="stylesheet">
 <script src="http://code.jquery.com/jquery-3.1.1.js"></script>
 <script>
   function handleInput() {
@@ -17,7 +18,9 @@
     var input = document.getElementById("inputField");
     
     if (selectOption === "custom") {
-      inputField.style.display = "block";
+    	input.value = null;
+    	inputField.style.display = "block";
+      
     } else {
       inputField.style.display = "none";
       if(selectOption !== "title"){
@@ -27,31 +30,45 @@
      
     }
   }
+  
+  function changeInputField() {
+	    var keywordInput = document.getElementById("keywordInput");
+	    var selectElement = document.getElementById("searchForm").elements["searchType"];
+	    var selectedValue = selectElement.options[selectElement.selectedIndex].value;
+
+	    if (selectedValue === "customerId") {
+	        keywordInput.placeholder = "고객 ID를 입력하세요.";
+	    	document.getElementById("searchForm").elements["action"].value = "searchId";
+	    } else if (selectedValue === "cardId") {
+	    	keywordInput.placeholder = "카드 ID를 입력하세요.";
+	      	document.getElementById("searchForm").elements["action"].value = "searchCardId";
+	    } else {
+	    	keywordInput.placeholder = "고객ID or 카드ID을 선택하세요.";
+	    }
+  }
 </script>
 </head>
 <body>
 <%@ include file="menu.jsp" %>
 
 <div class="result_table" style="width:80%;float: right;">
-	<h1>카드 결제 내역</h1>
-
+	<h1>카드 사용 내역</h1>
 	<form method="GET" action="CardControllerServlet">
 		<input type="hidden" name="action" value="recentlist" />
 		<input type="submit" class="btn btn-secondary" value="최근 결제 일 순" />
 	</form>
 	
-	<form  method="GET" action="CardControllerServlet">
-	  <input type="text" name="keyword" placeholder="고객ID를 입력하세요.">
-	  <input type="hidden" name="action" value="searchId" />
+	<form id="searchForm" method="GET" action="CardControllerServlet">
+	  <select name="searchType" onchange="changeInputField()">
+	  	<option value="title">검색 조건</option>
+	    <option value="customerId">고객 ID</option>
+	    <option value="cardId">카드 ID</option>
+	  </select>
+	  <input id="keywordInput" type="text" name="keyword" placeholder="고객ID or 카드ID을 선택하세요.">
+	  <input type="hidden" name="action">
 	  <input type="submit" value="검색">
 	</form>
-	
-	<form  method="GET" action="CardControllerServlet">
-	  <input type="text" name="keyword" placeholder="카드ID를 입력하세요.">
-	  <input type="hidden" name="action" value="searchCardId" />
-	  <input type="submit" value="검색">
-	</form>
-	
+
 	<form name="periodOption" method="GET" action="CardControllerServlet">
 	  <div class ="selectBox">
 		  <select name="list" id="mySelect" onchange="handleInput()">

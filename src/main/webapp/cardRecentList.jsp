@@ -6,7 +6,45 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>카드 사용 내역 조회</title>
+<link href="css/lookup.css" rel="stylesheet">
+<script src="http://code.jquery.com/jquery-3.1.1.js"></script>
+<script>
+  function handleInput() {
+    var selectOption = document.getElementById("mySelect").value;
+    var inputField = document.getElementById("customPeriodInput");
+    var input = document.getElementById("inputField");
+    
+    if (selectOption === "custom") {
+    	input.value = null;
+    	inputField.style.display = "block";
+      
+    } else {
+      inputField.style.display = "none";
+      if(selectOption !== "title"){
+    	input.value = selectOption;
+      	document.forms["periodOption"].submit();
+      }
+     
+    }
+  }
+  
+  function changeInputField() {
+	    var keywordInput = document.getElementById("keywordInput");
+	    var selectElement = document.getElementById("searchForm").elements["searchType"];
+	    var selectedValue = selectElement.options[selectElement.selectedIndex].value;
+
+	    if (selectedValue === "customerId") {
+	        keywordInput.placeholder = "고객 ID를 입력하세요.";
+	    	document.getElementById("searchForm").elements["action"].value = "searchId";
+	    } else if (selectedValue === "cardId") {
+	    	keywordInput.placeholder = "카드 ID를 입력하세요.";
+	      	document.getElementById("searchForm").elements["action"].value = "searchCardId";
+	    } else {
+	    	keywordInput.placeholder = "고객ID or 카드ID을 선택하세요.";
+	    }
+  }
+</script>
+<title>최근 순 카드 사용 내역 조회</title>
 </head>
 <body>
 <%@ include file="menu.jsp" %>
@@ -16,15 +54,33 @@
 		<input type="hidden" name="action" value="list" />
 		<input type="submit" class="btn btn-secondary" value="오래 된 순" />
 	</form>
-	<form action="CardControllerServlet" method="GET">
-	  <input type="text" name="keyword" placeholder="고객ID를 입력하세요.">
-	  <input type="hidden" name="action" value="searchId" />
+
+	<form id="searchForm" method="GET" action="CardControllerServlet">
+	  <select name="searchType" onchange="changeInputField()">
+	  	<option value="title">검색 조건</option>
+	    <option value="customerId">고객 ID</option>
+	    <option value="cardId">카드 ID</option>
+	  </select>
+	  <input id="keywordInput" type="text" name="keyword" placeholder="고객ID or 카드ID을 선택하세요.">
+	  <input type="hidden" name="action">
 	  <input type="submit" value="검색">
 	</form>
-	<form  method="GET" action="CardControllerServlet">
-	  <input type="text" name="keyword" placeholder="카드ID를 입력하세요.">
-	  <input type="hidden" name="action" value="searchCardId" />
-	  <input type="submit" value="검색">
+
+		<form name="periodOption" method="GET" action="CardControllerServlet">
+	  <div class ="selectBox">
+		  <select name="list" id="mySelect" onchange="handleInput()">
+		  	<option value="title">월별 조회하기</option>
+		    <option value="custom">직접입력</option>
+			<option value="1">1개월</option>
+			<option value="3">3개월</option>
+		  </select>
+		  
+		  <div id="customPeriodInput" style="display: none;">
+			  <input type="text" id="inputField" name="keyword" placeholder="기간을 입력하세요.(개월단위)">
+			  <input type="hidden" name="action" value="searchPeriod" />
+			  <input type="submit" value="조회하기">
+		  </div>
+	  </div>
 	</form>
 	<table class="table table-hover">
 	<tr>

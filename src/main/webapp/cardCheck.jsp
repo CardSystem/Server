@@ -4,8 +4,8 @@
 <html>
 <head>
 
-
-<title>adminPage</title>
+<link href="css/lookup.css" rel="stylesheet">
+<title>카드 사용 내역 조회</title>
   
 </head>
 <body>

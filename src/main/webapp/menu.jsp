@@ -33,9 +33,9 @@
 	            <li><a href="" >계좌 정보 조회</a></li>
             </ul>
             <li><a href="">카드 상품 조회</a></li>
-            <li><a href="">카드 사용 내역 조회</a></li>
+            <li><a href="cardCheck.jsp">카드 사용 내역 조회</a></li>
             <ul class = "sub_sub_menu">
-	            <li><a href="">카드 사용 내역</a></li>
+	            <li><a href="cardCheck.jsp">카드 사용 내역</a></li>
 	            <li><a href="">카드 월별 명세서</a></li>
 	            <li><a href="">할부 내역</a></li>
             </ul>

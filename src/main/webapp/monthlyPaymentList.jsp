@@ -6,7 +6,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<link href="css/lookup.css" rel="stylesheet">
+<title>월별 카드 사용 내역 조회</title>
 
 </head>
 <body>

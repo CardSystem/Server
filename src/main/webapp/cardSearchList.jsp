@@ -7,13 +7,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link href="css/lookup.css" rel="stylesheet">
 <title>Insert title here</title>
 </head>
 <body>
 <%@ include file="menu.jsp" %>
 
 <div class="result_table" style="width:80%;float: right;">
-<h1>카드 상품 별 결제 내역</h1>
+<h1>카드 상품 별 결제 내역 조회</h1>
 	<table class="table table-hover">
 	<tr>
 			<td>카드ID</td>

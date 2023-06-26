@@ -7,7 +7,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<link href="css/lookup.css" rel="stylesheet">
+<title>해당 고객 카드 별 결제 내역 조회</title>
 </head>
 <body>
 <%@ include file="menu.jsp" %>
