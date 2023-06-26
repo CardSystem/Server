@@ -5,8 +5,11 @@ public enum ErrorCode {
 	SUCCESS(200, "OK", "성공"), INSUFFICIENT_BALANCE(500, "Internal Server Error", "잔액이 부족합니다"),
 	STOPPED_ACCOUNT(500, "Internal Server Error", "정지된 계좌입니다."),
 	STOPPED_CARD(500, "Internal Server Error", "정지된 카드입니다."),
-	UNABLE_CARDNUM(500, "Internal Server Error", "존재하지 않는 카드번호입니다.");
-
+	UNABLE_CARDNUM(500, "Internal Server Error", "존재하지 않는 카드번호입니다."),
+	UNABLE_PRODUCTNUM(500, "Internal Server Error", "존재하지 않는 상품입니다."),
+	DUPLICATE_PRODUCT(500, "Internal Server Error", "카드 상품이 중복됩니다.");
+	
+	
 	public String getStatus() {
 		return status;
 	}
