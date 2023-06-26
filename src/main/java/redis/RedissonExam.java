@@ -51,31 +51,7 @@ public class RedissonExam {
 	        	  }
 
 	        }
-	        //락 시작
-//	        try {
-//	            boolean available = lock.tryLock(10, 2, TimeUnit.SECONDS);
-//	            if (!available) { //락을 점유하지 못했다면
-//	                System.out.println("redisson getlock timeout");
-//	                throw new IllegalArgumentException();
-//	            }
-//	            System.out.println("락아이디:"+lock.getName());
-//	            try {
-//	            	response=service.checkCardPayment(dto);
-//	            	System.out.println("아이디:"+response.getCardId()+" 잔액:"+response.getBalance());
-//
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//	            //그렇지 않다면 락 점유 성공->본격적으로 주문 시작
-//	        } catch (InterruptedException e) {
-//	            throw new RuntimeException(e);
-//	        } finally {
-//	        	if(Objects.nonNull(lock)&&lock.isLocked()&&lock.isHeldByCurrentThread()) {
-//		            lock.unlock();
-//		            System.out.println("락 해세");
-//	        	}
-//	        }
-//			return response;
+
 	    }
 
 		public void setService(CheckCardService checkCardService) {
