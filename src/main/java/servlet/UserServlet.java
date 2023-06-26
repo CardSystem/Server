@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Exception.BusinessException;
 import dao.UserDAO;
 import service.UserService;
 
@@ -52,7 +53,7 @@ public class UserServlet extends HttpServlet {
         String birth = request.getParameter("userBirth");
         try {
             return userService.checkLogin(request, response, id, birth);
-        } catch (SQLException e) {
+        } catch (SQLException | BusinessException e) {
             e.printStackTrace();
         }
         return null;
