@@ -1,11 +1,17 @@
 package redis;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,24 +20,36 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
+
 import dao.CheckCardHistoryDao;
 import domain.Account;
 import domain.Cards;
 import dto.AccountDto;
 import dto.CheckCardDaoToServiceDto;
+import dto.CheckCardHistoryDto;
 import dto.CheckCardRequestDto;
+import dto.CheckCardResponseDto;
 import service.CheckCardService;
 
 class RedissonExamTest {
 	
-	@Mock
-	CheckCardService checkCardService;
-	
-	@Mock
-	CheckCardHistoryDao dao;
-	
-	@InjectMocks
-	RedissonExam redisson;
+
+	  @Mock
+	    private CheckCardHistoryDao dao;
+
+	    @Mock
+	    private RedissonClient redissonClient;
+
+	    @InjectMocks
+	    private CheckCardService checkCardService;
+
+
+	    @InjectMocks
+	    private RedissonExam redissonExam;
+
+
 	
 	
 	public static Long id1;
@@ -88,15 +106,45 @@ class RedissonExamTest {
 		cardDtoMock2 = new CheckCardDaoToServiceDto(card2, accountId, discount);
 
 		accountDtoMock = new AccountDto(account);
+
+
 	}
+	
+    @Test
+    public void testInjection() throws Exception {
+    	
+//      
+//    	// given
+//		payment1 = 1000L;
+//		CheckCardRequestDto request = new CheckCardRequestDto(cardId1, userId, franchisee, payment1, fCategory,
+//				LocalDateTime.now());
+//		Double paymentReal = payment1 * (-1) * ((100 - discount) * 0.01);
+//		Long totalBalance = balance + (new Double(paymentReal)).longValue();
+//
+//		// when
+//		when(dao.selectCardByCardId(cardId1)).thenReturn(cardDtoMock1);
+//		when(dao.selectAccountByCardId(cardId1)).thenReturn(accountDtoMock);
+//
+//		// then
+//		CheckCardResponseDto responseDto = checkCardService.checkCardPayment(request);
+//		System.out.println(responseDto.getBalance());
+//		assertNotNull(responseDto);
+//		assertEquals(responseDto.getBalance(), totalBalance);
+//	
+//        assertNotNull(dao);
+//        assertNotNull(redissonClient);
+//        assertNotNull(lock);
+//        assertNotNull(checkCardService);
+//        assertNotNull(redissonExam);
+    }
 
 	@Test
-	void test() throws InterruptedException, ExecutionException {
-		// given
+	void test() throws Exception {
+        redissonExam.setService(checkCardService); // CheckCardService 주입
+    	// given
 		payment1 = 1000L;
 		payment2 = 3000L;
-		CheckCardRequestDto request = new CheckCardRequestDto(cardId2, userId, franchisee, payment1, fCategory,
-				LocalDateTime.now());
+
 		Double paymentReal1 = payment1 * (-1) * ((100 - discount) * 0.01);
 		Double paymentReal2 = payment2 * (-1) * ((100 - discount) * 0.01);
 		Double paymentReal3 = 2000L * (-1) * ((100 - discount) * 0.01);
@@ -117,51 +165,79 @@ class RedissonExamTest {
 				LocalDateTime.now());
 		CheckCardRequestDto request3 = new CheckCardRequestDto(cardId2, userId, franchisee, 2000L, fCategory,
 				LocalDateTime.now());
+		final CheckCardResponseDto res = new CheckCardResponseDto();
+		Long totalBalance = balance + (new Double(paymentReal1+paymentReal2+paymentReal3)).longValue();
+		
+		  // Mock RedissonClient
+        RedissonClient redissonClient = mock(RedissonClient.class);
+        RLock lock = mock(RLock.class);
+        when(redissonClient.getLock(String.format("cardId:%d",request1.getCardId()))).thenReturn(lock);
+        when(redissonClient.getLock(String.format("cardId:%d",request2.getCardId()))).thenReturn(lock);
+
+	    when(lock.tryLock()).thenReturn(true);
+	    
+        // Mock CheckCardService
+        CheckCardService checkCardService = mock(CheckCardService.class);
+//        when(checkCardService.checkCardPayment(request1)).thenReturn(expectedResponse);
 
 
 		
 
+		// when
+		when(dao.selectCardByCardId(cardId2)).thenReturn(cardDtoMock1);
+		when(dao.selectAccountByCardId(cardId2)).thenReturn(accountDtoMock);
+		when(dao.selectCardByCardId(cardId1)).thenReturn(cardDtoMock2);
+		when(dao.selectAccountByCardId(cardId1)).thenReturn(accountDtoMock);
+		
+	
+
 		CompletableFuture<Void> future1 = CompletableFuture.runAsync(() -> {
 			try {
-				redisson.cardLock(request1);
-//				System.out.println("1:" + redisson.cardLock(request1).getBalance());
+				  CheckCardResponseDto result = redissonExam.cardLock(request1);
+					
+			        res.setBalance(result.getBalance());
+			        
+
 			} catch (Exception e) {
 				// 예외 처리 로직
 			}
 		});
-
 		CompletableFuture<Void> future2 = CompletableFuture.runAsync(() -> {
 			try {
-				redisson.cardLock(request2);
-//				System.out.println("2:" + redisson.cardLock(request2).getBalance());
+				  CheckCardResponseDto result = redissonExam.cardLock(request2);
+					
+			        res.setBalance(result.getBalance());
+
 			} catch (Exception e) {
 				// 예외 처리 로직
 			}
 		});
 		CompletableFuture<Void> future3 = CompletableFuture.runAsync(() -> {
 			try {
-				redisson.cardLock(request3);
-//				System.out.println("3:" + redisson.cardLock(request3).getBalance());
+				  CheckCardResponseDto result = redissonExam.cardLock(request3);
+					
+			        res.setBalance(result.getBalance());
+
 			} catch (Exception e) {
 				// 예외 처리 로직
 			}
 		});
-		CompletableFuture<Void> combinedFuture = CompletableFuture.allOf(future1, future2, future3);
+		CompletableFuture<Void> combinedFuture = CompletableFuture.allOf(future1,future2,future3);
 		try {
-			combinedFuture.get(); // 대기하여 모든 작업이 완료되도록 함
-			System.out.println("Remaining balance: " + dao.selectAccountByCardId(cardId1).getBalance());
+			 // 대기하여 모든 작업이 완료되도록 함
+		combinedFuture.get();
+
+			System.out.println("Remaining balance: " + res.getBalance());
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 		}
+		
 		// then
+		System.out.println("테스트 토탈 남은금액: " + res.getBalance());
+		System.out.println("실제 토탈 남은금액: " + totalBalance);
 
-		System.out.println("테스트 토탈 남은금액: " + dao.selectAccountByCardId(cardId1).getBalance());
-		
-		
-		
-		
-		
-	
+		assertEquals(res.getBalance(),totalBalance);
+
 	
 	}
 

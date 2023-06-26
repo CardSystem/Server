@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.redisson.api.RedissonClient;
+
 import dao.CheckCardHistoryDao;
 import dto.CheckCardRequestDto;
 import dto.CheckCardResponseDto;
@@ -23,18 +25,17 @@ import service.CheckCardService;
 @WebServlet("/card/check")
 public class CheckCardHistoryServlet extends HttpServlet {
 
-//	private final CheckCardService checkCardService;
+//	private CheckCardService checkCardService = null;
 	private final RedissonExam redisson;
+
 	public static CheckCardHistoryDao dao = new CheckCardHistoryDao();
 
 	public CheckCardHistoryServlet() {
 		// 기본 생성자
-//		this.checkCardService = new CheckCardService(dao);
 		this.redisson=new RedissonExam();
 	}
 //
 	public CheckCardHistoryServlet(RedissonExam redisson) {
-//		this.checkCardService = checkCardService;
 		this.redisson=redisson;
 	}
 
@@ -57,6 +58,7 @@ public class CheckCardHistoryServlet extends HttpServlet {
 		CheckCardRequestDto dto = new CheckCardRequestDto(cardId, userId, franchisee, payment, fCategory, date);
 		try {
 			CheckCardResponseDto responseDto=RedissonExam.cardLock(dto);
+//			CheckCardResponseDto responseDto=checkCardService.checkCardPayment(dto);
 						request.setAttribute("data", responseDto);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/CheckCardResponse.jsp");
 			dispatcher.forward(request, response);
