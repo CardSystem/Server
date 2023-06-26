@@ -18,12 +18,11 @@ import lombok.RequiredArgsConstructor;
 import service.CheckCardService;
 
 public class RedissonExam {
-	public static CheckCardHistoryDao dao = new CheckCardHistoryDao();
+		public static CheckCardHistoryDao dao = new CheckCardHistoryDao();
 
 	 	public static final CheckCardService service = new CheckCardService(dao);
 
-	   public static CheckCardResponseDto cardLock(CheckCardRequestDto dto)
-	   {
+	 	public static CheckCardResponseDto cardLock(CheckCardRequestDto dto){
 		   CheckCardResponseDto response=null;
 		   RedissonClient redisson = null;
 	        Config config = new Config();

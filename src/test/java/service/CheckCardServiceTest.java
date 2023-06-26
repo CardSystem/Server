@@ -104,6 +104,7 @@ class CheckCardServiceTest {
 
 		// then
 		CheckCardResponseDto responseDto = service.checkCardPayment(request);
+		System.out.println(responseDto.getBalance());
 		assertNotNull(responseDto);
 		assertEquals(responseDto.getBalance(), totalBalance);
 	}
@@ -142,14 +143,13 @@ class CheckCardServiceTest {
 	void 정지된카드() throws Exception {
 
 		// given
-		isStopped = 1;
 		payment1 = 1000L;
 		CheckCardRequestDto request = new CheckCardRequestDto(cardId1, userId, franchisee, payment1, fCategory,
 				LocalDateTime.now());
 		Double paymentReal = payment1 * (-1) * ((100 - discount) * 0.01);
 		Long totalBalance = balance + (new Double(paymentReal)).longValue();
-		Cards card = new Cards(cardId1, id1, null, "2023-06-21", cardType, validity, agency, issuer, isStopped, cardNum);
-		CheckCardDaoToServiceDto cardDtoMock1 = new CheckCardDaoToServiceDto(card1, accountId, discount);
+		Cards card = new Cards(cardId1, id1, null, "2023-06-21", cardType, validity, agency, issuer, 1, cardNum);
+		CheckCardDaoToServiceDto cardDtoMock1 = new CheckCardDaoToServiceDto(card, accountId, discount);
 
 		// when
 		when(dao.selectCardByCardId(cardId1)).thenReturn(cardDtoMock1);
@@ -159,7 +159,7 @@ class CheckCardServiceTest {
 		try {
 			CheckCardResponseDto responseDto = service.checkCardPayment(request);
 		} catch (BusinessException e) {
-			System.out.println(e.getMessage() + " " + e.getErrorCode());
+			System.out.println("테스트에러: "+e.getMessage() + " " + e.getErrorCode());
 
 			assertEquals("정지된 카드입니다.", e.getMessage());
 		}
@@ -206,6 +206,7 @@ class CheckCardServiceTest {
 	@DisplayName("락 걸지 않았을 때 동시성 테스트")
 	void 동시성실패() throws Exception {
 
+
 		// given
 		payment1 = 1000L;
 		payment2 = 3000L;
@@ -231,11 +232,15 @@ class CheckCardServiceTest {
 				LocalDateTime.now());
 		CheckCardRequestDto request3 = new CheckCardRequestDto(cardId2, userId, franchisee, 2000L, fCategory,
 				LocalDateTime.now());
-
+		final CheckCardResponseDto res = new CheckCardResponseDto();
 
 		CompletableFuture<Void> future1 = CompletableFuture.runAsync(() -> {
 			try {
-				System.out.println("1:" + service.checkCardPayment(request1).getBalance());
+		        CheckCardResponseDto result = service.checkCardPayment(request1);
+				
+		        res.setBalance(result.getBalance());
+
+		        System.out.println("1:" +res.getBalance());
 			} catch (Exception e) {
 				// 예외 처리 로직
 			}
@@ -243,97 +248,40 @@ class CheckCardServiceTest {
 
 		CompletableFuture<Void> future2 = CompletableFuture.runAsync(() -> {
 			try {
-				System.out.println("2:" + service.checkCardPayment(request2).getBalance());
+				 CheckCardResponseDto result = service.checkCardPayment(request2);
+					
+			        res.setBalance(result.getBalance());
+
+				System.out.println("2:" + res.getBalance());
 			} catch (Exception e) {
 				// 예외 처리 로직
 			}
 		});
 		CompletableFuture<Void> future3 = CompletableFuture.runAsync(() -> {
 			try {
-				System.out.println("3:" + service.checkCardPayment(request3).getBalance());
+				  CheckCardResponseDto result = service.checkCardPayment(request3);
+					
+			        res.setBalance(result.getBalance());
+
+				System.out.println("3:" + res.getBalance());
 			} catch (Exception e) {
 				// 예외 처리 로직
 			}
 		});
-		CompletableFuture<Void> combinedFuture = CompletableFuture.allOf(future1, future2, future3);
+		CompletableFuture<Void> combinedFuture = CompletableFuture.allOf(future3);
 		try {
 			combinedFuture.get(); // 대기하여 모든 작업이 완료되도록 함
-			System.out.println("Remaining balance: " + dao.selectAccountByCardId(cardId1).getBalance());
+			System.out.println("Remaining balance: " + res.getBalance());
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 		}
-		// then
-
-		System.out.println("테스트 토탈 남은금액: " + dao.selectAccountByCardId(cardId1).getBalance());
+		
+		
+//		// then
+		System.out.println("테스트 토탈 남은금액: " + res.getBalance());
 
 	}
 	
 	
-	@Test
-	@DisplayName("레디스로 락 잡기")
-	void 레디스락() throws Exception {
-		// given
-		payment1 = 1000L;
-		payment2 = 3000L;
-		CheckCardRequestDto request = new CheckCardRequestDto(cardId2, userId, franchisee, payment1, fCategory,
-		LocalDateTime.now());
-				Double paymentReal1 = payment1 * (-1) * ((100 - discount) * 0.01);
-				Double paymentReal2 = payment2 * (-1) * ((100 - discount) * 0.01);
-				Double paymentReal3 = 2000L * (-1) * ((100 - discount) * 0.01);
-
-				System.out.println("1000원 결제 시 결제금액 : " + paymentReal1);
-				System.out.println("3000원 결제 시 결제금액 : " + paymentReal2);
-				System.out.println("2000원 결제 시 결제금액 : " + paymentReal3);
-
-				// when
-				when(dao.selectCardByCardId(cardId2)).thenReturn(cardDtoMock1);
-				when(dao.selectAccountByCardId(cardId2)).thenReturn(accountDtoMock);
-				when(dao.selectCardByCardId(cardId1)).thenReturn(cardDtoMock2);
-				when(dao.selectAccountByCardId(cardId1)).thenReturn(accountDtoMock);
-
-				CheckCardRequestDto request1 = new CheckCardRequestDto(cardId1, userId, franchisee, payment1, fCategory,
-						LocalDateTime.now());
-				CheckCardRequestDto request2 = new CheckCardRequestDto(cardId2, userId, franchisee, payment2, fCategory,
-						LocalDateTime.now());
-				CheckCardRequestDto request3 = new CheckCardRequestDto(cardId2, userId, franchisee, 2000L, fCategory,
-						LocalDateTime.now());
-
-
-				CompletableFuture<Void> future1 = CompletableFuture.runAsync(() -> {
-					try {
-						System.out.println("1:" + service.checkCardPayment(request1).getBalance());
-					} catch (Exception e) {
-						// 예외 처리 로직
-					}
-				});
-
-				CompletableFuture<Void> future2 = CompletableFuture.runAsync(() -> {
-					try {
-						System.out.println("2:" + service.checkCardPayment(request2).getBalance());
-					} catch (Exception e) {
-						// 예외 처리 로직
-					}
-				});
-				CompletableFuture<Void> future3 = CompletableFuture.runAsync(() -> {
-					try {
-						System.out.println("3:" + service.checkCardPayment(request3).getBalance());
-					} catch (Exception e) {
-						// 예외 처리 로직
-					}
-				});
-				CompletableFuture<Void> combinedFuture = CompletableFuture.allOf(future1, future2, future3);
-				try {
-					combinedFuture.get(); // 대기하여 모든 작업이 완료되도록 함
-					System.out.println("Remaining balance: " + dao.selectAccountByCardId(cardId1).getBalance());
-				} catch (RuntimeException e) {
-					e.printStackTrace();
-				}
-				
-				
-				
-				// then
-				System.out.println("테스트 토탈 남은금액: " + dao.selectAccountByCardId(cardId1).getBalance());
-
-	}
 
 }

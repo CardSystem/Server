@@ -2,13 +2,17 @@ package dto;
 
 import domain.Account;
 import domain.Cards;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AccountDto {
 
 	private Long id;
@@ -18,7 +22,9 @@ public class AccountDto {
 	private String bankName;
 	private Integer isStopped;
 
-
+	public void makeBalance(Long payment) {
+		this.balance += payment;
+	}
 	@Builder
 	public AccountDto(Account account) {
 		this.id = account.getId();
