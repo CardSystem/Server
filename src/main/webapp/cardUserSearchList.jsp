@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link href="css/lookup.css" rel="stylesheet">
+<link href="css/lookup.css?v=1" rel="stylesheet">
 <title>해당 고객 전체 카드 사용 내역 조회</title>
 </head>
 <body>
@@ -16,13 +16,14 @@
 <h1>해당 고객 카드 결제 내역</h1>
 
 	<form action="CardControllerServlet" method="GET">
-	  <input type="text" name="keyword" placeholder="카드ID를 입력하세요.">
+	  <input id="keywordInput" type="text" name="keyword" placeholder="카드ID를 입력하세요.">
 	  <input type="hidden" name="action" value="searchUserCardId" />
-	  <input type="submit" value="검색">
+	  <input class="btn btn-primary btn-sm" type="submit" value="검색">
 	</form>
 	
+	<div id="tableBox">
 	<table class="table table-hover">
-	<tr>
+	<tr style="background-color: rgb(241, 241, 241);">
 			<td>카드ID</td>
 			<td>사용자ID</td>
 			<td>가맹점명</td>
@@ -54,6 +55,7 @@
 		}
 		%>
 	</table>
+	</div>
 	</div>
 </body>
 </html>

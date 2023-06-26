@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link href="css/lookup.css" rel="stylesheet">
+<link href="css/lookup.css?v=1" rel="stylesheet">
 <title>Insert title here</title>
 </head>
 <body>
@@ -16,7 +16,7 @@
 <div class="result_table" style="width:80%;float: right;">
 <h1>카드 상품 별 결제 내역 조회</h1>
 	<table class="table table-hover">
-	<tr>
+	<tr style="background-color: rgb(241, 241, 241);">
 			<td>카드ID</td>
 			<td>사용자ID</td>
 			<td>가맹점명</td>
@@ -32,7 +32,7 @@
 		ArrayList<CardHistoryDTO> list = (ArrayList<CardHistoryDTO>)request.getAttribute("searchCardId");
 				for(CardHistoryDTO data : list){
 		%>
-		<tr>
+		<tr >
 			<td><%= data.getCardId() %></td>
 			<td><%= data.getUserId() %></td>
 			<td><%= data.getFranchisee() %></td>

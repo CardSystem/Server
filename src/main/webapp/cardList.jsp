@@ -9,7 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <title>카드 사용 내역 조회</title>
-<link href="css/lookup.css" rel="stylesheet">
+<link href="css/lookup.css?v=1" rel="stylesheet">
 <script src="http://code.jquery.com/jquery-3.1.1.js"></script>
 <script>
   function handleInput() {
@@ -47,17 +47,18 @@
 	    }
   }
 </script>
+
 </head>
 <body>
 <%@ include file="menu.jsp" %>
 
 <div class="result_table" style="width:80%;float: right;">
-	<h1>카드 사용 내역</h1>
-	<form method="GET" action="CardControllerServlet">
+	<h1><b>카드 사용 내역</b></h1>
+	<form id="recentOrPast" method="GET" action="CardControllerServlet">
 		<input type="hidden" name="action" value="recentlist" />
 		<input type="submit" class="btn btn-secondary" value="최근 결제 일 순" />
 	</form>
-	
+	<div id="inputContainer">
 	<form id="searchForm" method="GET" action="CardControllerServlet">
 	  <select name="searchType" onchange="changeInputField()">
 	  	<option value="title">검색 조건</option>
@@ -66,30 +67,30 @@
 	  </select>
 	  <input id="keywordInput" type="text" name="keyword" placeholder="고객ID or 카드ID을 선택하세요.">
 	  <input type="hidden" name="action">
-	  <input type="submit" value="검색">
+	  <input class="btn btn-primary btn-sm" type="submit" value="검색">
 	</form>
 
 	<form name="periodOption" method="GET" action="CardControllerServlet">
 	  <div class ="selectBox">
+	 	  <div id="customPeriodInput" style="display: none;">
+			  <input type="text" id="inputField" name="keyword" placeholder="기간을 입력하세요.(개월단위)">
+			  <input type="hidden" name="action" value="searchPeriod" />
+			  <input type="submit" value="조회하기">
+		  </div> 
 		  <select name="list" id="mySelect" onchange="handleInput()">
 		  	<option value="title">월별 조회하기</option>
 		    <option value="custom">직접입력</option>
 			<option value="1">1개월</option>
 			<option value="3">3개월</option>
 		  </select>
-		  
-		  <div id="customPeriodInput" style="display: none;">
-			  <input type="text" id="inputField" name="keyword" placeholder="기간을 입력하세요.(개월단위)">
-			  <input type="hidden" name="action" value="searchPeriod" />
-			  <input type="submit" value="조회하기">
-		  </div>
 	  </div>
 	</form>
+	</div>
 
 
-
+<div id="tableBox">
 <table class="table table-hover">
-    <tr>
+    <tr style="background-color: rgb(241, 241, 241);">
         <td>카드ID</td>
         <td>사용자ID</td>
         <td>가맹점명</td>
@@ -101,7 +102,6 @@
         <td>할부개월</td>
         <td>신용/체크</td>
     </tr>
-    
         <% ArrayList<CardHistoryDTO> list = (ArrayList<CardHistoryDTO>) request.getAttribute("list");
         for (CardHistoryDTO data : list) { %>
             <tr>
@@ -118,6 +118,6 @@
             </tr>
         <% } %>
 </table>
-
+</div>
 </body>
 </html>

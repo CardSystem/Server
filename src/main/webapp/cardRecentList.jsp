@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link href="css/lookup.css" rel="stylesheet">
+<link href="css/lookup.css?v=1" rel="stylesheet">
 <script src="http://code.jquery.com/jquery-3.1.1.js"></script>
 <script>
   function handleInput() {
@@ -45,16 +45,26 @@
   }
 </script>
 <title>최근 순 카드 사용 내역 조회</title>
+
+<style>
+#inputContainer {
+	display : flex;
+	}
+
+.selectBox {
+justify-content: flex-end;
+}
+</style>
 </head>
 <body>
 <%@ include file="menu.jsp" %>
 <div class="result_table" style="width:80%;float: right;">
-	<h1>카드 결제 내역</h1>
-	<form method="GET" action="CardControllerServlet">
+	<h1>카드 사용 내역</h1>
+	<form id="recentOrPast" method="GET" action="CardControllerServlet">
 		<input type="hidden" name="action" value="list" />
 		<input type="submit" class="btn btn-secondary" value="오래 된 순" />
 	</form>
-
+<div id = "inputContainer">
 	<form id="searchForm" method="GET" action="CardControllerServlet">
 	  <select name="searchType" onchange="changeInputField()">
 	  	<option value="title">검색 조건</option>
@@ -63,7 +73,7 @@
 	  </select>
 	  <input id="keywordInput" type="text" name="keyword" placeholder="고객ID or 카드ID을 선택하세요.">
 	  <input type="hidden" name="action">
-	  <input type="submit" value="검색">
+	  <input class="btn btn-primary btn-sm" type="submit" value="검색">
 	</form>
 
 		<form name="periodOption" method="GET" action="CardControllerServlet">
@@ -82,8 +92,11 @@
 		  </div>
 	  </div>
 	</form>
+	</div>
+	
+	<div id="tableBox">
 	<table class="table table-hover">
-	<tr>
+	<tr style="background-color: rgb(241, 241, 241);">
 			<td>카드ID</td>
 			<td>사용자ID</td>
 			<td>가맹점명</td>
@@ -115,6 +128,7 @@
 		}
 		%>
 	</table>
+	</div>
 	</div>
 </body>
 </html>
