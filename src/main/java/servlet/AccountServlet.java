@@ -57,7 +57,6 @@ public class AccountServlet extends HttpServlet {
             return "ChooseAccount.jsp";
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "데이터베이스 오류가 발생했습니다."); // 오류 메시지 설정
             return "Login.jsp";
         }
     }

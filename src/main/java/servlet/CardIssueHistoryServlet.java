@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.CardIssueHistoryDAO;
+import service.CardIssueHistoryService;
 
 @WebServlet("/CardIssueHistoryServlet")
 public class CardIssueHistoryServlet extends HttpServlet {
@@ -53,12 +54,7 @@ public class CardIssueHistoryServlet extends HttpServlet {
 	    long id = Long.parseLong(request.getParameter("id"));
 	    int isStop = Integer.parseInt(request.getParameter("is_stopped"));
 	    try {
-	    	if(isStop == 1) {
-	    		isStop = 0;
-	    	} else {
-	    		isStop = 1;
-	    	}
-	        CardIssueHistoryDAO.changeIsStopped(isStop, id);
+	    	CardIssueHistoryService.controlIsStop(isStop, id);
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
