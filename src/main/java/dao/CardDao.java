@@ -7,24 +7,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import db.DBUtil;
-import dto.CardIssueHistoryDTO;
+import dto.CardDto;
 
-public class CardIssueHistoryDAO {
+public class CardDao {
 	static DBUtil dbUtil = DBUtil.getInstance();
 
-	public static ArrayList<CardIssueHistoryDTO> showCardList() throws SQLException {
+	public static ArrayList<CardDto> showCardList() throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        ArrayList<CardIssueHistoryDTO> cardList = new ArrayList<>();
+        ArrayList<CardDto> cardList = new ArrayList<>();
 
         try {
             conn = dbUtil.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM cards");
+            pstmt = conn.prepareStatement("SELECT * FROM card");
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                CardIssueHistoryDTO card = new CardIssueHistoryDTO();
+                CardDto card = new CardDto();
                 card.setId(rs.getLong("id"));
                 card.setCardId(rs.getString("card_id"));
                 card.setCardNum(rs.getString("card_num"));
@@ -51,7 +51,7 @@ public class CardIssueHistoryDAO {
 		PreparedStatement pstmt = null;
 		try {
 			conn = dbUtil.getConnection();
-            pstmt = conn.prepareStatement("update cards set is_stopped=? where id=?");
+            pstmt = conn.prepareStatement("update card set is_stopped=? where id=?");
             // 이부분 처리 애매함 -> boolean인지 int인지
 			pstmt.setInt(1, isStopped);
 			pstmt.setLong(2, id);

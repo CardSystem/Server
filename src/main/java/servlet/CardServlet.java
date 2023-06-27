@@ -10,11 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.CardIssueHistoryDAO;
-import service.CardIssueHistoryService;
+import dao.CardDao;
+import service.CardService;
 
 @WebServlet("/CardIssueHistoryServlet")
-public class CardIssueHistoryServlet extends HttpServlet {
+public class CardServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
@@ -43,7 +43,7 @@ public class CardIssueHistoryServlet extends HttpServlet {
 
 	private String doList(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.setAttribute("list", CardIssueHistoryDAO.showCardList());
+			request.setAttribute("list", CardDao.showCardList());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -54,12 +54,12 @@ public class CardIssueHistoryServlet extends HttpServlet {
 	    long id = Long.parseLong(request.getParameter("id"));
 	    int isStop = Integer.parseInt(request.getParameter("is_stopped"));
 	    try {
-	    	CardIssueHistoryService.controlIsStop(isStop, id);
+	    	CardService.controlIsStop(isStop, id);
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
 	    // 변경 후 다시 목록으로 돌아갈 수 있도록 Redirect URL을 설정
-	    String redirectUrl = request.getContextPath() + "/CardIssueHistoryServlet?action=list";
+	    String redirectUrl = request.getContextPath() + "/CardServlet?action=list";
 	    return redirectUrl;
 	}
 }
