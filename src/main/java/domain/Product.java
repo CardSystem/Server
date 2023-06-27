@@ -21,13 +21,18 @@ public class Product {
 //	private Integer isStopped;
 //	private String cardNum;
 //	private Long accountId;
+	private String categoryName;
+	private Long discount;
 	
 	@Builder
-	public Product(Long id, String cardName, String cardType, Long cardLimit, Long categoryId) {
+	public Product(Long id, String cardName, String cardType, Long cardLimit, Long categoryId, String categoryName, Long discount) {
 		this.id = id;
 		this.cardName = cardName;
 		this.cardType = cardType;
 		this.cardLimit = cardLimit;
 		this.categoryId = categoryId;
+		this.categoryName = categoryName;
+		this.discount = discount;
+		
 	}
 }

@@ -69,14 +69,22 @@ public class ProductDao {
 
 				/* response 데이터 dto에 담기 */
 
-				ProductResponseDto dto = new ProductResponseDto();
-				dto.setId(rs.getLong("product_id"));
-				dto.setCardName(rs.getString("card_name"));
-				dto.setCardType(rs.getString("card_type"));
-				dto.setCardLimit(rs.getLong("card_limit"));
-				dto.setCategoryId(rs.getLong("category_id"));
-				dto.setCategoryName(rs.getString("category_name"));
-				dto.setDiscount(rs.getLong("discount"));
+				ProductResponseDto dto = ProductResponseDto.builder()
+						.id(rs.getLong("product_id"))
+						.cardName(rs.getString("card_name"))
+						.cardType(rs.getString("card_type"))
+						.cardLimit(rs.getLong("card_limit"))
+						.categoryId(rs.getLong("category_id"))
+						.categoryName(rs.getString("category_name"))
+						.discount(rs.getLong("discount"))
+						.build();
+//				dto.setId(rs.getLong("product_id"));
+//				dto.setCardName(rs.getString("card_name"));
+//				dto.setCardType(rs.getString("card_type"));
+//				dto.setCardLimit(rs.getLong("card_limit"));
+//				dto.setCategoryId(rs.getLong("category_id"));
+//				dto.setCategoryName(rs.getString("category_name"));
+//				dto.setDiscount(rs.getLong("discount"));
 				list.add(dto);
 			}
 		} catch (Exception e) {

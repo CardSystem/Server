@@ -18,14 +18,20 @@ public class ProductDto {
 		private String cardType;
 		private Long cardLimit;
 		private Long categoryId;
+		private String categoryName;
+		private Long discount;
+		
 		
 		//dto -> Entity화 빌더 메소드
 		public Product toEntity() {
 			return Product.builder()
+					.id(id)
 					.cardName(cardName)
 					.cardLimit(cardLimit)
 					.cardType(cardType)
 					.categoryId(categoryId)
+					.categoryName(categoryName)
+					.discount(discount)
 					.build();
 		}	
 	}
