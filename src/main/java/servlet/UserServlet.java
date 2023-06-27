@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import Exception.BusinessException;
-import dao.UserDAO;
+import dao.UserDao;
 import service.UserService;
 
 @WebServlet("/userServlet")

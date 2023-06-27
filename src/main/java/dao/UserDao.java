@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 import db.DBUtil;
 
-public class UserDAO {
+public class UserDao {
 	static DBUtil dbUtil = DBUtil.getInstance();
 	
 	public static int login(String id, String userBirth) throws SQLException {

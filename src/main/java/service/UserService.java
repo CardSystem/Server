@@ -9,12 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import Exception.BusinessException;
 import Exception.ErrorCode;
-import dao.UserDAO;
+import dao.UserDao;
 
 public class UserService {
 	public String checkLogin(HttpServletRequest request, HttpServletResponse response, String id, String birth)
 			throws ServletException, IOException, SQLException, BusinessException {
-		int loginResult = UserDAO.login(id, birth);
+		int loginResult = UserDao.login(id, birth);
 		if (loginResult == 1) {
 			if (id.contains("Admin")) {
 				request.getSession().setAttribute("adminId", id);
