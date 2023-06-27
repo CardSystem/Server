@@ -23,9 +23,11 @@ import org.mockito.MockitoAnnotations;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 
-import dao.CheckCardHistoryDao;
+import dao.AccountDao;
+import dao.CardDao;
+import dao.CardHistoryDao;
 import domain.Account;
-import domain.Cards;
+import domain.Card;
 import dto.AccountDto;
 import dto.CheckCardDaoToServiceDto;
 import dto.CheckCardHistoryDto;
@@ -36,12 +38,18 @@ import service.CheckCardService;
 class RedissonExamTest {
 	
 
-	  @Mock
-	    private CheckCardHistoryDao dao;
+	  	@Mock
+	    private CardHistoryDao historydao;
+	  	@Mock
+	    private AccountDao accountdao;
+	  	@Mock
+	    private CardDao carddao;
 
+	  	
 	    @Mock
 	    private RedissonClient redissonClient;
 
+	    
 	    @InjectMocks
 	    private CheckCardService checkCardService;
 
@@ -71,8 +79,8 @@ class RedissonExamTest {
 	public static String cardNum;
 	public static Long discount;
 	public static Long fCategory;
-	static Cards card1;
-	static Cards card2;
+	static Card card1;
+	static Card card2;
 	static Account account;
 	static CheckCardDaoToServiceDto cardDtoMock1;
 	static CheckCardDaoToServiceDto cardDtoMock2;
@@ -98,10 +106,10 @@ class RedissonExamTest {
 		cardNum = "1234123412341234";
 		discount = 15L;
 		fCategory = 1L;
-		card1 = new Cards(cardId1, id1, null, "2023-06-21", cardType, validity, agency, issuer, isStopped, cardNum);
-		card2 = new Cards(cardId2, id2, null, "2023-06-21", cardType, validity, agency, issuer, isStopped, cardNum);
+		card1 = new Card(cardId1, id1, null, "2023-06-21", cardType, validity, agency, issuer, isStopped, cardNum);
+		card2 = new Card(cardId2, id2, null, "2023-06-21", cardType, validity, agency, issuer, isStopped, cardNum);
 
-		account = new Account(id1, null, "11111111", balance, "하나은행", isStopped);
+		account = new Account(id1, "11111111", balance, "하나은행", isStopped);
 		cardDtoMock1 = new CheckCardDaoToServiceDto(card1, accountId, discount);
 		cardDtoMock2 = new CheckCardDaoToServiceDto(card2, accountId, discount);
 
@@ -110,33 +118,7 @@ class RedissonExamTest {
 
 	}
 	
-    @Test
-    public void testInjection() throws Exception {
-    	
-//      
-//    	// given
-//		payment1 = 1000L;
-//		CheckCardRequestDto request = new CheckCardRequestDto(cardId1, userId, franchisee, payment1, fCategory,
-//				LocalDateTime.now());
-//		Double paymentReal = payment1 * (-1) * ((100 - discount) * 0.01);
-//		Long totalBalance = balance + (new Double(paymentReal)).longValue();
-//
-//		// when
-//		when(dao.selectCardByCardId(cardId1)).thenReturn(cardDtoMock1);
-//		when(dao.selectAccountByCardId(cardId1)).thenReturn(accountDtoMock);
-//
-//		// then
-//		CheckCardResponseDto responseDto = checkCardService.checkCardPayment(request);
-//		System.out.println(responseDto.getBalance());
-//		assertNotNull(responseDto);
-//		assertEquals(responseDto.getBalance(), totalBalance);
-//	
-//        assertNotNull(dao);
-//        assertNotNull(redissonClient);
-//        assertNotNull(lock);
-//        assertNotNull(checkCardService);
-//        assertNotNull(redissonExam);
-    }
+
 
 	@Test
 	void test() throws Exception {
@@ -154,10 +136,10 @@ class RedissonExamTest {
 		System.out.println("2000원 결제 시 결제금액 : " + paymentReal3);
 
 		// when
-		when(dao.selectCardByCardId(cardId2)).thenReturn(cardDtoMock1);
-		when(dao.selectAccountByCardId(cardId2)).thenReturn(accountDtoMock);
-		when(dao.selectCardByCardId(cardId1)).thenReturn(cardDtoMock2);
-		when(dao.selectAccountByCardId(cardId1)).thenReturn(accountDtoMock);
+		when(carddao.selectCardByCardId(cardId2)).thenReturn(cardDtoMock1);
+		when(accountdao.selectAccountByCardId(cardId2)).thenReturn(accountDtoMock);
+		when(carddao.selectCardByCardId(cardId1)).thenReturn(cardDtoMock2);
+		when(accountdao.selectAccountByCardId(cardId1)).thenReturn(accountDtoMock);
 
 		CheckCardRequestDto request1 = new CheckCardRequestDto(cardId1, userId, franchisee, payment1, fCategory,
 				LocalDateTime.now());
@@ -184,10 +166,10 @@ class RedissonExamTest {
 		
 
 		// when
-		when(dao.selectCardByCardId(cardId2)).thenReturn(cardDtoMock1);
-		when(dao.selectAccountByCardId(cardId2)).thenReturn(accountDtoMock);
-		when(dao.selectCardByCardId(cardId1)).thenReturn(cardDtoMock2);
-		when(dao.selectAccountByCardId(cardId1)).thenReturn(accountDtoMock);
+		when(carddao.selectCardByCardId(cardId2)).thenReturn(cardDtoMock1);
+		when(accountdao.selectAccountByCardId(cardId2)).thenReturn(accountDtoMock);
+		when(carddao.selectCardByCardId(cardId1)).thenReturn(cardDtoMock2);
+		when(accountdao.selectAccountByCardId(cardId1)).thenReturn(accountDtoMock);
 		
 	
 

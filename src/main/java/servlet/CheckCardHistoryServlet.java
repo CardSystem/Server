@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.redisson.api.RedissonClient;
 
-import dao.CheckCardHistoryDao;
+import dao.CardHistoryDao;
 import dto.CheckCardRequestDto;
 import dto.CheckCardResponseDto;
 import redis.RedissonExam;
@@ -28,7 +28,7 @@ public class CheckCardHistoryServlet extends HttpServlet {
 //	private CheckCardService checkCardService = null;
 	private final RedissonExam redisson;
 
-	public static CheckCardHistoryDao dao = new CheckCardHistoryDao();
+	public static CardHistoryDao dao = new CardHistoryDao();
 
 	public CheckCardHistoryServlet() {
 		// 기본 생성자

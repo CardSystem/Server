@@ -1,7 +1,7 @@
 package dto;
 
 import domain.Account;
-import domain.Cards;
+import domain.Card;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +16,6 @@ import lombok.Setter;
 public class AccountDto {
 
 	private Long id;
-	private Cards card;
 	private String accountNum;
 	private Long balance;
 	private String bankName;
@@ -28,7 +27,6 @@ public class AccountDto {
 	@Builder
 	public AccountDto(Account account) {
 		this.id = account.getId();
-		this.card = account.getCard();
 		this.accountNum = account.getAccountNum();
 		this.balance = account.getBalance();
 		this.bankName = account.getBankName();

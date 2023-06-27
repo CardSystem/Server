@@ -11,13 +11,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Cards {
+public class Card {
 
-	private Long cardId;
 
 	private Long id;
+	private Long productId; //productId
 
-	private Account account;
+	private Long accountId;
 	private String issuedDate;
 	private String cardType;
 	private String validity;

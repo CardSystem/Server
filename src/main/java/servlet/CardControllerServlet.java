@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import dto.CardHistoryDTO;
 
 
-import dao.CardDAO;
+import dao.CardDao;
 
 
 
@@ -86,7 +86,7 @@ public class CardControllerServlet extends HttpServlet {
 
 	private String doList(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.setAttribute("list", CardDAO.showPayCardList());
+			request.setAttribute("list", CardDao.showPayCardList());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -95,7 +95,7 @@ public class CardControllerServlet extends HttpServlet {
 	
 	private String doRecentList(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.setAttribute("recentlist", CardDAO.showRecentPayCardList());
+			request.setAttribute("recentlist", CardDao.showRecentPayCardList());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -104,7 +104,7 @@ public class CardControllerServlet extends HttpServlet {
 	
 	private String doIdSearchList(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			ArrayList<CardHistoryDTO> userList = CardDAO.showSearchUidCardList(userId);
+			ArrayList<CardHistoryDTO> userList = CardDao.showSearchUidCardList(userId);
 			if(userList != null && !userList.isEmpty()) {
 				request.setAttribute("searchId",userList);
 			}
@@ -116,7 +116,7 @@ public class CardControllerServlet extends HttpServlet {
 	
 	private String doSearchUserCardList(HttpServletRequest request, HttpServletResponse response, String keyword) {
 		try {
-			ArrayList<CardHistoryDTO> userCardList = CardDAO.showSearchUserCardList(userId,keyword);
+			ArrayList<CardHistoryDTO> userCardList = CardDao.showSearchUserCardList(userId,keyword);
 			if(userCardList != null && !userCardList.isEmpty()) {
 				request.setAttribute("searchUserCardId",userCardList);
 			}
@@ -129,7 +129,7 @@ public class CardControllerServlet extends HttpServlet {
 	
 	private String doCardIdSearchList(HttpServletRequest request, HttpServletResponse response, long keyword) {
 		try {
-			request.setAttribute("searchCardId", CardDAO.showSearchCardList(keyword));
+			request.setAttribute("searchCardId", CardDao.showSearchCardList(keyword));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -138,7 +138,7 @@ public class CardControllerServlet extends HttpServlet {
 	
 	private String doPeriodSearchList(HttpServletRequest request, HttpServletResponse response, String option) {
 		try {
-			request.setAttribute("searchPeriod", CardDAO.showMonthlyCardList(option));
+			request.setAttribute("searchPeriod", CardDao.showMonthlyCardList(option));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

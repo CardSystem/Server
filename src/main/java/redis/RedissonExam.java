@@ -9,7 +9,9 @@ import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 
-import dao.CheckCardHistoryDao;
+import dao.AccountDao;
+import dao.CardDao;
+import dao.CardHistoryDao;
 import dto.CheckCardRequestDto;
 import dto.CheckCardResponseDto;
 import lombok.AllArgsConstructor;
@@ -21,9 +23,11 @@ import service.CheckCardService;
 
 @Setter
 public class RedissonExam {
-		public static CheckCardHistoryDao dao = new CheckCardHistoryDao();
+		public static CardHistoryDao historydao = new CardHistoryDao();
+		public static CardDao carddao = new CardDao();
+		public static AccountDao accountdao = new AccountDao();
 
-	 	public static CheckCardService service = new CheckCardService(dao);
+	 	public static CheckCardService service = new CheckCardService(historydao,accountdao,carddao);
 
 	 	public static CheckCardResponseDto cardLock(CheckCardRequestDto dto) throws Exception{
 		   CheckCardResponseDto response=null;
@@ -41,6 +45,7 @@ public class RedissonExam {
 	                System.out.println("redisson getlock timeout");
 	                throw new IllegalArgumentException();
 	            }
+	            System.out.println("점유한 스레드:"+lock.getName());
 	            return service.checkCardPayment(dto);
 	        } catch (InterruptedException e) {
 	            throw new RuntimeException(e);

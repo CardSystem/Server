@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
 
-import dao.InsertCardDao;
+import dao.CardDao;
 import dto.CardInsertDto;
 import dto.CardRequestDto;
 import exception.BusinessException;
@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class InsertCardService {
-	public final InsertCardDao dao;
+	public final CardDao dao;
 
 	private static final int RANDOM_STRING_LENGTH = 16;
 

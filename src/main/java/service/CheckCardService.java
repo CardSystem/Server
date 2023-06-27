@@ -5,7 +5,9 @@ import java.util.concurrent.TimeUnit;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 
-import dao.CheckCardHistoryDao;
+import dao.AccountDao;
+import dao.CardDao;
+import dao.CardHistoryDao;
 import domain.Account;
 import dto.AccountDto;
 import dto.CheckCardDaoToServiceDto;
@@ -15,25 +17,29 @@ import dto.CheckCardResponseDto;
 import exception.BusinessException;
 import exception.ErrorCode;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import redis.RedisLockUtil;
 
 @AllArgsConstructor
 public class CheckCardService {
 
-	public final CheckCardHistoryDao checkcarddao;
+	public final CardHistoryDao checkcardDao;
+	public final AccountDao accountDao;
+	public final CardDao cardDao;
 
 	public CheckCardResponseDto checkCardPayment(CheckCardRequestDto dto) throws Exception {
 		CheckCardHistoryDto historydto = null;
 		Long cardId = dto.getCardId();
 
-		// dao에서 받아올 때 dto로 받아오기
-		AccountDto accountdto = checkcarddao.selectAccountByCardId(cardId);
-		CheckCardDaoToServiceDto carddto = checkcarddao.selectCardByCardId(cardId);
-
+		AccountDto accountdto = accountDao.selectAccountByCardId(cardId);
+		CheckCardDaoToServiceDto carddto = cardDao.selectCardByCardId(cardId);
 		AccountDto responseDto=null;
+		
+		
 		int statusCode = 0;
 		String statusMsg = null;
 
+		
 		try {
 			Long payment = dto.getPayment();
 			if (carddto.getIsStopped() == 1) {
@@ -50,21 +56,21 @@ public class CheckCardService {
 
 			accountdto.makeBalance((new Double(paymentReal)).longValue());
 
-			checkcarddao.updateBalance(accountdto.getId(), accountdto.getBalance());
+			accountDao.updateBalance(accountdto.getId(), accountdto.getBalance());
 
 			historydto = new CheckCardHistoryDto(dto.getCardId(), dto.getUserId(), dto.getFranchisee(),
 					dto.getPayment(), accountdto.getBalance(), 1, dto.getDate(), dto.getFCategory(), 0, 0,
 					carddto.getCardType());
-			checkcarddao.insertData(historydto);
+			checkcardDao.insertCheckCardHistory(historydto);
 			statusCode = 200;
 			statusMsg = "결제성공";
 
 		} catch (BusinessException e) {
 			System.out.println("에러발생: " + e.getMessage());
 			historydto = new CheckCardHistoryDto(dto.getCardId(), dto.getUserId(), dto.getFranchisee(),
-					dto.getPayment(), accountdto.getBalance(), 0, dto.getDate(), dto.getFCategory(), 1, 0,
+					dto.getPayment(), accountdto.getBalance(), 0, dto.getDate(), dto.getFCategory(), 0, 0,
 					carddto.getCardType());
-			checkcarddao.insertData(historydto);
+			checkcardDao.insertCheckCardHistory(historydto);
 			statusCode = e.getErrorCode().getStatusCode();
 			statusMsg = e.getMessage();
 		}

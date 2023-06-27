@@ -1,6 +1,5 @@
 package domain;
 
-import domain.Cards.CardsBuilder;
 import dto.AccountDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +15,6 @@ import lombok.Setter;
 public class Account {
 
 	private Long id;
-	private Cards card;
 	private String accountNum;
 	private Long balance;
 	private String bankName;
