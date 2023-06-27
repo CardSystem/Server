@@ -8,7 +8,7 @@ import lombok.Setter;
 public class AccountDTO {
 	private long id;
 	private String userId;
-	private String AccountNum;
+	private String accountNum;
 	private long balance;
 	private String bankName;
 	private Integer isStopped;
