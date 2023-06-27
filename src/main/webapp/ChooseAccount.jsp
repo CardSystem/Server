@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="dto.AccountDTO"%>
+<%@page import="dto.AccountDto"%>
 <%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
 <html>
@@ -10,8 +10,8 @@
 <body>
     <%
     String userId = (String) request.getSession().getAttribute("userId");
-    String userBirth = (String) request.getSession().getAttribute("userBirth");
-    if (userId != null && userBirth != null) {
+        String userBirth = (String) request.getSession().getAttribute("userBirth");
+        if (userId != null && userBirth != null) {
     %>
     <p>ID: <%=userId%></p>
     <p>Birth: <%=userBirth%></p>
@@ -35,9 +35,9 @@
         <tbody>
             <%
             // 이전 코드를 유지하면서 null 값을 방지하기 위해 null 체크 또는 변수 초기화를 수행합니다.
-            ArrayList<AccountDTO> list = (ArrayList<AccountDTO>) request.getAttribute("list");
-            if (list != null) {
-                for (AccountDTO data : list) {
+                        ArrayList<AccountDto> list = (ArrayList<AccountDto>) request.getAttribute("list");
+                        if (list != null) {
+                            for (AccountDto data : list) {
             %>
             <tr>
                 <td><%=data.getAccountNum()%></td>

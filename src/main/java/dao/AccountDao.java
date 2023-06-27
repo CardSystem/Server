@@ -7,16 +7,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import db.DBUtil;
-import dto.AccountDTO;
+import dto.AccountDto;
 
-public class AccountDAO {
+public class AccountDao {
     static DBUtil dbUtil = DBUtil.getInstance();
 
-    public static ArrayList<AccountDTO> selectAccount(String userId) {
+    public static ArrayList<AccountDto> selectAccount(String userId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        ArrayList<AccountDTO> accountList = new ArrayList<>();
+        ArrayList<AccountDto> accountList = new ArrayList<>();
         
         try {
             conn = dbUtil.getConnection();
@@ -24,7 +24,7 @@ public class AccountDAO {
             pstmt.setString(1, userId);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                AccountDTO ad = new AccountDTO();
+                AccountDto ad = new AccountDto();
                 ad.setId(rs.getLong("id"));
                 ad.setUserId(rs.getString("user_id"));
                 ad.setAccountNum(rs.getString("account_num"));

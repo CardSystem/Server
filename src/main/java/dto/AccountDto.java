@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AccountDTO {
+public class AccountDto {
 	private long id;
 	private String userId;
 	private String accountNum;
@@ -13,5 +13,5 @@ public class AccountDTO {
 	private String bankName;
 	private Integer isStopped;
 	
-	public AccountDTO() {}
+	public AccountDto() {}
 }

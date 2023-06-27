@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.AccountDAO;
-import dto.AccountDTO;
+import dao.AccountDao;
+import dto.AccountDto;
 import service.AccountService;
 
 @WebServlet("/AccountServlet")
@@ -50,7 +50,7 @@ public class AccountServlet extends HttpServlet {
 
     private String doList(HttpServletRequest request, HttpServletResponse response) {
         try {
-            ArrayList<AccountDTO> accountList = AccountDAO.selectAccount(userId);
+            ArrayList<AccountDto> accountList = AccountDao.selectAccount(userId);
             if (accountList != null && !accountList.isEmpty()) {
                 request.setAttribute("list", accountList);
             }
