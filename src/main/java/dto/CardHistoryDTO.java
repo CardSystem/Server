@@ -5,8 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CardHistoryDTO{
-//	private long id;
+public class CardHistoryDto{
+	private long id;
 	private long cardId;
 	private String userId;
 	private String franchisee;
@@ -19,7 +19,7 @@ public class CardHistoryDTO{
 	private int insMonth;
 	private String cardType;
 	
-	public CardHistoryDTO() {
+	public CardHistoryDto() {
 		
 	}
 
