@@ -23,8 +23,8 @@ public class ProductService {
 	}
 
 	public Optional<List<ProductResponseDto>> getProductList() {
-		List<ProductResponseDto> list = dao.getProdcutList();
-		return Optional.ofNullable(list);
+		List<ProductResponseDto> list = dao.getProductList();
+		return Optional.of(list);
 	}
 
 	public void registerProduct(final ProductDto.Request dto) throws SQLException {

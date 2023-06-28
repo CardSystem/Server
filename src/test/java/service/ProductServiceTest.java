@@ -5,14 +5,17 @@ package service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +31,8 @@ import dao.ProductDao;
 import domain.Product;
 import dto.ProductDto;
 import dto.ProductResponseDto;
+import exception.BusinessException;
+import exception.ErrorCode;
 
 /**
  * @author 동현
@@ -35,6 +40,8 @@ import dto.ProductResponseDto;
  */
 
 class ProductServiceTest {
+	
+
 	//의존하는 실체 객체 대신 가짜 객체로 초기화
 	@Mock
 	private ProductDao dao;
@@ -80,11 +87,12 @@ class ProductServiceTest {
 		mockProductList.add(response);
 		
 		// when
-		when(dao.getProdcutList()).thenReturn(mockProductList);
+		when(dao.getProductList()).thenReturn(mockProductList);
 		
 		//Optional로 null 검증
 	    Optional<List<ProductResponseDto>> dto = productService.getProductList();
 	    
+	    //then
 	    assertNotNull(mockProductList);
 	    assertTrue(dto.isPresent(), "상품 리스트가 비어있지 않아야 테스트 통과");
 	    assertNotNull(dto);
@@ -94,10 +102,33 @@ class ProductServiceTest {
 	    	}
 	    });
 	}
+	
+	
+	@Test
+	@DisplayName("상품 조회 테스트 - 실패(등록된 상품이 없을 때)")
+	void getProductListFailedTest() throws SQLException{
+		//given
+		Long idxMock = request.getId();
+		dao.deleteProduct(idxMock);
+		 
+		//when
+		when(dao.getProductList()).thenReturn(null);
+		
+		//then
+		try {
+			Optional<List<ProductResponseDto>> list = productService.getProductList();
+			
+		} catch (NullPointerException e) {
+			assertThatThrownBy(()-> productService.getProductList())
+			.isInstanceOf(NullPointerException.class);
+			assertThat(e.getMessage()).isEqualTo(null);
+			System.out.println("상품 조회 실패 테스트 결과 값 : "+ e.getMessage());
+		}			
+	}
 		
 	
 	@Test
-	@DisplayName("상품 추가 테스트 - 성공")
+	@DisplayName("상품 등록 테스트 - 성공")
 	void registerProductTest() throws Exception {
 		//given
 		ProductDto.Request requestMock = ProductDto.Request
@@ -106,8 +137,8 @@ class ProductServiceTest {
 				.cardName("국민")
 				.cardType("신용")
 				.cardLimit(40000000L)
-				.categoryId(2L)
-				.categoryName("카테고리명-음식점")
+				.categoryId(3L)
+				.categoryName("카테고리명-테마파크")
 				.discount(10L)
 				.build();
 		requestMock.toEntity();
@@ -120,9 +151,37 @@ class ProductServiceTest {
 		
 		// then
 		assertNotNull(dao.selectOneProduct(2L));
-		assertTrue(requestMock.getDiscount()==10L, "해당 카드의 할인율이 일치하지 않음");
-		assertEquals(requestMock.getCardName(), "국민");
+		assertTrue(requestMock.getDiscount()== 10L, "해당 카드의 할인율이 일치하지 않음");
+	    assertEquals(requestMock.getCardName(), "국민");
 		System.out.println(requestMock);
+	}
+	
+	
+	@Test
+	@DisplayName("상품 등록 테스트 - 실패(카드명 중복될 때)")
+	void registerProductFailedTest() throws Exception{
+		
+		//given
+		ProductDto.Request requestMock = ProductDto.Request
+				.builder()
+				.id(2L)
+				.cardName("신한DS")
+				.cardType("신용")
+				.cardLimit(40000000L)
+				.categoryId(2L)
+				.categoryName("카테고리명-음식점")
+				.discount(10L)
+				.build();
+		requestMock.toEntity();
+		Optional<String> cardNameMock = Optional.of(requestMock.getCardName());
+		
+		//when
+		when(dao.selectProductCardName(request.getCardName())).thenReturn(cardNameMock);
+		
+		//then
+		assertThatThrownBy(()-> productService.registerProduct(requestMock))
+		.isInstanceOf(BusinessException.class)
+		.hasMessageContaining(ErrorCode.DUPLICATE_PRODUCT.getMessage());
 	}
 	
 	@Test
@@ -159,21 +218,30 @@ class ProductServiceTest {
 			return null;
 		}).when(dao).updateProduct(any(Long.class),any(ProductDto.Request.class));
 		
+		//then
 		assertNotNull(requestMock);
 		assertNotNull(productMock);
-		assertEquals(productMock.getCardName(),"우리은행-우리카드");
+		assertEquals(productMock.getCardName(), "우리은행-우리카드");
 		
 	}
 	
 	@Test
 	@DisplayName("상품 삭제 테스트 - 성공")
 	void deleteProductTest() throws Exception {
+		//given
 		Long deleteIdx = request.getId();
-		doAnswer( i ->{
-			productService.deleteProduct(deleteIdx);
-			return null;
+		
+		//when
+		doAnswer(i -> {
+		productService.deleteProduct(deleteIdx);
+			return true;
 		}).when(dao).deleteProduct(any(Long.class));
 		
+		Optional<List<ProductResponseDto>> list = Optional.ofNullable(dao.getProductList());
+		int size = list.map(List::size).orElse(0);
+		
+		//then
+		assertThat(size).isEqualTo(0);
+		System.out.println(size);
 	}
-
 }

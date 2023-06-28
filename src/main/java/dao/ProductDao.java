@@ -69,7 +69,7 @@ public class ProductDao {
 		return Optional.ofNullable(str);
 	}
 
-	public List<ProductResponseDto> getProdcutList(){
+	public List<ProductResponseDto> getProductList(){
 		List<ProductResponseDto> list = new ArrayList<>();
 		try {
 			conn = dbUtil.getConnection();

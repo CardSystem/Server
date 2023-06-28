@@ -36,7 +36,7 @@ public class ProductServlet extends HttpServlet {
 			throws ServletException, IOException {
 		List<ProductResponseDto> productList = productService.getProductList().orElseGet(()-> null);		
 		
-		if (productList == null) {
+		if (productList.isEmpty()) {
 		    throw new BusinessException(ErrorCode.NOT_FOUND_PRODUCTLIST, "상품 리스트를 찾을 수 없습니다.");
 		} 
 		request.setAttribute("productList", productList);
