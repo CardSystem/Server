@@ -56,4 +56,21 @@ public class AccountDao {
             dbUtil.close(pstmt, conn);
         }
     }
+    
+    public static void changeIsStopped(int isStopped, String id) throws SQLException {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = dbUtil.getConnection();
+            pstmt = conn.prepareStatement("update account set is_stopped=? where user_id=?");
+            // 이부분 처리 애매함 -> boolean인지 int인지
+			pstmt.setInt(1, isStopped);
+			pstmt.setString(2, id);
+			pstmt.executeUpdate();//insert실행
+		} catch(Exception e) {
+	         e.printStackTrace();
+	    } finally {
+			dbUtil.close(pstmt, conn);
+		}
+	}
 }

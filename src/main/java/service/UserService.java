@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import Exception.BusinessException;
 import Exception.ErrorCode;
+import dao.AccountDao;
+import dao.CardDao;
 import dao.UserDao;
 
 public class UserService {
@@ -62,6 +64,7 @@ public class UserService {
     		isStop = 1;
     	}
         UserDao.changeIsBlock(isStop, id);
-		
+//        AccountDao.changeIsStopped(isStop, id);
+//		CardDao.changeIsStopped(isStop, isStop);
 	}
 }

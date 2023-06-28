@@ -79,10 +79,12 @@ public class UserDao {
 		PreparedStatement pstmt = null;
 		try {
 			conn = dbUtil.getConnection();
-			pstmt = conn.prepareStatement("update user set is_blocked=? where id=?");
-			pstmt.setInt(1, isBlocked);
+//			pstmt = conn.prepareStatement("update user set is_blocked=? where id=?");
+			pstmt = conn.prepareStatement("UPDATE ACCOUNT A , CARD B SET A.IS_STOPPED = 1, B.IS_STOPPED = 1 WHERE A.USER_ID = ? AND B.ACCOUNT_ID = A.ID");
+//			pstmt.setInt(1, isBlocked);
 			pstmt.setString(2, id);
 			pstmt.executeUpdate();
+			System.out.println(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

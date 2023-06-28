@@ -28,11 +28,16 @@ public class CardServlet extends HttpServlet {
 			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 			dispatcher.forward(request, response);
 			break;
-		case "changeIsStop":
-			url = doChangeIsStop(request, response);
+		case "block":
+			url = blockCard(request, response);
+			response.sendRedirect(url);
+			break;
+		case "cancel":
+			url = cancelCard(request, response);
 			response.sendRedirect(url);
 			break;
 		}
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -50,11 +55,24 @@ public class CardServlet extends HttpServlet {
 		return "CardIssueHistory.jsp";
 	}
 
-	private String doChangeIsStop(HttpServletRequest request, HttpServletResponse response) {
+	private String blockCard(HttpServletRequest request, HttpServletResponse response) {
 	    long id = Long.parseLong(request.getParameter("id"));
 	    Integer isStop = Integer.parseInt(request.getParameter("is_stopped"));
 	    try {
-	    	CardService.controlIsStop(isStop, id);
+	    	CardService.block(isStop, id);
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    // 변경 후 다시 목록으로 돌아갈 수 있도록 Redirect URL을 설정
+	    String redirectUrl = request.getContextPath() + "/CardServlet?action=list";
+	    return redirectUrl;
+	}
+	
+	private String cancelCard(HttpServletRequest request, HttpServletResponse response) {
+	    long id = Long.parseLong(request.getParameter("id"));
+	    Integer isStop = Integer.parseInt(request.getParameter("is_stopped"));
+	    try {
+	    	CardService.cancel(isStop, id);
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }

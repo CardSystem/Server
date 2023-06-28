@@ -44,11 +44,18 @@
 				<td><%=data.getValidity()%></td>
 				<td><%=data.getIsStopped()%>
 					<form method="post" action="CardServlet">
-						<input type="hidden" name="action" value="changeIsStop" />
+						<input type="hidden" name="action" value="block" />
 						<input type="hidden" name="id" value="<%=data.getId()%>" />
 						<input type="hidden" name="is_stopped" value="<%=data.getIsStopped()%>" />
-						<input type="submit" value="변경" />
-					</form></td>
+						<input type="submit" value="정지" />
+					</form>
+					<form method="post" action="CardServlet">
+						<input type="hidden" name="action" value="cancel" />
+						<input type="hidden" name="id" value="<%=data.getId()%>" />
+						<input type="hidden" name="is_stopped" value="<%=data.getIsStopped()%>" />
+						<input type="submit" value="해제" />
+					</form>
+					</td>
 			</tr>
 			<%
 			}
