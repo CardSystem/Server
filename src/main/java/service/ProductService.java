@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class ProductService {
-	// dao, Entity 클래스 필드로 선언
+	
 	private ProductDao dao = ProductDao.getInstance();
 
 	public Optional<Long> selectOneProduct(final Long idx) throws SQLException {
@@ -28,11 +28,9 @@ public class ProductService {
 	}
 
 	public void registerProduct(final ProductDto.Request dto) throws SQLException {
-		Product product = new Product();
-		String cardName = product.getCardName();
-		System.out.print(cardName);
-		if (cardName == dto.getCardName()) {
-			 throw new BusinessException(ErrorCode.UNABLE_PRODUCTNUM, "일치하는 정보가 없습니다.");
+		String cardName = dao.selectProductCardName(dto.getCardName()).orElseGet(()-> null);		
+		if (cardName != null) {
+			 throw new BusinessException(ErrorCode.DUPLICATE_PRODUCT, "상품명이 중복된 상품입니다.");
 		}
 		
 		dao.registerProduct(dto);
@@ -41,9 +39,9 @@ public class ProductService {
 	public void updateProduct(final Long idx, final ProductDto.Request dto)
 			throws SQLException {
 		Long findId = selectOneProduct(idx).orElseGet(() -> null);
-		System.out.println(findId);
+		
 		if (findId == null) {
-			throw new BusinessException(ErrorCode.UNABLE_PRODUCTNUM, "일치하는 정보가 없습니다.");
+			throw new BusinessException(ErrorCode.UNABLE_PRODUCTNUM, "존재하지 않는 상품입니다.");
 		}
 		dao.updateProduct(idx, dto);
 
@@ -53,9 +51,8 @@ public class ProductService {
 		Long findId = selectOneProduct(idx).orElseGet(() -> null);
 		
 		if (findId == null) {
-			throw new BusinessException(ErrorCode.UNABLE_PRODUCTNUM, "일치하는 정보가 없습니다.");
+			throw new BusinessException(ErrorCode.UNABLE_PRODUCTNUM, "존재하지 않는 상품입니다.");
 		}
-
 		dao.deleteProduct(idx);
 	}
 }

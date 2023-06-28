@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import db.DBUtil;
 import domain.Account;
@@ -47,28 +48,35 @@ public class ProductDao {
 		}
 		return result;
 	}
+	
+	public Optional<String> selectProductCardName(final String cardName) {
+		String str = null;
+		try {
+			conn = dbUtil.getConnection();
+			final String query = "SELECT card_name FROM product WHERE card_name = ?";
+			ps = conn.prepareStatement(query);
+			ps.setString(1, cardName);
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				str = rs.getString("card_name");
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			dbUtil.close(ps,conn);
+		}
+		return Optional.ofNullable(str);
+	}
 
 	public List<ProductResponseDto> getProdcutList(){
 		List<ProductResponseDto> list = new ArrayList<>();
 		try {
 			conn = dbUtil.getConnection();
-			final String query2 = "SELECT p.id AS product_id, p.card_name, p.card_limit, p.card_type, s.id AS category_id, s.category_name, s.discount FROM product p JOIN sale_category s ON p.category_id = s.id ORDER BY p.id DESC";
-			ps = conn.prepareStatement(query2);
+			final String query = "SELECT p.id AS product_id, p.card_name, p.card_limit, p.card_type, s.id AS category_id, s.category_name, s.discount FROM product p JOIN sale_category s ON p.category_id = s.id ORDER BY p.id DESC";
+			ps = conn.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				/* db 데이터 엔티티 클래스에 빌더 */
-
-				/*
-				Product product = Product.builder()
-						.id(rs.getLong("id"))
-						.cardName(rs.getString("card_name"))
-						.cardLimit(rs.getLong("card_limit"))
-						.cardType(rs.getString("card_type"))
-						.categoryId(rs.getLong("category_id"))
-						.build();*/
-
-				/* response 데이터 dto에 담기 */
-
 				ProductResponseDto dto = ProductResponseDto.builder()
 						.id(rs.getLong("product_id"))
 						.cardName(rs.getString("card_name"))
@@ -78,18 +86,10 @@ public class ProductDao {
 						.categoryName(rs.getString("category_name"))
 						.discount(rs.getLong("discount"))
 						.build();
-//				dto.setId(rs.getLong("product_id"));
-//				dto.setCardName(rs.getString("card_name"));
-//				dto.setCardType(rs.getString("card_type"));
-//				dto.setCardLimit(rs.getLong("card_limit"));
-//				dto.setCategoryId(rs.getLong("category_id"));
-//				dto.setCategoryName(rs.getString("category_name"));
-//				dto.setDiscount(rs.getLong("discount"));
 				list.add(dto);
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("존재하지 않는 카드 상품입니다.");
 		} finally {
 			dbUtil.close(ps, conn);
 		}
@@ -126,7 +126,6 @@ public class ProductDao {
 			ps.setLong(3, dto.getCardLimit());
 			ps.setLong(4, dto.getCategoryId());
 			ps.setLong(5, idx);
-
 			ps.executeUpdate();
 
 		} catch (SQLException e) {

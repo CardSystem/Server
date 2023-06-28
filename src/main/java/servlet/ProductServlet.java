@@ -14,17 +14,12 @@ import dao.ProductDao;
 import dto.ProductDto;
 import dto.ProductResponseDto;
 import exception.BusinessException;
+import exception.ErrorCode;
 import service.ProductService;
-
-/**
- * Servlet implementation class ProductServlet
- */
 
 @WebServlet("/product")
 public class ProductServlet extends HttpServlet {
-	/**
-	 * 테스트 코드 작성을 위한 기본 생성자
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private final ProductService productService;	
 	
@@ -39,18 +34,14 @@ public class ProductServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<ProductResponseDto> productList = productService.getProductList().orElseGet(()->null);		
+		List<ProductResponseDto> productList = productService.getProductList().orElseGet(()-> null);		
 		
 		if (productList == null) {
-		    throw new BusinessException(null, "예외 처리 던지기");
+		    throw new BusinessException(ErrorCode.NOT_FOUND_PRODUCTLIST, "상품 리스트를 찾을 수 없습니다.");
 		} 
 		request.setAttribute("productList", productList);
-//		response.sendRedirect(request.getContextPath()+"/productList.jsp");
 	    RequestDispatcher dispatcher = request.getRequestDispatcher("productList.jsp");
-		dispatcher.forward(request, response);
-//		RequestDispatcher dispatcher = request.getRequestDispatcher("productList.jsp");
-//	    dispatcher.forward(request, response);
-		// 빈 리스트를 설정하거나, 필요에 따라 다른 처리를 수행할 수도 있습니다. 
+		dispatcher.forward(request, response); 
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -88,8 +79,6 @@ public class ProductServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();			
 		}
-		System.out.println("성공 성공 성공");
-		response.sendRedirect("success.jsp");
 	}
 
 	public void doUpdate(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -113,8 +102,6 @@ public class ProductServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("성공 성공 성공");
-		response.sendRedirect("success.jsp");
 	}
 
 	public void doDeleteProduct(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -125,8 +112,5 @@ public class ProductServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		System.out.println("성공 성공 성공");
-		response.sendRedirect("success.jsp");
 	}
 }
