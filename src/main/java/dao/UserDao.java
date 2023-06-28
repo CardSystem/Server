@@ -127,4 +127,28 @@ public class UserDao {
 	        dbUtil.close(pstmt1, conn);
 	    }
 	}
+	
+	public static int checkUserBlock(String id) {
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    int isBlocked = 0;
+
+	    try {
+	        conn = dbUtil.getConnection();
+	        pstmt = conn.prepareStatement("SELECT is_blocked FROM user WHERE id = ?");
+	        pstmt.setString(1, id);
+	        rs = pstmt.executeQuery();
+
+	        if (rs.next()) {
+	            isBlocked = rs.getInt("is_blocked");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        dbUtil.close(rs, pstmt, conn);
+	    }
+
+	    return isBlocked;
+	}
 }

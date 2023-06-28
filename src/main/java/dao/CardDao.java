@@ -62,4 +62,26 @@ public class CardDao {
 			dbUtil.close(pstmt, conn);
 		}
 	}
+
+	public static long getAccountIdByCardId(long id) {
+		Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    long accountId = 0;
+	    try {
+	        conn = dbUtil.getConnection();
+	        pstmt = conn.prepareStatement("SELECT account_id FROM card WHERE id = ?");
+	        pstmt.setLong(1, id);
+	        rs = pstmt.executeQuery();
+
+	        if (rs.next()) {
+	            accountId = rs.getLong("account_id");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        dbUtil.close(rs, pstmt, conn);
+	    }
+		return accountId;
+	}
 }

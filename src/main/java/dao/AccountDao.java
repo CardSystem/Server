@@ -73,4 +73,26 @@ public class AccountDao {
 			dbUtil.close(pstmt, conn);
 		}
 	}
+
+	public static String getUserIdByAccountId(long account_id) {
+		Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    String userId = null;
+	    try {
+	        conn = dbUtil.getConnection();
+	        pstmt = conn.prepareStatement("SELECT user_id FROM account WHERE id = ?");
+	        pstmt.setLong(1, account_id);
+	        rs = pstmt.executeQuery();
+
+	        if (rs.next()) {
+	        	userId = rs.getString("user_id");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        dbUtil.close(rs, pstmt, conn);
+	    }
+		return userId;
+	}
 }
