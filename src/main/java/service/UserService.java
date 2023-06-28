@@ -57,14 +57,19 @@ public class UserService {
 		}
 	}
 
-	public static void controlIsBlock(int isStop, String id) throws SQLException {
-		if(isStop == 1) {
-    		isStop = 0;
-    	} else {
-    		isStop = 1;
-    	}
+	public static void block(int isStop, String id) throws SQLException {
+		if(isStop == 0) {
+			isStop = 1;
+		}
+		
         UserDao.changeIsBlock(isStop, id);
-//        AccountDao.changeIsStopped(isStop, id);
-//		CardDao.changeIsStopped(isStop, isStop);
+	}
+	
+	public static void cancel(int isStop, String id) throws SQLException {
+		if(isStop == 1) {
+			isStop = 0;
+		}
+		
+        UserDao.changeIsCancel(isStop, id);
 	}
 }

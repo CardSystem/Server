@@ -73,22 +73,58 @@ public class UserDao {
 
 	    return userList;
 	}
-
+	
 	public static void changeIsBlock(int isBlocked, String id) throws SQLException {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		try {
-			conn = dbUtil.getConnection();
-//			pstmt = conn.prepareStatement("update user set is_blocked=? where id=?");
-			pstmt = conn.prepareStatement("UPDATE ACCOUNT A , CARD B SET A.IS_STOPPED = 1, B.IS_STOPPED = 1 WHERE A.USER_ID = ? AND B.ACCOUNT_ID = A.ID");
-//			pstmt.setInt(1, isBlocked);
-			pstmt.setString(2, id);
-			pstmt.executeUpdate();
-			System.out.println(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			dbUtil.close(pstmt, conn);
-		}
+	    Connection conn = null;
+	    PreparedStatement pstmt1 = null;
+	    PreparedStatement pstmt2 = null;
+
+	    try {
+	        conn = dbUtil.getConnection();
+
+	        // 첫 번째 pstmt 실행
+	        pstmt1 = conn.prepareStatement("update user set is_blocked=? where id=?");
+	        pstmt1.setInt(1, isBlocked);
+	        pstmt1.setString(2, id);
+	        pstmt1.executeUpdate();
+
+	        // 두 번째 pstmt 실행
+	        pstmt2 = conn.prepareStatement("UPDATE ACCOUNT A , CARD B SET B.IS_STOPPED = B.IS_STOPPED + 1 WHERE A.USER_ID = ? AND B.ACCOUNT_ID = A.ID");
+	        pstmt2.setString(1, id);
+	        pstmt2.executeUpdate();
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        dbUtil.close(pstmt2);
+	        dbUtil.close(pstmt1, conn);
+	    }
+	}
+	
+	public static void changeIsCancel(int isBlocked, String id) throws SQLException {
+	    Connection conn = null;
+	    PreparedStatement pstmt1 = null;
+	    PreparedStatement pstmt2 = null;
+
+	    try {
+	        conn = dbUtil.getConnection();
+
+	        // 첫 번째 pstmt 실행
+	        pstmt1 = conn.prepareStatement("update user set is_blocked=? where id=?");
+	        pstmt1.setInt(1, isBlocked);
+	        pstmt1.setString(2, id);
+	        pstmt1.executeUpdate();
+
+	        // 두 번째 pstmt 실행
+	        pstmt2 = conn.prepareStatement("UPDATE ACCOUNT A , CARD B SET B.IS_STOPPED = B.IS_STOPPED - 1 WHERE A.USER_ID = ? AND B.ACCOUNT_ID = A.ID");
+	        pstmt2.setString(1, id);
+	        pstmt2.executeUpdate();
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        dbUtil.close(pstmt2);
+	        dbUtil.close(pstmt1, conn);
+	    }
 	}
 }

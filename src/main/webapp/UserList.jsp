@@ -33,11 +33,18 @@
 				<td><%=data.getCredit()%></td>
 				<td><%=data.getIsBlocked()%>
 					<form method="post" action="UserServlet">
-						<input type="hidden" name="action" value="changeIsBlock" />
+						<input type="hidden" name="action" value="block" />
 						<input type="hidden" name="id" value="<%=data.getId()%>" />
 						<input type="hidden" name="is_blocked" value="<%=data.getIsBlocked()%>" />
-						<input type="submit" value="변경" />
-					</form></td>
+						<input type="submit" value="정지" />
+					</form>
+					<form method="post" action="UserServlet">
+						<input type="hidden" name="action" value="cancel" />
+						<input type="hidden" name="id" value="<%=data.getId()%>" />
+						<input type="hidden" name="is_blocked" value="<%=data.getIsBlocked()%>" />
+						<input type="submit" value="취소" />
+					</form>
+					</td>
 			</tr>
 			<%
 			}

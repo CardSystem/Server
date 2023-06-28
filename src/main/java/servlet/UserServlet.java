@@ -43,8 +43,12 @@ public class UserServlet extends HttpServlet {
 			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 			dispatcher.forward(request, response);
 			break;
-		case "changeIsBlock":
-			url = doChangeIsBlock(request, response);
+		case "block":
+			url = block(request, response);
+			response.sendRedirect(url);
+			break;
+		case "cancel":
+			url = cancel(request, response);
 			response.sendRedirect(url);
 			break;
 		}
@@ -77,16 +81,49 @@ public class UserServlet extends HttpServlet {
 		return "UserList.jsp";
 	}
 
-	private String doChangeIsBlock(HttpServletRequest request, HttpServletResponse response) {
-		String id = request.getParameter("id");
-		Integer isStop = Integer.parseInt(request.getParameter("is_blocked"));
-		try {
-			UserService.controlIsBlock(isStop, id);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		// 변경 후 다시 목록으로 돌아갈 수 있도록 Redirect URL을 설정
-		String redirectUrl = request.getContextPath() + "/UserServlet?action=userList";
-		return redirectUrl;
+	private String block(HttpServletRequest request, HttpServletResponse response) {
+	    String id = request.getParameter("id");
+	    Integer isStop = Integer.parseInt(request.getParameter("is_blocked"));
+
+	    // 유효성 검사
+	    if (isStop >= 1) {
+	        // 이미 정지 상태인 경우
+	        return request.getContextPath() + "/UserServlet?action=userList";
+	    }
+
+	    isStop++; // isStop 값을 1 증가
+
+	    try {
+	        UserService.block(isStop, id);
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    // 변경 후 다시 목록으로 돌아갈 수 있도록 Redirect URL을 설정
+	    String redirectUrl = request.getContextPath() + "/UserServlet?action=userList";
+	    return redirectUrl;
+	}
+
+	private String cancel(HttpServletRequest request, HttpServletResponse response) {
+	    String id = request.getParameter("id");
+	    Integer isStop = Integer.parseInt(request.getParameter("is_blocked"));
+
+	    // 유효성 검사
+	    if (isStop <= 0) {
+	        // 이미 정지 상태가 아닌 경우
+	        return request.getContextPath() + "/UserServlet?action=userList";
+	    }
+
+	    isStop--; // isStop 값을 1 감소
+
+	    try {
+	        UserService.cancel(isStop, id);
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    // 변경 후 다시 목록으로 돌아갈 수 있도록 Redirect URL을 설정
+	    String redirectUrl = request.getContextPath() + "/UserServlet?action=userList";
+	    return redirectUrl;
 	}
 }
