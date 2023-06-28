@@ -23,7 +23,7 @@
     }
     %>
     
-	<form method="GET" action="CardIssueHistoryServlet">
+	<form method="GET" action="CardServlet">
 		<input type="hidden" name="action" value="list" />
 		<input type="submit" value="조회" />
 	</form>

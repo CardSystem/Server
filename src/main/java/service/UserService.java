@@ -54,4 +54,14 @@ public class UserService {
 			throw new BusinessException(ErrorCode.LOGIN_ERROR, "로그인 에러");
 		}
 	}
+
+	public static void controlIsBlock(int isStop, String id) throws SQLException {
+		if(isStop == 1) {
+    		isStop = 0;
+    	} else {
+    		isStop = 1;
+    	}
+        UserDao.changeIsBlock(isStop, id);
+		
+	}
 }

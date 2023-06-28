@@ -16,7 +16,7 @@
       <div style="display: flex; height: 100%; justify-content: center;">
         <div class="col-12 text-center align-self-center py-5">
         <h1>Card Tracker</h1>
-        <form method="post" action="userServlet">
+        <form method="post" action="UserServlet">
           <div class="section pb-5 pt-5 pt-sm-2 text-center">
             <div class="card-3d-wrap mx-auto">
               <div class="card-3d-wrapper">

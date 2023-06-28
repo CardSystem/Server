@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="dto.AccountDto"%>
-<%@page import="java.util.ArrayList"%>
+<%@ page import="dto.AccountDto"%>
+<%@ page import="java.util.ArrayList"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,7 +35,7 @@
         <tbody>
             <%
             // 이전 코드를 유지하면서 null 값을 방지하기 위해 null 체크 또는 변수 초기화를 수행합니다.
-                        ArrayList<AccountDto> list = (ArrayList<AccountDto>) request.getAttribute("list");
+            ArrayList<AccountDto> list = (ArrayList<AccountDto>) request.getAttribute("list");
                         if (list != null) {
                             for (AccountDto data : list) {
             %>

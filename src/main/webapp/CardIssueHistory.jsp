@@ -31,7 +31,7 @@
 		<tbody>
 			<%
 			ArrayList<CardDto> list = (ArrayList<CardDto>) request.getAttribute("list");
-				for (CardDto data : list) {
+			for(CardDto data : list){
 			%>
 			<tr>
 				<td><%=data.getId()%></td>
@@ -43,7 +43,7 @@
 				<td><%=data.getCardType()%></td>
 				<td><%=data.getValidity()%></td>
 				<td><%=data.getIsStopped()%>
-					<form method="post" action="CardIssueHistoryServlet">
+					<form method="post" action="CardServlet">
 						<input type="hidden" name="action" value="changeIsStop" />
 						<input type="hidden" name="id" value="<%=data.getId()%>" />
 						<input type="hidden" name="is_stopped" value="<%=data.getIsStopped()%>" />

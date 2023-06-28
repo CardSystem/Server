@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import dao.CardDao;
 import service.CardService;
 
-@WebServlet("/CardIssueHistoryServlet")
+@WebServlet("/CardServlet")
 public class CardServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -52,7 +52,7 @@ public class CardServlet extends HttpServlet {
 
 	private String doChangeIsStop(HttpServletRequest request, HttpServletResponse response) {
 	    long id = Long.parseLong(request.getParameter("id"));
-	    int isStop = Integer.parseInt(request.getParameter("is_stopped"));
+	    Integer isStop = Integer.parseInt(request.getParameter("is_stopped"));
 	    try {
 	    	CardService.controlIsStop(isStop, id);
 	    } catch (SQLException e) {
