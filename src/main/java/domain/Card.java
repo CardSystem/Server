@@ -10,12 +10,12 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cards {
+public class Card {
 	private Long id;
 	
-	private Long cardId;
+	private Long productId;
+	private Long accountId;
 	
-	private Account account;
 	private String issuedDate;
 	private String cardType;
 	private String validity;

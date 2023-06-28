@@ -10,9 +10,39 @@ import domain.Product;
 import dto.ProductCreateDto;
 import dto.ProductDto;
 public class ProductDao {
-static DBUtil dbUtil = DBUtil.getInstance();
+	static DBUtil dbUtil = DBUtil.getInstance();
 
-public static void insertData(ProductCreateDto productCreateDto) throws SQLException {
+	public static ProductDto selectProductByProductId(Long productId) throws SQLException {
+		Product product=null;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = dbUtil.getConnection();
+			pstmt = conn.prepareStatement("select * from product where id=?");
+			pstmt.setLong(1,productId);
+			rs = pstmt.executeQuery();//select실행
+			
+			while(rs.next()) {
+				product = Product.builder()
+						.id(rs.getLong("id"))
+						.cardName(rs.getString("card_name"))
+						.cardType(rs.getString("card_type"))
+						.cardLimit(rs.getLong("card_limit"))
+						.categoryId(rs.getLong("category_id"))
+						.build();
+			
+			}
+		}finally {
+			dbUtil.close(rs, pstmt, conn);
+		}
+		
+		return new ProductDto(product);
+	}
+	
+	public static void insertData(ProductCreateDto productCreateDto) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
@@ -36,6 +66,9 @@ public static void insertData(ProductCreateDto productCreateDto) throws SQLExcep
 
 	public static ArrayList<ProductDto> selectAllData() throws SQLException {
 		ArrayList<ProductDto> productList = new ArrayList<>();
+		System.out.println("dao 진입!");
+
+		Product product=null;
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -47,9 +80,9 @@ public static void insertData(ProductCreateDto productCreateDto) throws SQLExcep
 			rs = pstmt.executeQuery();//select실행
 			
 			while(rs.next()) {
-				Product product = Product.builder()
+				product = Product.builder()
 						.id(rs.getLong("id"))
-						.cardName(rs.getString("category_name"))
+						.cardName(rs.getString("card_name"))
 						.cardType(rs.getString("card_type"))
 						.cardLimit(rs.getLong("card_limit"))
 						.categoryId(rs.getLong("category_id"))
@@ -61,6 +94,7 @@ public static void insertData(ProductCreateDto productCreateDto) throws SQLExcep
 		}finally {
 			dbUtil.close(rs, pstmt, conn);
 		}
+		System.out.println("길이:"+productList.size());
 		
 		return productList;
 	}

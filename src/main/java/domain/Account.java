@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class Account {
 	
 	private Long id;
-	private Cards card;
+	private Card card;
 	private String accountNum;
 	private Long balance;
 	private String bankName;

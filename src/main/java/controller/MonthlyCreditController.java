@@ -16,7 +16,7 @@ import dao.MonthlyCreditDao;
 import dto.MonthlyCreditCreateDto;
 
 @WebServlet("/CreditServlet")
-public class CreditController extends HttpServlet {
+public class MonthlyCreditController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -24,7 +24,7 @@ public class CreditController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String order = request.getParameter("action");
-		String url;
+		String url = null;
 		switch(order) {
 		case "insert":
 			url = doInsert(request, response);
@@ -72,7 +72,8 @@ public class CreditController extends HttpServlet {
 	
 	private String doList(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.setAttribute("monthlyCreditList", dao.selectAllMonthlyCrdit());
+			System.out.println("doList 입장!");
+			request.setAttribute("monthlyCreditList", dao.selectAllMonthlyCreditByCardId(Long.parseLong(request.getParameter("card_id"))));
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

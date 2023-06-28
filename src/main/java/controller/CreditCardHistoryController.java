@@ -10,7 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.CardDao;
 import dao.CreditCardHistoryDao;
+import dao.InstallmentDao;
+import dao.ProductDao;
 import dto.CreditCardRequestDto;
 import dto.CreditCardResponseDto;
 import service.CreditCardService;
@@ -43,10 +46,13 @@ public class CreditCardHistoryController extends HttpServlet {
 	
 	public final CreditCardService creditCardService;
 	private static final long serialVersionUID = 1L;
-	public static CreditCardHistoryDao dao=new CreditCardHistoryDao();
+	public static CreditCardHistoryDao dao = new CreditCardHistoryDao();
+	public static ProductDao productDao = new ProductDao();
+	public static InstallmentDao installmentDao = new InstallmentDao();
+	public static CardDao cardDao = new CardDao();
 	
 	public CreditCardHistoryController() {
-		this.creditCardService = new CreditCardService(dao);
+		this.creditCardService = new CreditCardService(dao, productDao, installmentDao, cardDao); 
 	}
 	
 	public CreditCardHistoryController(CreditCardService creditCardService) {
@@ -71,9 +77,8 @@ public class CreditCardHistoryController extends HttpServlet {
 		String franchisee=request.getParameter("franchisee");
 		Long fCategory=Long.parseLong(request.getParameter("f_category"));
 		int insMonth=Integer.parseInt(request.getParameter("ins_month"));
+		System.out.println("card/credit/post 서블릿 진입");
 		LocalDateTime date = LocalDateTime.now();
-		
-		System.out.println("서블릿 post 메소드 진입");
 		
 		CreditCardRequestDto creditCardRequestDto = new CreditCardRequestDto(cardId,userId,franchisee,payment,fCategory,insMonth,date);
 		
@@ -81,11 +86,10 @@ public class CreditCardHistoryController extends HttpServlet {
 			CreditCardResponseDto creditCardResponseDto = creditCardService.payCreditCard(creditCardRequestDto);
 			request.setAttribute("data", creditCardResponseDto);
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/CreditCardResponse.jsp");
-		} catch (Exception e) { 
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
 		
 	}
 	

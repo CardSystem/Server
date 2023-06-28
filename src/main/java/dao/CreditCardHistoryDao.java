@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import dto.CreditCardHistoryDto;
 import domain.Account;
-import domain.Cards;
+import domain.Card;
 import domain.CreditCardHistory;
 import dto.CardDto;
 import dto.CreditCardHistoryCreateDto;
@@ -20,10 +20,8 @@ public class CreditCardHistoryDao {
 
 	static DBUtil dbUtil = DBUtil.getInstance();
 	
-	
-	
 	//카드아이디로 계좌 찾기
-	public static Account selectAccountByCardId(Long cardId)
+	public Account selectAccountByCardId(Long cardId)
 	{
 		System.out.println("신용카드 계좌찾기 dao 진입");
 		Connection conn = null;
@@ -67,12 +65,12 @@ public class CreditCardHistoryDao {
 	}
 	
 	// 카드id로 카드 존재 여부 확인
-	public static CardDto selectCardByCardId(Long cardId) {
+	public CardDto selectCardByCardId(Long cardId) {
 		System.out.println("카드 존재 여부 확인 dao 진입");
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		Cards card = null;
+		Card card = null;
 		ResultSet rs = null;
 		
 		
@@ -83,12 +81,12 @@ public class CreditCardHistoryDao {
 			
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
-				card = new Cards();
+				card = new Card();
 				
 				card.builder()
 				.id(rs.getLong("id"))
-				.cardId(rs.getLong("card_id"))
-				.account(selectAccountByCardId(cardId))
+				.productId(rs.getLong("product_id"))
+				.accountId(rs.getLong("account_id"))
 				.issuedDate(rs.getString("issued_date"))
 				.cardType(rs.getString("card_type"))
 				.validity(rs.getString("validity"))
@@ -102,21 +100,19 @@ public class CreditCardHistoryDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("카드가 존재하지 않습니다.");
-		}
-		
-		finally {
+		}finally {
 			try {
-				dbUtil.close(rs);
-				dbUtil.close(pstmt);
+				dbUtil.close(rs, pstmt, conn);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			
 		}
 		return new CardDto(card);
 	}
 	
 	// 신용카드 DB에 카드 결제 내역 저장
-	public static void insertCreditCardHistory(CreditCardHistoryCreateDto creditCardHistoryCreateDto) throws SQLException {
+	public void insertCreditCardHistory(CreditCardHistoryCreateDto creditCardHistoryCreateDto) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
@@ -142,14 +138,14 @@ public class CreditCardHistoryDao {
 			pstmt.setString(11, creditCardHistory.getCardType());
 			
 			pstmt.executeUpdate();//insert실행
-			System.out.println("insert 실행");
+			System.out.println("신용카드 사용내역 insert 실행");
 		} finally {
 			dbUtil.close(pstmt, conn);
 		}
 	}
 	
 	// 신용카드 결제내역 반환
-	public static ArrayList<CreditCardHistoryDto> selectAllCrditCardHistory() throws SQLException {
+	public ArrayList<CreditCardHistoryDto> selectAllCrditCardHistory() throws SQLException {
 		ArrayList<CreditCardHistoryDto> list = new ArrayList<>();
 		
 		Connection conn = null;
@@ -181,26 +177,17 @@ public class CreditCardHistoryDao {
 				
 				list.add(new CreditCardHistoryDto(creditCardHistory));
 				
-				/*
-				creditCardHistory.setId(rs.getLong("id"));
-				creditCardHistory.setCardId(rs.getLong("card_id"));
-				creditCardHistory.setUserId(rs.getString("user_id"));
-				creditCardHistory.setFranchisee(rs.getString("franchisee"));
-				creditCardHistory.setPayment(rs.getLong("payment"));
-				creditCardHistory.setBalance(rs.getLong("balance"));
-				creditCardHistory.setIsSuccess(rs.getInt("is_success"));
-				creditCardHistory.setDate(rs.getTimestamp("date").toLocalDateTime());
-				creditCardHistory.setFCategory(rs.getLong("f_category"));
-				creditCardHistory.setIsIns(rs.getInt("is_ins"));
-				creditCardHistory.setInsMonth(rs.getInt("ins_month"));
-				creditCardHistory.setCardType(rs.getString("card_type"));
-				list.add(new CreditCardHistoryDto(creditCardHistory));
-				*/
 			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("데이터가 존재하지 않습니다.");
 		}finally {
-			dbUtil.close(rs, pstmt, conn);
+			try {
+				dbUtil.close(rs, pstmt, conn);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		
 		return list;
 	}
 }

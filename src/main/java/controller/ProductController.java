@@ -69,7 +69,9 @@ public class ProductController extends HttpServlet {
 	
 	private String doList(HttpServletRequest request, HttpServletResponse response) {
 		try {
+			System.out.println("doList 진입!");
 			request.setAttribute("productList", dao.selectAllData());
+			System.out.println("doList 탈출!");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

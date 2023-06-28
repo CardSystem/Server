@@ -22,6 +22,8 @@
 	</tr>
 	<%
 	ArrayList<ProductDto> list = (ArrayList<ProductDto>)request.getAttribute("productList");
+	
+	System.out.println(list.size());
 	for(ProductDto data : list){
 	%>
 	<tr>

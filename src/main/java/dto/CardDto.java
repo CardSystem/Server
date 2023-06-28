@@ -1,7 +1,7 @@
 package dto;
 
 import domain.Account;
-import domain.Cards;
+import domain.Card;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,9 +10,9 @@ import lombok.Setter;
 @Setter
 public class CardDto {
 	
-	private Long cardId;
+	private Long productId;
+	private Long accountId;
 	
-	private Account account;
 	private String issuedDate;
 	private String cardType;
 	private String validity;
@@ -22,9 +22,9 @@ public class CardDto {
 	private String cardNum;
 	private Long totalPayment;
 	
-	public CardDto(Cards card) {
-		this.cardId = card.getCardId();
-		this.account = card.getAccount();
+	public CardDto(Card card) {
+		this.productId = card.getProductId();
+		this.accountId = card.getAccountId();
 		this.issuedDate = card.getIssuedDate();
 		this.cardType = card.getCardType();
 		this.validity = card.getValidity();
