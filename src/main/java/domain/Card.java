@@ -1,6 +1,7 @@
 package domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,13 +10,14 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cards {
+@Builder
+public class Card {
 
-	private Long cardId;
 
 	private Long id;
+	private Long productId; //productId
 
-	private Account account;
+	private Long accountId;
 	private String issuedDate;
 	private String cardType;
 	private String validity;
