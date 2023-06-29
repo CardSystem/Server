@@ -52,7 +52,8 @@
 <script>
 $(document).ready(function() {
   $('#dataTable').DataTable({
-    "order": [[0, "desc"]]
+    "order": [[0, "desc"]],
+    "destroy" :true,
   });
 });
 </script>
@@ -149,7 +150,6 @@ $(document).ready(function() {
    </footer>
    <!-- End of Footer -->
 </div>
-<script src="resources/js/demo/datatables-demo.js"></script>
 
 </body>
 </html>

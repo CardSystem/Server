@@ -156,8 +156,7 @@
     <script src="resources/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="resources/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="resources/js/demo/datatables-demo.js"></script>
+
 
 </body>
 
