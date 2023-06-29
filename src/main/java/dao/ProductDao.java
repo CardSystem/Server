@@ -103,7 +103,7 @@ public class ProductDao {
 		
 	}
 
-	public List<ProductResponseDto> getProductList(){
+	public Optional<List<ProductResponseDto>> getProductList(){
 		List<ProductResponseDto> list = new ArrayList<>();
 		try {
 			conn = dbUtil.getConnection();
@@ -127,7 +127,7 @@ public class ProductDao {
 		} finally {
 			dbUtil.close(ps, conn);
 		}
-		return list;
+		return Optional.ofNullable(list);
 	}
 
 	public void registerProduct(final ProductDto.Request dto) throws SQLException {

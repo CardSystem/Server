@@ -34,11 +34,8 @@ public class ProductServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<ProductResponseDto> productList = productService.getProductList().orElseGet(()-> null);		
+		List<ProductResponseDto> productList = productService.getProductList();
 		
-		if (productList.isEmpty()) {
-		    throw new BusinessException(ErrorCode.NOT_FOUND_PRODUCTLIST, "상품 리스트를 찾을 수 없습니다.");
-		} 
 		request.setAttribute("productList", productList);
 	    RequestDispatcher dispatcher = request.getRequestDispatcher("productList.jsp");
 		dispatcher.forward(request, response); 
@@ -51,10 +48,13 @@ public class ProductServlet extends HttpServlet {
 		
 		if(order.equals("register")) {
 			doRegister(request,response);
+			doGet(request,response);
 		}else if (order.equals("update")) {
 			doUpdate(request, response);
+			doGet(request,response);
 		} else if (order.equals("delete")) {
 			doDeleteProduct(request, response);
+			doGet(request,response);
 		}
 		
 	}

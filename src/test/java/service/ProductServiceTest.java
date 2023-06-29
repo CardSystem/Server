@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -87,21 +86,21 @@ class ProductServiceTest {
 		mockProductList.add(response);
 		
 		// when
-		when(dao.getProductList()).thenReturn(mockProductList);
+		when(dao.getProductList()).thenReturn(Optional.of(mockProductList));
 		
 		//Optional로 null 검증
-	    Optional<List<ProductResponseDto>> dto = productService.getProductList();
+	    List<ProductResponseDto> dto = productService.getProductList();
 	    
 	    //then
 	    assertNotNull(mockProductList);
-	    assertTrue(dto.isPresent(), "상품 리스트가 비어있지 않아야 테스트 통과");
+	    assertTrue(!dto.isEmpty(), "상품 리스트가 비어있지 않아야 테스트 통과");
 	    assertNotNull(dto);
-	    dto.ifPresent(list -> {
-	    	for(ProductResponseDto element : list) {
+	    
+	    	for(ProductResponseDto element : dto) {
 	    		System.out.println(element);
 	    	}
-	    });
-	}
+	    };
+	
 	
 	
 	@Test
@@ -116,13 +115,11 @@ class ProductServiceTest {
 		
 		//then
 		try {
-			Optional<List<ProductResponseDto>> list = productService.getProductList();
+			productService.getProductList();
 			
 		} catch (NullPointerException e) {
 			assertThatThrownBy(()-> productService.getProductList())
 			.isInstanceOf(NullPointerException.class);
-			assertThat(e.getMessage()).isEqualTo(null);
-			System.out.println("상품 조회 실패 테스트 결과 값 : "+ e.getMessage());
 		}			
 	}
 		
@@ -237,7 +234,7 @@ class ProductServiceTest {
 			return true;
 		}).when(dao).deleteProduct(any(Long.class));
 		
-		Optional<List<ProductResponseDto>> list = Optional.ofNullable(dao.getProductList());
+		Optional<List<ProductResponseDto>> list = dao.getProductList();
 		int size = list.map(List::size).orElse(0);
 		
 		//then

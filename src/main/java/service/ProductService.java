@@ -22,9 +22,11 @@ public class ProductService {
 		return Optional.ofNullable(dao.selectOneProduct(idx));
 	}
 
-	public Optional<List<ProductResponseDto>> getProductList() {
-		List<ProductResponseDto> list = dao.getProductList();
-		return Optional.of(list);
+	public List<ProductResponseDto> getProductList() {
+		List<ProductResponseDto> list = dao.getProductList().orElseThrow(
+				()-> new BusinessException(ErrorCode.NOT_FOUND_PRODUCTLIST, "상품 리스트를 찾을 수 없습니다."));;		
+		
+		return list;
 	}
 
 	public void registerProduct(final ProductDto.Request dto) throws SQLException {
