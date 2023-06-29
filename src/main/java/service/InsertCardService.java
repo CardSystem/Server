@@ -52,10 +52,8 @@ public class InsertCardService {
 		calendar.setTime(new Date());
 		Date today = calendar.getTime();
 		String issuedDate = format.format(today);
-		// 5년을 더함
 		calendar.add(Calendar.YEAR, 5);
 
-		// 일을 01로 설정
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 
 		Date modifiedDate = calendar.getTime();
