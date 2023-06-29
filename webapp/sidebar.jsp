@@ -41,7 +41,7 @@
 	
 	<link href="resources/css/lookup.css" rel="stylesheet">
 	
-	<title>sidebar</title>
+	<title>왼쪽 메뉴 바</title>
 </head>
 
 <body id="page-top">
