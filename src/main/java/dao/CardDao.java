@@ -18,6 +18,7 @@ import exception.ErrorCode;
 
 public class CardDao {
 	static DBUtil dbUtil = DBUtil.getInstance();
+
 	public static ArrayList<CardHistoryDTO> showPayCardList() throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;

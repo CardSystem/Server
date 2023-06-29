@@ -2,12 +2,19 @@ package db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DBUtil {
 	private final String driverName = "com.mysql.cj.jdbc.Driver";
+
 	private final String url = "jdbc:mysql://127.0.0.1:3306/card_sys?serverTimezone=UTC&characterEncoding=UTF-8";
 	private final String user = "root";
 	private final String pass = "aa262622!";
@@ -21,6 +28,8 @@ public class DBUtil {
 			e.printStackTrace();
 		}
 	}
+	
+
 
 	public static DBUtil getInstance() {
 		return instance;
