@@ -1,4 +1,4 @@
-<%@page import="dto.CardDto"%>
+<%@page import="dto.CardResponseDto"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -30,8 +30,8 @@
 		</thead>
 		<tbody>
 			<%
-			ArrayList<CardDto> list = (ArrayList<CardDto>) request.getAttribute("list");
-			for(CardDto data : list){
+			ArrayList<CardResponseDto> list = (ArrayList<CardResponseDto>) request.getAttribute("list");
+				for(CardResponseDto data : list){
 			%>
 			<tr>
 				<td><%=data.getId()%></td>

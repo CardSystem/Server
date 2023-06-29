@@ -1,16 +1,30 @@
 package service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import dao.AccountDao;
 import dao.CardDao;
 import dao.UserDao;
+import dto.CardResponseDto;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class CardService {
-	public static void block(int isStop, long id) throws SQLException {
-		long accountId = CardDao.getAccountIdByCardId(id);
-		String userId = AccountDao.getUserIdByAccountId(accountId);
-		if(UserDao.checkUserBlock(userId) == 1) {
+	
+	private UserDao userDao = UserDao.getInstance();
+	private AccountDao accountDao = AccountDao.getInstance();
+	private CardDao cardDao = CardDao.getInstance();
+	
+	public List<CardResponseDto> showCardList() throws SQLException{
+		List<CardResponseDto> list = cardDao.showCardList();
+		return list;
+	}
+	
+	public void block(int isStop, long id) throws SQLException {
+		long accountId = cardDao.getAccountIdByCardId(id);
+		String userId = accountDao.getUserIdByAccountId(accountId);
+		if(userDao.checkUserBlock(userId) == 1) {
 			if(isStop == 2) {
 				isStop = 2;
 			} else if(isStop == 1){
@@ -26,13 +40,13 @@ public class CardService {
 			}
 		}
 
-        CardDao.changeIsStopped(isStop, id);
+		cardDao.changeIsStopped(isStop, id);
 	}
 	
-	public static void cancel(int isStop, long id) throws SQLException {
-		long accountId = CardDao.getAccountIdByCardId(id);
-		String userId = AccountDao.getUserIdByAccountId(accountId);
-		if(UserDao.checkUserBlock(userId) == 1) {
+	public void cancel(int isStop, long id) throws SQLException {
+		long accountId = cardDao.getAccountIdByCardId(id);
+		String userId = accountDao.getUserIdByAccountId(accountId);
+		if(userDao.checkUserBlock(userId) == 1) {
 			if(isStop == 2) {
 				isStop = 2;
 			} else if(isStop == 1){
@@ -48,6 +62,6 @@ public class CardService {
 			}
 		}
 		
-        CardDao.changeIsStopped(isStop, id);
+		cardDao.changeIsStopped(isStop, id);
 	}
 }

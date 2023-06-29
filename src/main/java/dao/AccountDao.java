@@ -5,18 +5,24 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import db.DBUtil;
-import dto.AccountDto;
+import dto.AccountResponseDto;
 
 public class AccountDao {
     static DBUtil dbUtil = DBUtil.getInstance();
+    private static AccountDao dao = new AccountDao();
+    
+    public static AccountDao getInstance() {
+    	return dao;
+    }
 
-    public static ArrayList<AccountDto> selectAccount(String userId) {
+    public List<AccountResponseDto> selectAccount(String userId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        ArrayList<AccountDto> accountList = new ArrayList<>();
+        List<AccountResponseDto> accountList = new ArrayList<>();
         
         try {
             conn = dbUtil.getConnection();
@@ -24,14 +30,15 @@ public class AccountDao {
             pstmt.setString(1, userId);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                AccountDto ad = new AccountDto();
-                ad.setId(rs.getLong("id"));
-                ad.setUserId(rs.getString("user_id"));
-                ad.setAccountNum(rs.getString("account_num"));
-                ad.setBalance(rs.getLong("balance"));
-                ad.setBankName(rs.getString("bank_name"));
-                ad.setIsStopped(rs.getInt("is_stopped"));
-                accountList.add(ad);
+                AccountResponseDto dto = AccountResponseDto.builder()
+                		.id(rs.getLong("id"))
+                		.userId(rs.getString("user_id"))
+                		.accountNum(rs.getString("account_num"))
+                		.balance(rs.getLong("balance"))
+                		.bankName(rs.getString("bank_name"))
+                		.isStopped(rs.getInt("is_stopped"))
+                		.build();
+                accountList.add(dto);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,7 +48,7 @@ public class AccountDao {
         return accountList;
     }
     
-    public static void depositAccount(String accountNum, long balance) throws SQLException {
+    public void depositAccount(String accountNum, long balance) throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
@@ -57,7 +64,7 @@ public class AccountDao {
         }
     }
     
-    public static void changeIsStopped(int isStopped, String id) throws SQLException {
+    public void changeIsStopped(int isStopped, String id) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -74,7 +81,7 @@ public class AccountDao {
 		}
 	}
 
-	public static String getUserIdByAccountId(long account_id) {
+	public String getUserIdByAccountId(long account_id) {
 		Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;

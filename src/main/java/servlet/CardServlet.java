@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,12 +12,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.CardDao;
+import dao.UserDao;
+import dao.AccountDao;
 import service.CardService;
+import dto.CardResponseDto;
 
 @WebServlet("/CardServlet")
 public class CardServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	private final CardService cardService;
+	
+	public CardServlet() {
+		UserDao userDao = new UserDao();
+		AccountDao accountDao = new AccountDao();
+		CardDao cardDao = new CardDao();
+		this.cardService = new CardService(userDao, accountDao, cardDao);
+	}
+	
+	public CardServlet(CardService cardService) {
+		this.cardService = cardService;
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -48,7 +64,8 @@ public class CardServlet extends HttpServlet {
 
 	private String doList(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.setAttribute("list", CardDao.showCardList());
+			List<CardResponseDto> cardList = cardService.showCardList();
+			request.setAttribute("list", cardList);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -59,7 +76,7 @@ public class CardServlet extends HttpServlet {
 	    long id = Long.parseLong(request.getParameter("id"));
 	    Integer isStop = Integer.parseInt(request.getParameter("is_stopped"));
 	    try {
-	    	CardService.block(isStop, id);
+	    	cardService.block(isStop, id);
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
@@ -72,7 +89,7 @@ public class CardServlet extends HttpServlet {
 	    long id = Long.parseLong(request.getParameter("id"));
 	    Integer isStop = Integer.parseInt(request.getParameter("is_stopped"));
 	    try {
-	    	CardService.cancel(isStop, id);
+	    	cardService.cancel(isStop, id);
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }

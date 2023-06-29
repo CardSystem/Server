@@ -7,16 +7,27 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.List;
+
 import Exception.BusinessException;
 import Exception.ErrorCode;
-import dao.AccountDao;
-import dao.CardDao;
+import dto.UserResponseDto;
 import dao.UserDao;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class UserService {
+	
+	private UserDao dao = UserDao.getInstance();
+	
+	public List<UserResponseDto> showUserList() throws SQLException{
+		List<UserResponseDto> list = dao.showUserList();
+		return list;
+	}
+	
 	public String checkLogin(HttpServletRequest request, HttpServletResponse response, String id, String birth)
 			throws ServletException, IOException, SQLException, BusinessException {
-		int loginResult = UserDao.login(id, birth);
+		int loginResult = dao.login(id, birth);
 		if (loginResult == 1) {
 			if (id.contains("Admin")) {
 				request.getSession().setAttribute("adminId", id);
@@ -57,19 +68,19 @@ public class UserService {
 		}
 	}
 
-	public static void block(int isStop, String id) throws SQLException {
+	public void block(int isStop, String id) throws SQLException {
 		if(isStop == 0) {
 			isStop = 1;
 		}
 		
-        UserDao.changeIsBlock(isStop, id);
+        dao.changeIsBlock(isStop, id);
 	}
 	
-	public static void cancel(int isStop, String id) throws SQLException {
+	public void cancel(int isStop, String id) throws SQLException {
 		if(isStop == 1) {
 			isStop = 0;
 		}
 		
-        UserDao.changeIsCancel(isStop, id);
+        dao.changeIsCancel(isStop, id);
 	}
 }

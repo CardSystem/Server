@@ -1,5 +1,6 @@
 package servlet;
 
+import java.util.List;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -12,19 +13,25 @@ import javax.servlet.http.HttpServletResponse;
 
 import Exception.BusinessException;
 import dao.UserDao;
+import dto.UserResponseDto;
 import service.UserService;
 
 @WebServlet("/UserServlet")
 public class UserServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	private final UserService userService;
+	
+	public UserServlet() {
+		UserDao dao = new UserDao();
+		this.userService = new UserService(dao);
+	}
+	
+	public UserServlet(UserService userService) {
+		this.userService = userService;
+	}
 	public static String id;
 
-	private UserService userService;
-
-	public void init() {
-		userService = new UserService();
-	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -74,7 +81,8 @@ public class UserServlet extends HttpServlet {
 
 	private String doList(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.setAttribute("userList", UserDao.showUserList());
+			List<UserResponseDto> userList = userService.showUserList();
+			request.setAttribute("userList", userList);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -94,7 +102,7 @@ public class UserServlet extends HttpServlet {
 	    isStop++; // isStop 값을 1 증가
 
 	    try {
-	        UserService.block(isStop, id);
+	        userService.block(isStop, id);
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
@@ -117,7 +125,7 @@ public class UserServlet extends HttpServlet {
 	    isStop--; // isStop 값을 1 감소
 
 	    try {
-	        UserService.cancel(isStop, id);
+	        userService.cancel(isStop, id);
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }

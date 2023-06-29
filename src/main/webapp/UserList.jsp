@@ -1,4 +1,4 @@
-<%@page import="dto.UserDto"%>
+<%@page import="dto.UserResponseDto"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -22,8 +22,8 @@
 		</thead>
 		<tbody>
 			<%
-			ArrayList<UserDto> list = (ArrayList<UserDto>) request.getAttribute("userList");
-				for (UserDto data : list) {
+			ArrayList<UserResponseDto> list = (ArrayList<UserResponseDto>) request.getAttribute("userList");
+					for (UserResponseDto data : list) {
 			%>
 			<tr>
 				<td><%=data.getId()%></td>

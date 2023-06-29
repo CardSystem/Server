@@ -3,6 +3,7 @@ package servlet;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,13 +14,23 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.AccountDao;
-import dto.AccountDto;
+import dto.AccountResponseDto;
 import service.AccountService;
 
 @WebServlet("/AccountServlet")
 public class AccountServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+    private final AccountService accountService;
+    
+    public AccountServlet() {
+    	AccountDao dao = new AccountDao();
+    	this.accountService = new AccountService(dao);
+    }
+    
+    public AccountServlet(AccountService accountService) {
+    	this.accountService = accountService;
+    }
     private String userId = null;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -37,7 +48,8 @@ public class AccountServlet extends HttpServlet {
                 
             case "depositAccount":
             	url = doDepositAccount(request, response);
-    			response.sendRedirect(url);
+            	RequestDispatcher dispatcher1 = request.getRequestDispatcher(doList(request, response));
+    			dispatcher1.forward(request, response);
     			break;
         }
     }
@@ -50,7 +62,7 @@ public class AccountServlet extends HttpServlet {
 
     private String doList(HttpServletRequest request, HttpServletResponse response) {
         try {
-            ArrayList<AccountDto> accountList = AccountDao.selectAccount(userId);
+            List<AccountResponseDto> accountList = accountService.selectAccount(userId);
             if (accountList != null && !accountList.isEmpty()) {
                 request.setAttribute("list", accountList);
             }
@@ -63,16 +75,13 @@ public class AccountServlet extends HttpServlet {
     
     private String doDepositAccount(HttpServletRequest request, HttpServletResponse response) {
         String accountNum = request.getParameter("accountNum");
-        long balance = Long.parseLong(request.getParameter("balance"));
+        String balance = request.getParameter("balance");
         
         try {
-        	return AccountService.checkMoney(request, accountNum, balance);
-//            AccountDAO.depositAccount(accountNum, balance);
+        	accountService.checkMoney(request, response, accountNum, balance);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
-//        String redirectUrl = request.getContextPath() + "/AccountServlet?action=list";
-//        return redirectUrl;
     }
 }

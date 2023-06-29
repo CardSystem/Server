@@ -5,18 +5,24 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import db.DBUtil;
-import dto.CardDto;
+import dto.CardResponseDto;
 
 public class CardDao {
 	static DBUtil dbUtil = DBUtil.getInstance();
-
-	public static ArrayList<CardDto> showCardList() throws SQLException {
+	private static CardDao dao = new CardDao();
+	
+	public static CardDao getInstance() {
+		return dao;
+	}
+	
+	public List<CardResponseDto> showCardList() throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        ArrayList<CardDto> cardList = new ArrayList<>();
+        List<CardResponseDto> cardList = new ArrayList<>();
 
         try {
             conn = dbUtil.getConnection();
@@ -24,18 +30,19 @@ public class CardDao {
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                CardDto card = new CardDto();
-                card.setId(rs.getLong("id"));
-                card.setCardId(rs.getString("card_id"));
-                card.setCardNum(rs.getString("card_num"));
-                card.setIssuedDate(rs.getString("issued_date"));
-                card.setAgency(rs.getString("agency"));
-                card.setIssuer(rs.getString("issuer"));
-                card.setCardType(rs.getString("card_type"));
-                card.setValidity(rs.getString("validity"));
-                card.setIsStopped(rs.getInt("is_stopped"));
+                CardResponseDto dto = CardResponseDto.builder()
+                		.id(rs.getLong("id"))
+                		.cardId(rs.getString("card_id"))
+                		.cardNum(rs.getString("card_num"))
+                		.issuedDate(rs.getString("issued_date"))
+                		.agency(rs.getString("agency"))
+                		.issuer(rs.getString("issuer"))
+                		.cardType(rs.getString("card_type"))
+                		.validity(rs.getString("validity"))
+                		.isStopped(rs.getInt("is_stopped"))
+                		.build();
 
-                cardList.add(card);
+                cardList.add(dto);
             }
         } catch(Exception e) {
             e.printStackTrace();
@@ -46,7 +53,7 @@ public class CardDao {
         return cardList;
     }
 	
-	public static void changeIsStopped(int isStopped, long id) throws SQLException {
+	public void changeIsStopped(int isStopped, long id) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -63,7 +70,7 @@ public class CardDao {
 		}
 	}
 
-	public static long getAccountIdByCardId(long id) {
+	public long getAccountIdByCardId(long id) {
 		Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
