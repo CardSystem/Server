@@ -1,5 +1,3 @@
 eclipse.preferences.version=1
-encoding//src/main/java/dao/CardDao.java=UTF-8
 encoding//src/main/java/db/DBUtil.java=UTF-8
 encoding//src/main/java/exception/ErrorCode.java=UTF-8
-encoding//src/main/java/servlet/CardControllerServlet.java=UTF-8

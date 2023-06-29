@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+<<<<<<< HEAD
                     
     
     
@@ -38,4 +39,17 @@
 
 
 
+=======
+    <wb-module deploy-name="cardSystem-0.0.1-SNAPSHOT">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources"/>
+        <wb-resource deploy-path="/" source-path="/src/webapp"/>
+        <property name="context-root" value="cardSystem"/>
+        <property name="java-output-path" value="/cardSystem/build/classes"/>
+    </wb-module>
+>>>>>>> 63e6eac65387fe9a40447d878488db4bea8e5f22
 </project-modules>
