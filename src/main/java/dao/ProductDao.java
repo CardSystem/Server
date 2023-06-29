@@ -68,6 +68,40 @@ public class ProductDao {
 		}
 		return Optional.ofNullable(str);
 	}
+	
+	//Card 테이블에서 조인된 테이블 내 데이터 가공을 위한 dao
+	public List<ProductResponseDto> selectProductOfCard() {
+		List<ProductResponseDto> searchProduct = new ArrayList<>();
+		try {
+			conn = dbUtil.getConnection();
+			final String query = "SELECT p.id AS product_id, p.card_name, p.card_limit, p.card_type, "
+					+ "s.id AS category_id, s.category_name, s.discount AS category_id, s.category_name, s.discount "
+					+ "FROM product p "
+					+ "JOIN sale_category s ON p.category_id = s.id"
+					+ "JOIN card c ON p.id = c.product_id";
+			ps = conn.prepareStatement(query);
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				ProductResponseDto dto = ProductResponseDto.builder()
+						.id(rs.getLong("product_id"))
+						.cardName(rs.getString("card_name"))
+						.cardType(rs.getString("card_type"))
+						.cardLimit(rs.getLong("card_limit"))
+						.categoryId(rs.getLong("category_id"))
+						.categoryName(rs.getString("category_name"))
+						.discount(rs.getLong("discount"))
+						.build();
+				searchProduct.add(dto);
+			}
+		}catch(SQLException e) {
+				e.printStackTrace();
+			}finally {
+				dbUtil.close(ps, conn);
+			}
+			return searchProduct;
+		
+	}
 
 	public List<ProductResponseDto> getProductList(){
 		List<ProductResponseDto> list = new ArrayList<>();
