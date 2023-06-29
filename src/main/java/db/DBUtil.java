@@ -1,20 +1,10 @@
 package db;
-<<<<<<< HEAD
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBUtil {
-	private final String driverName = "com.mysql.cj.jdbc.Driver";
-	private final String url = "jdbc:mysql://localhost:3306/card_system?serverTimezone=UTC";//database�씠由� = testdb
-	private final String user = "root";
-	private final String pass = "1234";
-	
-	private static DBUtil instance = new DBUtil();
-	
-	private DBUtil(){
-		
-=======
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,7 +14,8 @@ import java.sql.Statement;
 
 public class DBUtil {
 	private final String driverName = "com.mysql.cj.jdbc.Driver";
-	private final String url = "jdbc:mysql://localhost:3306/card_system?serverTimezone=UTC";//database�씠由� = testdb
+
+	private final String url = "jdbc:mysql://127.0.0.1:3306/card_sys?serverTimezone=UTC&characterEncoding=UTF-8";
 	private final String user = "root";
 	private final String pass = "aa262622!";
 
@@ -38,16 +29,6 @@ public class DBUtil {
 		}
 	}
 	
-	public static DBUtil getInstance() {
-		return instance;
-	}
-	
-	public Connection getConnection() throws SQLException {
-		
-		return DriverManager.getConnection(url, user, pass);
-	}
-	
-    
 
 
 	public static DBUtil getInstance() {

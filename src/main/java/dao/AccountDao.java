@@ -53,8 +53,7 @@ public class AccountDao {
 			}
 			return dto;
 		}
-		
-		
+
 		public void updateBalance(Long accountId, Long money) throws SQLException {
 			Connection conn = null;
 			PreparedStatement pstmt = null;
