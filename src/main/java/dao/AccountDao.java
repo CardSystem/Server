@@ -12,7 +12,6 @@ import dto.AccountDto;
 public class AccountDao {
 	static DBUtil dbUtil = DBUtil.getInstance();
 
-	//Account
 		public AccountDto selectAccountByCardId(Long cardId) {
 			Connection conn = null;
 			PreparedStatement pstmt = null;
@@ -56,7 +55,6 @@ public class AccountDao {
 		}
 		
 		
-		//Account
 		public void updateBalance(Long accountId, Long money) throws SQLException {
 			Connection conn = null;
 			PreparedStatement pstmt = null;
