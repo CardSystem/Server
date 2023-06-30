@@ -15,9 +15,10 @@
 				<th width="40%">id</th>
 				<th width="15%">이름</th>
 				<th width="15%">생년월일</th>
-				<th width="10%">성별</th>
-				<th width="10%">신용등급</th>
-				<th width="10%">정지여부</th>
+				<th width="5%">성별</th>
+				<th width="5%">신용등급</th>
+				<th width="10%">관리자정지여부</th>
+				<th width="10%">연체정지여부</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -31,20 +32,21 @@
 				<td><%=data.getUserBirth()%></td>
 				<td><%=data.getGender()%></td>
 				<td><%=data.getCredit()%></td>
-				<td><%=data.getIsBlocked()%>
+				<td><%=data.getAdminBlock()%>
 					<form method="post" action="UserServlet">
 						<input type="hidden" name="action" value="block" />
 						<input type="hidden" name="id" value="<%=data.getId()%>" />
-						<input type="hidden" name="is_blocked" value="<%=data.getIsBlocked()%>" />
+						<input type="hidden" name="is_blocked" value="<%=data.getAdminBlock()%>" />
 						<input type="submit" value="정지" />
 					</form>
 					<form method="post" action="UserServlet">
 						<input type="hidden" name="action" value="cancel" />
 						<input type="hidden" name="id" value="<%=data.getId()%>" />
-						<input type="hidden" name="is_blocked" value="<%=data.getIsBlocked()%>" />
+						<input type="hidden" name="is_blocked" value="<%=data.getAdminBlock()%>" />
 						<input type="submit" value="취소" />
 					</form>
-					</td>
+				</td>
+				<td><%=data.getDelayBlock()%></td>
 			</tr>
 			<%
 			}

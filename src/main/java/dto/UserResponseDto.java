@@ -13,7 +13,8 @@ public class UserResponseDto {
 	private String userName;
 	private String userBirth;
 	private int credit;
-	private Integer isBlocked;
+	private Integer adminBlock;
+	private Integer delayBlock;
 	private String gender;
 	
 	//도메인 -> dto
@@ -23,7 +24,8 @@ public class UserResponseDto {
 				.userName(user.getUserName())
 				.userBirth(user.getUserBirth())
 				.credit(user.getCredit())
-				.isBlocked(user.getIsBlocked())
+				.adminBlock(user.getAdminBlock())
+				.delayBlock(user.getDelayBlock())
 				.gender(user.getGender())
 				.build();
 	}

@@ -11,16 +11,18 @@ public class User {
 	private String userName;
 	private String userBirth;
 	private int credit;
-	private Integer isBlocked;
+	private Integer adminBlock;
+	private Integer delayBlock;
 	private String gender;
 	
 	@Builder
-	public User(String id, String userName, String userBirth, int credit, Integer isBlocked, String gender) {
+	public User(String id, String userName, String userBirth, int credit, Integer adminBlock, Integer delayBlock, String gender) {
 		this.id = id;
 		this.userName = userName;
 		this.userBirth = userBirth;
 		this.credit = credit;
-		this.isBlocked = isBlocked;
+		this.adminBlock = adminBlock;
+		this.delayBlock = delayBlock;
 		this.gender = gender;
 	}
 }

@@ -17,7 +17,8 @@ public class UserRequestDto {
 	private String userName;
 	private String userBirth;
 	private int credit;
-	private Integer isBlocked;
+	private Integer adminBlock;
+	private Integer delayBlock;
 	private String gender;
 	
 	// dto -> 도메인
@@ -27,7 +28,8 @@ public class UserRequestDto {
 				.userName(userName)
 				.userBirth(userBirth)
 				.credit(credit)
-				.isBlocked(isBlocked)
+				.adminBlock(adminBlock)
+				.delayBlock(delayBlock)
 				.gender(gender)
 				.build();
 	}

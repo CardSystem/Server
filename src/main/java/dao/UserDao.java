@@ -65,7 +65,8 @@ public class UserDao {
 							.id(userId).userName(rs.getString("user_name"))
 							.userBirth(rs.getString("user_birth"))
 							.credit(rs.getInt("credit"))
-							.isBlocked(rs.getInt("is_blocked"))
+							.adminBlock(rs.getInt("admin_block"))
+							.delayBlock(rs.getInt("delay_block"))
 							.gender(rs.getString("gender"))
 							.build();
 					userList.add(dto);
@@ -89,7 +90,7 @@ public class UserDao {
 			conn = dbUtil.getConnection();
 
 			// 첫 번째 pstmt 실행
-			pstmt1 = conn.prepareStatement("update user set is_blocked=? where id=?");
+			pstmt1 = conn.prepareStatement("update user set admin_block=? where id=?");
 			pstmt1.setInt(1, isBlocked);
 			pstmt1.setString(2, id);
 			pstmt1.executeUpdate();
@@ -117,7 +118,7 @@ public class UserDao {
 			conn = dbUtil.getConnection();
 
 			// 첫 번째 pstmt 실행
-			pstmt1 = conn.prepareStatement("update user set is_blocked=? where id=?");
+			pstmt1 = conn.prepareStatement("update user set admin_block=? where id=?");
 			pstmt1.setInt(1, isBlocked);
 			pstmt1.setString(2, id);
 			pstmt1.executeUpdate();
@@ -144,7 +145,7 @@ public class UserDao {
 
 		try {
 			conn = dbUtil.getConnection();
-			pstmt = conn.prepareStatement("SELECT is_blocked FROM user WHERE id = ?");
+			pstmt = conn.prepareStatement("SELECT admin_block FROM user WHERE id = ?");
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 
