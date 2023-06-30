@@ -1,0 +1,47 @@
+[33mcommit 7675d1d141cb7e17410825042f7880ca1faa9178[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/checkCard[m[33m)[m
+Author: PARKYUNJU <pyunj6767@gmail.com>
+Date:   Thu Jun 22 09:45:24 2023 +0900
+
+    #14 feat : 락을 위한 redis 세팅 및 연결 테스트
+
+[33mcommit 6b336e9e96adf4395da5a4f8719e3d7d0881997d[m[33m ([m[1;31morigin/chckCard[m[33m)[m
+Author: PARKYUNJU <pyunj6767@gmail.com>
+Date:   Thu Jun 22 09:30:49 2023 +0900
+
+    #14 feat : 하나의 계좌에 두개의 카드를 연결하고 각각 다른 금액을 동시에 결제 시 잔액 무결성 유지 실패 테스트
+
+[33mcommit a8986863e5bb8a5eb748c67373204bd076797d54[m
+Author: PARKYUNJU <pyunj6767@gmail.com>
+Date:   Wed Jun 21 17:16:22 2023 +0900
+
+    #16 feat : 카드 가입 로직 구현
+
+[33mcommit 4bca9994e75807221672260a182d3ebf3dd73e95[m
+Author: PARKYUNJU <pyunj6767@gmail.com>
+Date:   Wed Jun 21 14:37:25 2023 +0900
+
+    #2 refractor : 카드와 계좌의 정지 여부를 조회하는 메서드에서 같은 쿼리 두 번 날려서 속도저하 -> 한번의 쿼리로 가져온 결과에서 검사하는 방식으로 불필요한 쿼리 발생 삭제
+
+[33mcommit 443b71ee6c6a7a85271a016283c96196ab8baa03[m
+Author: PARKYUNJU <pyunj6767@gmail.com>
+Date:   Wed Jun 21 13:22:10 2023 +0900
+
+    #2 fix : 서블릿에 @RequiredArgsConstroctor 제거, 생성자를 통해 의존성을 주입하고 서버와 테스트 모두 구동 성공
+
+[33mcommit 63a7b324e9ac5dce7194209f9a739710ec7a734e[m
+Author: PARKYUNJU <pyunj6767@gmail.com>
+Date:   Wed Jun 21 11:38:10 2023 +0900
+
+    #14 feat : 체크카드 결제 테스트코드 성공 케이스 구현. 테스트 대상:service, 모든 객체 mock으로 구현
+
+[33mcommit b67bb0d1d006d73a79b93933dc39fb16d3d2f431[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: PARKYUNJU <pyunj6767@gmail.com>
+Date:   Tue Jun 20 17:37:38 2023 +0900
+
+    #14 fix : 불필요한 파일 삭제, 서블릿 파일 rename
+
+[33mcommit 7659a6b5226aefcb00ac617ad90ae59801edd1ce[m
+Author: PARKYUNJU <pyunj6767@gmail.com>
+Date:   Tue Jun 20 17:32:22 2023 +0900
+
+    #13 feat : 최종 폴더구조, 서버 설정
