@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import db.DBUtil;
 import domain.Account;
+import domain.Product;
 import dto.AccountDto;
 import dto.ProductDto;
 import dto.ProductResponseDto;
@@ -105,13 +106,14 @@ public class ProductDao {
 
 	public Optional<List<ProductResponseDto>> getProductList(){
 		List<ProductResponseDto> list = new ArrayList<>();
+		
 		try {
 			conn = dbUtil.getConnection();
 			final String query = "SELECT p.id AS product_id, p.card_name, p.card_limit, p.card_type, s.id AS category_id, s.category_name, s.discount FROM product p JOIN sale_category s ON p.category_id = s.id ORDER BY p.id DESC";
 			ps = conn.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				ProductResponseDto dto = ProductResponseDto.builder()
+				Product product = Product.builder()
 						.id(rs.getLong("product_id"))
 						.cardName(rs.getString("card_name"))
 						.cardType(rs.getString("card_type"))
@@ -120,7 +122,8 @@ public class ProductDao {
 						.categoryName(rs.getString("category_name"))
 						.discount(rs.getLong("discount"))
 						.build();
-				list.add(dto);
+				
+				list.add(ProductResponseDto.of(product));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
