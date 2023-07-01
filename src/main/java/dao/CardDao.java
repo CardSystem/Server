@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import db.DBUtil;
+import domain.Card;
 import dto.CardResponseDto;
 
 public class CardDao {
@@ -30,9 +31,10 @@ public class CardDao {
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                CardResponseDto dto = CardResponseDto.builder()
+            	Card card = Card.builder()
                 		.id(rs.getLong("id"))
-                		.cardId(rs.getString("card_id"))
+                		.productId(rs.getLong("product_id"))
+                		.accountId(rs.getLong("account_id"))
                 		.cardNum(rs.getString("card_num"))
                 		.issuedDate(rs.getString("issued_date"))
                 		.agency(rs.getString("agency"))
@@ -40,9 +42,10 @@ public class CardDao {
                 		.cardType(rs.getString("card_type"))
                 		.validity(rs.getString("validity"))
                 		.isStopped(rs.getInt("is_stopped"))
+                		.totalPayment(rs.getLong("total_payment"))
                 		.build();
 
-                cardList.add(dto);
+                cardList.add(CardResponseDto.of(card));
             }
         } catch(Exception e) {
             e.printStackTrace();

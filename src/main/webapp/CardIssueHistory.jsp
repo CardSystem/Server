@@ -18,7 +18,6 @@
 		<thead>
 			<tr>
 				<th width="5%">번호</th>
-				<th width="15%">카드이름</th>
 				<th width="20%">카드번호</th>
 				<th width="15%">발급일</th>
 				<th width="10%">발급지점</th>
@@ -26,6 +25,7 @@
 				<th width="5%">체크/신용</th>
 				<th width="15%">유효기간</th>
 				<th width="5%">정지여부</th>
+				<th width="15%">총결제</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -35,7 +35,6 @@
 			%>
 			<tr>
 				<td><%=data.getId()%></td>
-				<td><%=data.getCardId()%></td>
 				<td><%=data.getCardNum()%></td>
 				<td><%=data.getIssuedDate()%></td>
 				<td><%=data.getAgency()%></td>
@@ -55,7 +54,8 @@
 						<input type="hidden" name="is_stopped" value="<%=data.getIsStopped()%>" />
 						<input type="submit" value="해제" />
 					</form>
-					</td>
+				</td>
+				<td><%=data.getTotalPayment()%></td>
 			</tr>
 			<%
 			}

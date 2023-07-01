@@ -12,7 +12,6 @@ public class CardResponseDto {
 	private long id;
 	private long productId;
 	private long accountId;
-	private String cardId;
 	private String issuedDate;
 	private String cardType;
 	private String validity;
@@ -20,20 +19,21 @@ public class CardResponseDto {
 	private String issuer;
 	private Integer isStopped;
 	private String cardNum;
+	private long totalPayment;
 
 	public static CardResponseDto of(Card card) {
 		return CardResponseDto.builder()
 				.id(card.getId())
 				.productId(card.getProductId())
 				.accountId(card.getAccountId())
-				.cardId(card.getCardId())
-				.issuedDate(card.getCardId())
+				.issuedDate(card.getIssuedDate())
 				.cardType(card.getCardType())
 				.validity(card.getValidity())
 				.agency(card.getAgency())
 				.issuer(card.getIssuer())
 				.isStopped(card.getIsStopped())
 				.cardNum(card.getCardNum())
+				.totalPayment(card.getTotalPayment())
 				.build();
 	}
 

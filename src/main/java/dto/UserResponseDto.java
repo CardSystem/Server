@@ -16,7 +16,7 @@ public class UserResponseDto {
 	private Integer adminBlock;
 	private Integer delayBlock;
 	private String gender;
-	
+
 	//도메인 -> dto
 	public static UserResponseDto of(User user) {
 		return UserResponseDto.builder()

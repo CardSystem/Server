@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import db.DBUtil;
+import domain.User;
 import dto.UserRequestDto;
 import dto.UserResponseDto;
 
@@ -61,15 +62,16 @@ public class UserDao {
 			while (rs.next()) {
 				String userId = rs.getString("id");
 				if (!userId.contains("Admin")) {
-					UserResponseDto dto = UserResponseDto.builder()
-							.id(userId).userName(rs.getString("user_name"))
+					User user = User.builder()
+							.id(userId)
+							.userName(rs.getString("user_name"))
 							.userBirth(rs.getString("user_birth"))
 							.credit(rs.getInt("credit"))
 							.adminBlock(rs.getInt("admin_block"))
 							.delayBlock(rs.getInt("delay_block"))
 							.gender(rs.getString("gender"))
 							.build();
-					userList.add(dto);
+					userList.add(UserResponseDto.of(user));
 				}
 			}
 		} catch (Exception e) {
@@ -150,7 +152,7 @@ public class UserDao {
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-				isBlocked = rs.getInt("is_blocked");
+				isBlocked = rs.getInt("admin_block");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

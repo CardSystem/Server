@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import db.DBUtil;
+import domain.Account;
 import dto.AccountResponseDto;
 
 public class AccountDao {
@@ -30,7 +31,7 @@ public class AccountDao {
             pstmt.setString(1, userId);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                AccountResponseDto dto = AccountResponseDto.builder()
+                Account account = Account.builder()
                 		.id(rs.getLong("id"))
                 		.userId(rs.getString("user_id"))
                 		.accountNum(rs.getString("account_num"))
@@ -38,7 +39,7 @@ public class AccountDao {
                 		.bankName(rs.getString("bank_name"))
                 		.isStopped(rs.getInt("is_stopped"))
                 		.build();
-                accountList.add(dto);
+                accountList.add(AccountResponseDto.of(account));
             }
         } catch (Exception e) {
             e.printStackTrace();
