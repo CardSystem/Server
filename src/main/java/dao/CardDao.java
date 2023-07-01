@@ -5,10 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import db.DBUtil;
 import domain.Card;
 import domain.Product;
+import dto.CardResponseDto;
 import dto.CardHistoryDto;
 import dto.CardInsertDto;
 import dto.CheckCardDaoToServiceDto;
@@ -18,7 +20,11 @@ import exception.ErrorCode;
 
 public class CardDao {
 	static DBUtil dbUtil = DBUtil.getInstance();
-
+private static CardDao dao = new CardDao();
+	
+	public static CardDao getInstance() {
+		return dao;
+	}
 	public static ArrayList<CardHistoryDto> showPayCardList() throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -122,7 +128,7 @@ public class CardDao {
         return searchUidCardPayList;
     }
 	
-	//�븳 user媛� �냼�쑀�븳移대뱶 寃곗젣�궡�뿭議고쉶
+	//占쎈립 user揶쏉옙 占쎈꺖占쎌�占쎈립燁삳�諭� 野껉퀣�젫占쎄땀占쎈열鈺곌퀬�돳
 		public static ArrayList<CardHistoryDto> showSearchUserCardList(String userId, String keyword) throws SQLException {
 	        Connection conn = null;
 	        PreparedStatement pstmt = null;
@@ -160,7 +166,7 @@ public class CardDao {
 	    }
 		
 		
-	//移대뱶�긽�뭹蹂� 寃곗젣�궡�뿭議고쉶
+	//燁삳�諭띰옙湲쏙옙萸배퉪占� 野껉퀣�젫占쎄땀占쎈열鈺곌퀬�돳
 	public static ArrayList<CardHistoryDto> showSearchCardList(long keyword) throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -200,7 +206,7 @@ public class CardDao {
 	
 
 	
-	//�썡蹂� 寃곗젣�궡�뿭議고쉶(1媛쒖썡,3媛쒖썡,吏곸젒�엯�젰)
+	//占쎌뜞癰귨옙 野껉퀣�젫占쎄땀占쎈열鈺곌퀬�돳(1揶쏆뮇�뜞,3揶쏆뮇�뜞,筌욊낯�젔占쎌뿯占쎌젾)
 		public static ArrayList<CardHistoryDto> showMonthlyCardList(String option) throws SQLException {
 	        Connection conn = null;
 	        PreparedStatement pstmt = null;
@@ -268,7 +274,7 @@ public class CardDao {
 
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.out.println("존재하지않음");
+				System.out.println("議댁옱�븯吏��븡�쓬");
 			}
 
 			finally {
@@ -298,7 +304,7 @@ public class CardDao {
 
 
 			try {
-				System.out.println("insert 시작");
+				System.out.println("insert �떆�옉");
 				conn = dbUtil.getConnection();
 				pstmt = conn.prepareStatement("select count(account_id) from card where account_id=?;");
 				pstmt.setLong(1, accountId);
@@ -306,12 +312,12 @@ public class CardDao {
 				if (rs.next()) {
 					cardNum=rs.getLong("count(account_id)");
 				}
-				System.out.println("카드 갯수:"+cardNum);
+				System.out.println("移대뱶 媛��닔:"+cardNum);
 				
 			}  catch (Exception e) {
 				e.printStackTrace();
 				
-				System.out.println("존재하지않는 계좌 아이디입니다.");
+				System.out.println("議댁옱�븯吏��븡�뒗 怨꾩쥖 �븘�씠�뵒�엯�땲�떎.");
 			}finally {
 				try {
 					dbUtil.close(rs);
@@ -336,7 +342,7 @@ public class CardDao {
 
 
 			try {
-				System.out.println("insert 시작");
+				System.out.println("insert �떆�옉");
 				conn = dbUtil.getConnection();
 				StringBuilder d = new StringBuilder();
 				d.append("insert into card(product_id,issued_date,card_type,validity,agency,issuer,is_stopped,card_num,account_id) \n");
@@ -353,7 +359,7 @@ public class CardDao {
 				pstmt.setLong(9, data.getAccountId());
 
 				pstmt.executeUpdate();
-				System.out.println("insert 실행");
+				System.out.println("insert �떎�뻾");
 
 			} finally {
 				dbUtil.close(pstmt, conn);
@@ -398,11 +404,11 @@ public class CardDao {
 					dto = new CheckCardDaoToServiceDto(card, rs.getLong("account_id"), rs.getLong("discount"));
 
 				} else {
-					throw new BusinessException(ErrorCode.UNABLE_CARDNUM, "존재하지 않는 카드번호입니다.");
+					throw new BusinessException(ErrorCode.UNABLE_CARDNUM, "議댁옱�븯吏� �븡�뒗 移대뱶踰덊샇�엯�땲�떎.");
 				}
 
 			} catch (BusinessException | SQLException e) {
-				System.out.println("찾을 수 없는 카드거나 계좌입니다: " + e.getMessage());
+				System.out.println("李얠쓣 �닔 �뾾�뒗 移대뱶嫄곕굹 怨꾩쥖�엯�땲�떎: " + e.getMessage());
 			}
 
 			finally {
@@ -416,6 +422,81 @@ public class CardDao {
 			return dto;
 		}
 
+		public List<CardResponseDto> showCardList() throws SQLException {
+	        Connection conn = null;
+	        PreparedStatement pstmt = null;
+	        ResultSet rs = null;
+	        List<CardResponseDto> cardList = new ArrayList<>();
+
+	        try {
+	            conn = dbUtil.getConnection();
+	            pstmt = conn.prepareStatement("SELECT * FROM card");
+	            rs = pstmt.executeQuery();
+
+	            while (rs.next()) {
+	            	Card card = Card.builder()
+	                		.id(rs.getLong("id"))
+	                		.productId(rs.getLong("product_id"))
+	                		.accountId(rs.getLong("account_id"))
+	                		.cardNum(rs.getString("card_num"))
+	                		.issuedDate(rs.getString("issued_date"))
+	                		.agency(rs.getString("agency"))
+	                		.issuer(rs.getString("issuer"))
+	                		.cardType(rs.getString("card_type"))
+	                		.validity(rs.getString("validity"))
+	                		.isStopped(rs.getInt("is_stopped"))
+	                		.totalPayment(rs.getLong("total_payment"))
+	                		.build();
+
+	                cardList.add(CardResponseDto.of(card));
+	            }
+	        } catch(Exception e) {
+	            e.printStackTrace();
+	        } finally {
+	            dbUtil.close(rs, pstmt, conn);
+	        }
+
+	        return cardList;
+	    }
+		
+		public void changeIsStopped(int isStopped, long id) throws SQLException {
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			try {
+				conn = dbUtil.getConnection();
+	            pstmt = conn.prepareStatement("update card set is_stopped=? where id=?");
+	            // 이부분 처리 애매함 -> boolean인지 int인지
+				pstmt.setInt(1, isStopped);
+				pstmt.setLong(2, id);
+				pstmt.executeUpdate();//insert실행
+			} catch(Exception e) {
+		         e.printStackTrace();
+		    } finally {
+				dbUtil.close(pstmt, conn);
+			}
+		}
+
+		public long getAccountIdByCardId(long id) {
+			Connection conn = null;
+		    PreparedStatement pstmt = null;
+		    ResultSet rs = null;
+		    long accountId = 0;
+		    try {
+		        conn = dbUtil.getConnection();
+		        pstmt = conn.prepareStatement("SELECT account_id FROM card WHERE id = ?");
+		        pstmt.setLong(1, id);
+		        rs = pstmt.executeQuery();
+
+		        if (rs.next()) {
+		            accountId = rs.getLong("account_id");
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    } finally {
+		        dbUtil.close(rs, pstmt, conn);
+		    }
+			return accountId;
+		}
 		
 		
 	

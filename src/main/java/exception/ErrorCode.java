@@ -4,15 +4,22 @@ import com.sun.net.httpserver.Authenticator.Success;
 
 public enum ErrorCode {
 	
-	Success(200,"OK","ì„±ê³µ"),
-	INSUFFICIENT_BALANCE(500,"Internal Server Error","ì”ì•¡ì´ ë¶€ì¡±í•©ë‹ˆë‹¤"),
-    STOPPED_ACCOUNT(500,"Internal Server Error","ì •ì§€ëœ ê³„ì¢Œì…ë‹ˆë‹¤."),
-	STOPPED_CARD(500,"Internal Server Error","ì •ì§€ëœ ì¹´ë“œì…ë‹ˆë‹¤.."),
-	UNABLE_CARDNUM(500,"Internal Server Error","ì¡´ì¬í•˜ì§€ ì•ŠëŠ” ì¹´ë“œë²ˆí˜¸ì…ë‹ˆë‹¤."),
-	UNABLE_PRODUCTNUM(500, "Internal Server Error", "ì¡´ì¬í•˜ì§€ ì•ŠëŠ” ìƒí’ˆì…ë‹ˆë‹¤."),
-	TOO_MANY_CARDS(500,"Internal Server Error","í•œ ê³„ì¢Œì— ì¹´ë“œëŠ” 3ê°œê¹Œì§€ ë“±ë¡í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤."),
-	DUPLICATE_PRODUCT(500, "Internal Server Error", "ìƒí’ˆëª…ì´ ì¤‘ë³µëœ ìƒí’ˆì…ë‹ˆë‹¤."),
-	NOT_FOUND_PRODUCTLIST(500, "Internal Server Error", "ìƒí’ˆ ë¦¬ìŠ¤íŠ¸ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+	SUCCESS(200,"OK","¼º°ø"),
+	INSUFFICIENT_BALANCE(500,"Internal Server Error","ÀÜ¾×ÀÌ ºÎÁ·ÇÕ´Ï´Ù"),
+    STOPPED_ACCOUNT(500,"Internal Server Error","Á¤ÁöµÈ °èÁÂÀÔ´Ï´Ù."),
+	STOPPED_CARD(500,"Internal Server Error","Á¤ÁöµÈ Ä«µåÀÔ´Ï´Ù.."),
+	UNABLE_CARDNUM(500,"Internal Server Error","Á¸ÀçÇÏÁö ¾Ê´Â Ä«µå¹øÈ£ÀÔ´Ï´Ù."),
+	UNABLE_PRODUCTNUM(500, "Internal Server Error", "Á¸ÀçÇÏÁö ¾Ê´Â »óÇ°ÀÔ´Ï´Ù."),
+	TOO_MANY_CARDS(500,"Internal Server Error","ÇÑ °èÁÂ¿¡ Ä«µå´Â 3°³±îÁö µî·ÏÇÒ ¼ö ÀÖ½À´Ï´Ù."),
+	DUPLICATE_PRODUCT(500, "Internal Server Error", "»óÇ°¸íÀÌ Áßº¹µÈ »óÇ°ÀÔ´Ï´Ù."),
+	NOT_FOUND_PRODUCTLIST(500, "Internal Server Error", "»óÇ° ¸®½ºÆ®¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù."),
+	WORNG_PASSWORD(500,"Internal Server Error","ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù."),
+	UNABLE_USER(500,"Internal Server Error","Á¸ÀçÇÏÁö ¾Ê´Â »ç¿ëÀÚÀÔ´Ï´Ù."),
+	LOGIN_ERROR(500,"Internal Server Error","·Î±×ÀÎ ¿¡·¯°¡ ¹ß»ıÇß½À´Ï´Ù."),
+	WRONG_AMOUNT(500,"Internal Server Error","Àß¸øµÈ ¼ıÀÚ Çü½ÄÀÔ´Ï´Ù."),
+	DATABASE_ERROR(500,"Internal Server Error","µ¥ÀÌÅÍº£ÀÌ½º ¿À·ù°¡ ¹ß»ıÇß½À´Ï´Ù."),
+	NO_AMOUNT(500,"Internal Server Error","±İ¾×À» ÀÔ·ÂÇØÁÖ¼¼¿ä");
+	
 	public String getStatus() {
 		return status;
 	}
