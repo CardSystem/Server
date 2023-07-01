@@ -2,15 +2,31 @@ package db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DBUtil {
-	private final String driverName = "com.mysql.cj.jdbc.Driver";
-	private final String url = "jdbc:mysql://127.0.0.1:3306/card_system?serverTimezone=UTC&characterEncoding=UTF-8";
-	private final String user = "root";
-	private final String pass = "1234";
+	String driverName = "com.mysql.cj.jdbc.Driver";
+
+	
+    private static final String DB_URL = "jdbc:mysql://cardsystemdatabase.cdvfrfzlq3nb.us-east-1.rds.amazonaws.com:3306/cardsystemdatabase";
+    private static final String DB_USERNAME = "admin";
+    private static final String DB_PASSWORD = "12341234";
+//	  String dbName = System.getProperty("cardsystemdatabase");
+//	  String userName = System.getProperty("admin");
+//	  String password = System.getProperty("12341234");
+//	  String hostname = System.getProperty("cardsystemdatabase.cdvfrfzlq3nb.us-east-1.rds.amazonaws.com");
+//	  String port = System.getProperty("3306");
+//	  String jdbcUrl = "jdbc:mysql://" + hostname + ":" +
+//	    port + "/" + dbName + "?user=" + userName + "&password=" + password;
+//	
 
 	private static DBUtil instance = new DBUtil();
 
@@ -21,13 +37,15 @@ public class DBUtil {
 			e.printStackTrace();
 		}
 	}
+	
+
 
 	public static DBUtil getInstance() {
 		return instance;
 	}
 
 	public Connection getConnection() throws SQLException {
-		return DriverManager.getConnection(url, user, pass);
+		return DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
 	}
 
 	public void close(AutoCloseable... closeables) {

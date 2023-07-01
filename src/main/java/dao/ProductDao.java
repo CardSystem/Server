@@ -27,45 +27,6 @@ public class ProductDao {
 		return dao;
 	}
 
-	public AccountDto selectAccountByCardId(Long cardId) {
-		Account account = null;
-		AccountDto dto = null;
-		ResultSet rs = null;
-		try {
-			conn = dbUtil.getConnection();
-			ps= conn.prepareStatement(
-					"select * from account join cards on account.id=cards.account_id where cards.id=?;");
-			ps.setLong(1, cardId);
-
-			rs = ps.executeQuery();
-			if (rs.next()) {
-
-				account = new Account();
-				account.setId(rs.getLong("id"));
-				account.setAccountNum(rs.getString("account_num"));
-				account.setBalance(rs.getLong("balance"));
-				account.setBankName(rs.getString("bank_name"));
-				account.setIsStopped(rs.getInt("is_stopped"));
-				System.out.println("계좌번호:" + account.getAccountNum());
-				dto = new AccountDto(account);
-
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("존재하지않음");
-		}
-
-		finally {
-			try {
-				dbUtil.close(rs,ps);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return dto;
-	}
-
 
 	public Long selectOneProduct(final Long idx) throws SQLException{
 		Long result = null;
@@ -174,7 +135,15 @@ public class ProductDao {
 	}
 
 	public void registerProduct(final ProductRequestDto dto) throws SQLException {
+		
+		
 		try {
+			
+			try {
+			    Class.forName("com.mysql.cj.jdbc.Driver");
+			  } catch (ClassNotFoundException e) {
+			    throw new RuntimeException("Cannot find the driver in the classpath!", e);
+			  }
 			conn = dbUtil.getConnection();
 			final String query = "INSERT INTO product(card_name, card_type, card_limit, category_id) VALUES (?,?,?,?)";
 			ps = conn.prepareStatement(query);
