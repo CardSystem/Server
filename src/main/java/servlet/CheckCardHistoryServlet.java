@@ -57,12 +57,20 @@ public class CheckCardHistoryServlet extends HttpServlet {
 		LocalDateTime date = LocalDateTime.now();
 		CheckCardRequestDto dto = new CheckCardRequestDto(cardId, userId, franchisee, payment, fCategory, date);
 		try {
-			CheckCardResponseDto responseDto=RedissonExam.cardLock(dto);
-//			CheckCardResponseDto responseDto=checkCardService.checkCardPayment(dto);
-						request.setAttribute("data", responseDto);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/CheckCardResponse.jsp");
-			dispatcher.forward(request, response);
-			System.out.println(responseDto.getCardType());
+			  CheckCardResponseDto responseDto = RedissonExam.cardLock(dto);
+	            String message = responseDto.getStatusMsg();
+
+	            System.out.println(message);
+	            // JSP로 직접 메시지와 입력값을 넘김
+	            request.setAttribute("message", message);
+	            request.setAttribute("cardId", cardId);
+	            request.setAttribute("userId", userId);
+	            request.setAttribute("payment", payment);
+	            request.setAttribute("franchisee", franchisee);
+	            request.setAttribute("fCategory", fCategory);
+
+	            // CheckCard.jsp로 다시 이동
+	            RequestDispatcher dispatcher = request.getRequestDispatcher("/CheckCard.jsp");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -44,41 +44,35 @@ class RedissonExamTest {
 	    private AccountDao accountdao;
 	  	@Mock
 	    private CardDao carddao;
-
-	  	
 	    @Mock
 	    private RedissonClient redissonClient;
-
-	    
 	    @InjectMocks
 	    private CheckCardService checkCardService;
-
-
 	    @InjectMocks
 	    private RedissonExam redissonExam;
 
 
 	
 	
-	public static Long id1;
-	public static Long cardId2;
-	public static Long id2;
-	public static Long cardId1;
-	public static Long payment1;
-	public static Long payment2;
+	public Long id1;
+	public Long cardId2;
+	public Long id2;
+	public Long cardId1;
+	public Long payment1;
+	public Long payment2;
 
-	public static String userId;
-	public static String franchisee;
-	public static Long accountId;
-	public static Long balance;
-	public static Integer isStopped;
-	public static String cardType;
-	public static String validity;
-	public static String agency;
-	public static String issuer;
-	public static String cardNum;
-	public static Long discount;
-	public static Long fCategory;
+	public String userId;
+	public String franchisee;
+	public Long accountId;
+	public Long balance;
+	public Integer isStopped;
+	public String cardType;
+	public String validity;
+	public String agency;
+	public String issuer;
+	public String cardNum;
+	public Long discount;
+	public Long fCategory;
 	static Card card1;
 	static Card card2;
 	static Account account;
