@@ -1,7 +1,7 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,71 +11,105 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.ProductDao;
-import domain.Product;
-import dto.ProductCreateDto;
+import dto.ProductRequestDto;
+import dto.ProductResponseDto;
+import service.ProductService;
 
 //카드 상품 추가
 
 @WebServlet("/product")
 public class ProductServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+	private final ProductService productService;
 	
-	public static ProductDao dao=new ProductDao();
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public ProductServlet() {
+		ProductDao dao = new ProductDao();
+		this.productService = new ProductService(dao);
+	}
+
+	public ProductServlet(ProductService productService) {
+		this.productService = productService;
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		List<ProductResponseDto> productList = productService.getProductList();
+
+		request.setAttribute("productList", productList);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("productList.jsp");
+		dispatcher.forward(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
 		String order = request.getParameter("action");
-		String url;
-		switch(order) {
-		case "insert":
-			url = doInsert(request, response);
-			System.out.println("get처리 성공");
-			response.sendRedirect(url);
-			break;
-
-		case "productList":
-			url = doList(request, response);
-			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-			dispatcher.forward(request, response);
-			break;
+		
+		if(order.equals("register")) {
+			doRegister(request,response);
+			doGet(request,response);
+		}else if (order.equals("update")) {
+			doUpdate(request, response);
+			doGet(request,response);
+		} else if (order.equals("delete")) {
+			doDeleteProduct(request, response);
+			doGet(request,response);
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");//한글깨짐 방지
-		doGet(request, response);
-	}
-	
-	private String doInsert(HttpServletRequest request, HttpServletResponse response) {
-		ProductCreateDto productCreateDto = ProductCreateDto.builder()
-				.cardName(request.getParameter("card_name").toString())
-				.cardType(request.getParameter("card_type").toString())
-				.cardLimit(Long.parseLong(request.getParameter("card_limit")))
-				.categoryId(Long.parseLong(request.getParameter("category_id")))
+	public void doRegister(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		final String name = request.getParameter("name");
+		final String type = request.getParameter("type");
+		final Long limit = Long.parseLong(request.getParameter("limit"));
+		final Long categoryId = Long.parseLong(request.getParameter("category"));
+
+		ProductRequestDto dto = ProductRequestDto
+				.builder()
+				.cardName(name)
+				.cardType(type)
+				.cardLimit(limit)
+				.categoryId(categoryId)
 				.build();
-			
+
 		try {
-			dao.insertData(productCreateDto);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("db insert중 에러!");
+			productService.registerProduct(dto);
+		} catch (Exception e) {
+			e.printStackTrace();			
 		}
-		System.out.print( "success");
-		return "product?action=productList";
 	}
-	
-	private String doList(HttpServletRequest request, HttpServletResponse response) {
+
+	public void doUpdate(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		final Long id = Long.parseLong(request.getParameter("productId"));
+		final String name = request.getParameter("name");
+		final String type = request.getParameter("type");
+		final Long limit = Long.parseLong(request.getParameter("limit"));
+		final Long categoryId = Long.parseLong(request.getParameter("category"));
+
+		ProductRequestDto dto = ProductRequestDto
+				.builder()
+				.cardName(name)
+				.cardType(type)
+				.cardLimit(limit)
+				.categoryId(categoryId)
+				.build();
+
 		try {
-			System.out.println("doList 진입!");
-			request.setAttribute("productList", dao.selectAllData());
-			System.out.println("doList 탈출!");
-		} catch (SQLException e) {
+			productService.updateProduct(id, dto);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "ProductList.jsp";
+	}
+
+	public void doDeleteProduct(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		final Long id = Long.parseLong(request.getParameter("productId"));
+
+		try {
+			productService.deleteProduct(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
