@@ -8,10 +8,18 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 import db.DBUtil;
+import domain.Account;
+import domain.Card;
+import dto.AccountDto;
+import dto.CheckCardDaoToServiceDto;
+import dto.CheckCardHistoryDto;
 import dto.CardHistoryDto;
 
+import exception.BusinessException;
+import exception.ErrorCode;
 
 public class CardHistoryDao {
 	static DBUtil dbUtil = DBUtil.getInstance();
@@ -67,6 +75,7 @@ public class CardHistoryDao {
             while (rs.next()) {
             	CardHistoryDto data = new CardHistoryDto();
             	data.setId(rs.getLong("id"));
+
             	data.setCardId(rs.getLong("card_id"));
 				data.setUserId(rs.getString("user_id"));
 				data.setFranchisee(rs.getString("franchisee"));
@@ -205,5 +214,47 @@ public class CardHistoryDao {
 		}
 		
 
+
+	public void insertCheckCardHistory(CheckCardHistoryDto data) throws SQLException {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		  try {
+			    System.out.println("Loading driver...");
+			    Class.forName("com.mysql.cj.jdbc.Driver");
+			    System.out.println("Driver loaded!");
+			  } catch (ClassNotFoundException e) {
+			    throw new RuntimeException("Cannot find the driver in the classpath!", e);
+			  }
+
+		try {
+			conn = dbUtil.getConnection();
+			StringBuilder d = new StringBuilder();
+			d.append(
+					"insert into card_history(card_id,user_id,franchisee,payment,balance,is_success,date,f_category,is_ins,ins_month,card_type) \n");
+			d.append("values(?,?,?,?,?,?,?,?,?,?,?)");
+			pstmt = conn.prepareStatement(d.toString());
+			pstmt.setLong(1, data.getCardId());
+			pstmt.setString(2, data.getUserId());
+			pstmt.setString(3, data.getFranchisee());
+			pstmt.setLong(4, data.getPayment());
+			pstmt.setLong(5, data.getBalance());
+			pstmt.setInt(6, data.getIsSuccess());
+			pstmt.setTimestamp(7, Timestamp.valueOf(data.getDate()));
+			pstmt.setLong(8, data.getFCategory());
+			pstmt.setInt(9, data.getIsIns());
+			pstmt.setInt(10, data.getInsMonth());
+			pstmt.setString(11, data.getCardType());
+
+			pstmt.executeUpdate();
+			System.out.println("insert 실행");
+
+		} finally {
+			dbUtil.close(pstmt, conn);
+		}
+	}
+
+	
+
+	
 
 }

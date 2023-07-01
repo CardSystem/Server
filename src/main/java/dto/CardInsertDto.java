@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CardInsertDto {
 
-	private Long cardId;
+	private Long productId;
 	private String issuedDate;
 	private String cardType;
 	private String validity;

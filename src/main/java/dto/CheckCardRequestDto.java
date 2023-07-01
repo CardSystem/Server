@@ -9,11 +9,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CheckCardRequestDto {
-	
-
-
-
-
 
 	private LocalDateTime date;
 	private Long cardId;
