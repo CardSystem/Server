@@ -8,9 +8,9 @@ import java.sql.Statement;
 
 public class DBUtil {
 	private final String driverName = "com.mysql.cj.jdbc.Driver";
-	private final String url = "jdbc:mysql://127.0.0.1:3306/jsptest?serverTimezone=UTC&characterEncoding=UTF-8";
+	private final String url = "jdbc:mysql://127.0.0.1:3306/card_system?serverTimezone=UTC&characterEncoding=UTF-8";
 	private final String user = "root";
-	private final String pass = "cjswo159";
+	private final String pass = "1234";
 
 	private static DBUtil instance = new DBUtil();
 
