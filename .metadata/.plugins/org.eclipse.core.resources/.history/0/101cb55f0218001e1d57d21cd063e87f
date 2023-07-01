@@ -1,0 +1,133 @@
+package servlet;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import dto.CardHistoryDto;
+
+
+import dao.CardHistoryDao;
+
+
+
+@WebServlet("/CardServlet")
+public class CardServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	private String userId = null;
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String keyword = request.getParameter("keyword");
+		String order = request.getParameter("action");
+		String url;
+		
+		
+		if(order != null) {
+			switch(order) {
+				case "list":
+					url = doList(request, response);
+					RequestDispatcher dispatcherList = request.getRequestDispatcher(url);
+					dispatcherList.forward(request, response);
+					break;
+				case "searchId":
+					
+					userId = keyword;
+					
+					HttpSession session = request.getSession();
+					request.getSession().removeAttribute("userId");
+					session.setAttribute("userId", userId);
+					
+					userId = (String)session.getAttribute("userId");
+
+					url = doIdSearchList(request, response);
+					RequestDispatcher dispatcherSearchId = request.getRequestDispatcher(url);
+					dispatcherSearchId.forward(request, response);
+					break;
+				case "searchUserCardId":
+					userId = (String) request.getSession().getAttribute("userId");
+					long userCardKeyword= Long.parseLong(keyword); 
+					url = doSearchUserCardList(request, response,userCardKeyword);
+					RequestDispatcher dispatcherSearchUserCardId = request.getRequestDispatcher(url);
+					dispatcherSearchUserCardId.forward(request, response);
+					break;
+				case "searchCardId":
+					long cardKeyword= Long.parseLong(keyword); 
+					url = doCardIdSearchList(request, response,cardKeyword);
+					RequestDispatcher dispatcherSearchCardId = request.getRequestDispatcher(url);
+					dispatcherSearchCardId.forward(request, response);
+					break;
+				case "searchPeriod":
+					url = doPeriodSearchList(request, response,keyword);
+					RequestDispatcher dispatcherSearchPeriod = request.getRequestDispatcher(url);
+					dispatcherSearchPeriod.forward(request, response);
+					break;
+			}
+		}
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");// ïúÍ∏ Íπ®Ïßê Î∞©Ï 
+		doGet(request, response);
+	}
+
+	private String doList(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			request.setAttribute("list", CardHistoryDao.showPayCardList());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return "cardList.jsp";
+	}
+	
+	private String doIdSearchList(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			ArrayList<CardHistoryDto> userList = CardHistoryDao.showSearchUidCardList(userId);
+			if(userList != null && !userList.isEmpty()) {
+				request.setAttribute("searchId",userList);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "cardUserSearchList.jsp";
+	}
+	
+	private String doSearchUserCardList(HttpServletRequest request, HttpServletResponse response, long keyword) {
+		try {
+			ArrayList<CardHistoryDto> userCardList = CardHistoryDao.showSearchUserCardList(userId,keyword);
+			if(userCardList != null && !userCardList.isEmpty()) {
+				request.setAttribute("searchUserCardId",userCardList);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "cardUserCidSearchList.jsp";
+	}
+	
+	private String doCardIdSearchList(HttpServletRequest request, HttpServletResponse response, long keyword) {
+		try {
+			request.setAttribute("searchCardId", CardHistoryDao.showSearchCardList(keyword));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return "cardSearchList.jsp";
+	}
+	
+	private String doPeriodSearchList(HttpServletRequest request, HttpServletResponse response, String option) {
+		try {
+			request.setAttribute("searchPeriod", CardHistoryDao.showMonthlyCardList(option));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return "monthlyPaymentList.jsp";
+	}
+	
+}

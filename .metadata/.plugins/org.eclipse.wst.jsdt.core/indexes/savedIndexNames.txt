@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+C:\Users\drdd1\Desktop\cardtracker\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+4227789277.index
+2501520862.index
+3498538833.index
+587447420.index
+4226974923.index
+2045575145.index

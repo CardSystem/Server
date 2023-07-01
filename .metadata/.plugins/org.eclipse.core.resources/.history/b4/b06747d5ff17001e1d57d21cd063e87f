@@ -1,0 +1,20 @@
+package dto;
+
+import domain.Card;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class CardRequestDto {
+
+	private Long cardId;
+	private Long accountId;
+	private String issuer;
+	private String agency;
+
+}
