@@ -24,7 +24,8 @@ public class AccountDto {
 	public void makeBalance(Long payment) {
 		this.balance += payment;
 	}
-	@Builder
+	
+	
 	public AccountDto(Account account) {
 		this.id = account.getId();
 		this.accountNum = account.getAccountNum();

@@ -1,4 +1,4 @@
-<%@page import="dto.CardHistoryDto"%>
+<%@page import="dto.CardHistoryResponseDto"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -32,7 +32,6 @@
     <!-- bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>    
-	
 	<style>
 		label {
 		display:none;
@@ -40,11 +39,16 @@
 	</style>
 	
 	<link href="resources/css/lookup.css" rel="stylesheet">
-	
+	<script type="text/javascript">
+		window.history.forward(); 
+			function noBack(){
+			window.history.forward();
+		} 
+	</script>
 	<title>사이드 바</title>
 </head>
 
-<body id="page-top">
+<body id="page-top" onload="noBack();" onpageshow="if(event.persisted) noBack();" onunload="">
 
     <!-- Page Wrapper -->
     <div id="wrapper" >
@@ -69,24 +73,18 @@
             <li class="nav-item active">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="bi bi-table" ></i>
-                    <span>조회</span>
+<i class="bi bi-person-circle"></i>
+                    <span>고객</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">- 고객 정보 조회</h6>
-                        <a class="collapse-item" >신상 정보 조회</a>
-                        <a class="collapse-item" >보유한 카드 내역 조회</a>
-                        <a class="collapse-item" >계좌 정보 조회</a>
-                         <h6 class="collapse-header">- 카드 상품 조회</h6>
-                        <a class="collapse-item" >카드 상품 조회</a>
-                        <h6 class="collapse-header">- 카드 사용 내역 조회</h6>
-                        <form class="collapse-item" id="cardForm" method="GET" action="CardServlet" style="display: none;">
-							 <input type="hidden" name="action" value="list" />
-						</form>	
-						<a class="collapse-item" href="#" onclick="document.getElementById('cardForm').submit(); return false;">카드 사용 내역</a>
-                        <a class="collapse-item" >카드 월별 명세서</a>
-                        <a class="collapse-item" >할부 내역</a>
+                        <form method="GET" id="showUserList" action="UserServlet">
+							<input type="hidden" name="action" value="userList" />
+						</form>
+                        <a class="collapse-item" href="#" onclick="document.getElementById('showUserList').submit(); return false;">신상 정보 조회/수정</a>
+                        
+                       
                     </div>
                 </div>
             </li>
@@ -95,16 +93,35 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="bi bi-pencil-square"></i>
-                    <span>수정</span>
+<i class="bi bi-credit-card-fill"></i>                    <span>카드</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">- 정보 수정</h6>
-                        <a class="collapse-item">고객 정보 수정</a>
-                        <a class="collapse-item">카드 정보 수정</a>
-                        <a class="collapse-item" >카드 정지</a>
+                        <h6 class="collapse-header">- 수정</h6>
+                        <form class="collapse-item" id="productCrudForm" method="GET" action="product" style="display: none;">
+							 <input type="hidden" name="action" value="productCrud" />
+						</form>	
+                        <a class="collapse-item" href="#" onclick="document.getElementById('productCrudForm').submit(); return false;">카드 정보 수정</a>
+                        
+                        
+                        
+                        <h6 class="collapse-header">- 조회</h6>
+                         <form method="GET" id="cardIssueHistory" action="CardServlet">
+							<input type="hidden" name="action" value="cardIssueHistoryList" />
+						</form>
+                        <a class="collapse-item" href="#" onclick="document.getElementById('cardIssueHistory').submit(); return false;">카드 발급 내역 조회</a>
+                        <form class="collapse-item" id="productForm" method="GET" action="product" style="display: none;">
+							 <input type="hidden" name="action" value="productList" />
+						</form>	
+                        <a class="collapse-item" href="#" onclick="document.getElementById('productForm').submit(); return false;">카드 상품 조회</a>
+                        
+                        <form class="collapse-item" id="cardForm" method="GET" action="CardServlet" style="display: none;">
+							 <input type="hidden" name="action" value="list" />
+						</form>	
+						<a class="collapse-item" href="#" onclick="document.getElementById('cardForm').submit(); return false;">카드 사용 내역 조회</a>
+                        <a class="collapse-item" >카드 월별 명세서 조회</a>
+                        <a class="collapse-item" >할부 내역 조회</a>
                     </div>
                 </div>
             </li>
@@ -117,16 +134,22 @@
 
             <!-- Main Content -->
             <div id="content">
-
+                        
                 <!-- Topbar 로그아웃 버튼 -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
                     <div class="ml-auto">
-                    <a class="nav-link" href="" >
+                    <form method="POST" id="logout" action="UserServlet">
+						<input type="hidden" name="action" value="logout" />
+					</form>
+                    <a class="nav-link" href="#" onclick="document.getElementById('logout').submit(); return false;">
                     <i class="bi bi-box-arrow-left" style="font-size: 15px; text-align:center; "></i>
                     <span>로그아웃</span></a>
                     </div>
                 </nav>
                 <!-- End of Topbar -->
+                
+               
+                
         
 
     <!-- Bootstrap core JavaScript-->

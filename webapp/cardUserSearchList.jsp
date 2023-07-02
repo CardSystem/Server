@@ -1,4 +1,4 @@
-<%@page import="dto.CardHistoryDto"%>
+<%@page import="dto.CardHistoryResponseDto"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -56,8 +56,8 @@ $(document).ready(function() {
                         </tr>
                     </thead>
         			<tbody>
-			        <% ArrayList<CardHistoryDto> list = (ArrayList<CardHistoryDto>) request.getAttribute("searchId");
-			        for (CardHistoryDto data : list) { %>
+			        <% ArrayList<CardHistoryResponseDto> list = (ArrayList<CardHistoryResponseDto>) request.getAttribute("searchId");
+			        for (CardHistoryResponseDto data : list) { %>
 			            <tr>
 			            	<td><%= data.getId() %></td>
 			                <td><%= data.getCardId() %></td>

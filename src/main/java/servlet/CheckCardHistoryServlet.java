@@ -31,7 +31,7 @@ public class CheckCardHistoryServlet extends HttpServlet {
 	public static CardHistoryDao dao = new CardHistoryDao();
 
 	public CheckCardHistoryServlet() {
-		// 기본 생성자
+		// 湲곕낯 �깮�꽦�옄
 		this.redisson=new RedissonExam();
 	}
 //
@@ -48,6 +48,7 @@ public class CheckCardHistoryServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		System.out.println("서블릿 접근");
+		System.out.println(request.getParameter("card_id"));
 		Long cardId = Long.parseLong(request.getParameter("card_id"));
 		String userId = request.getParameter("user_id");
 		Long payment = Long.parseLong(request.getParameter("payment"));
@@ -61,20 +62,16 @@ public class CheckCardHistoryServlet extends HttpServlet {
 	            String message = responseDto.getStatusMsg();
 
 	            System.out.println(message);
-	            // JSP로 직접 메시지와 입력값을 넘김
-	            request.setAttribute("message", message);
-	            request.setAttribute("cardId", cardId);
-	            request.setAttribute("userId", userId);
-	            request.setAttribute("payment", payment);
-	            request.setAttribute("franchisee", franchisee);
-	            request.setAttribute("fCategory", fCategory);
 
-	            // CheckCard.jsp로 다시 이동
-	            RequestDispatcher dispatcher = request.getRequestDispatcher("/CheckCard.jsp");
+							request.setAttribute("data", responseDto);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/CheckCardResponse.jsp");
+				dispatcher.forward(request, response);
+				System.out.println(responseDto.getCardType());
+
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 }
