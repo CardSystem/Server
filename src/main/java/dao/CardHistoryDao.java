@@ -13,10 +13,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import db.DBUtil;
 import domain.Account;
 import domain.Card;
+import domain.CardHistory;
 import dto.AccountDto;
 import dto.CheckCardDaoToServiceDto;
 import dto.CheckCardHistoryDto;
-import dto.CardHistoryDto;
+import dto.CardHistoryResponseDto;
 
 import exception.BusinessException;
 import exception.ErrorCode;
@@ -24,11 +25,12 @@ import exception.ErrorCode;
 public class CardHistoryDao {
 	static DBUtil dbUtil = DBUtil.getInstance();
 	
-	public static ArrayList<CardHistoryDto> showPayCardList() throws SQLException {
+	public ArrayList<CardHistoryResponseDto> showPayCardList() throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        ArrayList<CardHistoryDto> cardPayList = new ArrayList<>();
+        ArrayList<CardHistoryResponseDto> cardPayList = new ArrayList<>();
+        CardHistory cardHistory = new CardHistory();
         
         try {
             conn = dbUtil.getConnection();
@@ -36,20 +38,20 @@ public class CardHistoryDao {
 
             rs = pstmt.executeQuery();
             while (rs.next()) {
-            	CardHistoryDto data = new CardHistoryDto();
-            	data.setId(rs.getLong("id"));
-            	data.setCardId(rs.getLong("card_id"));
-				data.setUserId(rs.getString("user_id"));
-				data.setFranchisee(rs.getString("franchisee"));
-				data.setPayment(rs.getInt("payment"));
-				data.setBalance(rs.getInt("balance"));
-				data.setDate(rs.getString("date"));
-				data.setFCategory(rs.getInt("f_category"));
-				data.setIsIns(rs.getInt("is_ins")); 
-				data.setInsMonth(rs.getInt("ins_month"));
-				data.setCardType(rs.getString("card_type"));
-               
-                cardPayList.add(data);
+            	cardHistory = CardHistory.builder()
+            			.id(rs.getLong("id"))
+                        .cardId(rs.getLong("card_id"))
+                        .userId(rs.getString("user_id"))
+                        .franchisee(rs.getString("franchisee"))
+                        .payment(rs.getInt("payment"))
+                        .balance(rs.getInt("balance"))
+                        .date(rs.getString("date"))
+                        .fCategory(rs.getInt("f_category"))
+                        .isIns(rs.getInt("is_ins"))
+                        .insMonth(rs.getInt("ins_month"))
+                        .cardType(rs.getString("card_type"))
+                        .build();
+                cardPayList.add(CardHistoryResponseDto.of(cardHistory));
             }
         } catch(Exception e) {
             e.printStackTrace();
@@ -60,12 +62,13 @@ public class CardHistoryDao {
     }
 	
 	
-	public static ArrayList<CardHistoryDto> showSearchUidCardList(String keyword) throws SQLException {
+	public ArrayList<CardHistoryResponseDto> showSearchUidCardList(String keyword) throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         
-        ArrayList<CardHistoryDto> searchUidCardPayList = new ArrayList<>();
+        ArrayList<CardHistoryResponseDto> searchUidCardPayList = new ArrayList<>();
+        CardHistory cardHistory = new CardHistory();
         
         try {
             conn = dbUtil.getConnection();
@@ -73,21 +76,22 @@ public class CardHistoryDao {
             pstmt.setString(1, keyword);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-            	CardHistoryDto data = new CardHistoryDto();
-            	data.setId(rs.getLong("id"));
+            	
+            	cardHistory = CardHistory.builder()
+            			.id(rs.getLong("id"))
+                        .cardId(rs.getLong("card_id"))
+                        .userId(rs.getString("user_id"))
+                        .franchisee(rs.getString("franchisee"))
+                        .payment(rs.getInt("payment"))
+                        .balance(rs.getInt("balance"))
+                        .date(rs.getString("date"))
+                        .fCategory(rs.getInt("f_category"))
+                        .isIns(rs.getInt("is_ins"))
+                        .insMonth(rs.getInt("ins_month"))
+                        .cardType(rs.getString("card_type"))
+                        .build();
+                searchUidCardPayList.add(CardHistoryResponseDto.of(cardHistory));
 
-            	data.setCardId(rs.getLong("card_id"));
-				data.setUserId(rs.getString("user_id"));
-				data.setFranchisee(rs.getString("franchisee"));
-				data.setPayment(rs.getInt("payment"));
-				data.setBalance(rs.getInt("balance"));
-				data.setDate(rs.getString("date"));
-				data.setFCategory(rs.getInt("f_category"));
-				data.setIsIns(rs.getInt("is_ins")); 
-				data.setInsMonth(rs.getInt("ins_month"));
-				data.setCardType(rs.getString("card_type"));
-               
-                searchUidCardPayList.add(data);
             }
         } catch(Exception e) {
             e.printStackTrace();
@@ -97,13 +101,13 @@ public class CardHistoryDao {
         return searchUidCardPayList;
     }
 	
-		public static ArrayList<CardHistoryDto> showSearchUserCardList(String userId, long keyword) throws SQLException {
+		public ArrayList<CardHistoryResponseDto> showSearchUserCardList(String userId, long keyword) throws SQLException {
 	        Connection conn = null;
 	        PreparedStatement pstmt = null;
 	        ResultSet rs = null;
 	        
-	        ArrayList<CardHistoryDto> searchUserCardPayList = new ArrayList<>();
-	        
+	        ArrayList<CardHistoryResponseDto> searchUserCardPayList = new ArrayList<>();
+	        CardHistory cardHistory = new CardHistory();
 	        try {
 	            conn = dbUtil.getConnection();
 	            pstmt = conn.prepareStatement("select id, card_id, user_id, franchisee, payment, balance ,date, f_category, is_ins,ins_month,card_type from card_history where user_id = ? and card_id = ? order by date desc;");
@@ -111,20 +115,34 @@ public class CardHistoryDao {
 	            pstmt.setLong(2, keyword);
 	            rs = pstmt.executeQuery();
 	            while (rs.next()) {
-	            	CardHistoryDto data = new CardHistoryDto();
-	            	data.setId(rs.getLong("id"));
-	            	data.setCardId(rs.getLong("card_id"));
-					data.setUserId(rs.getString("user_id"));
-					data.setFranchisee(rs.getString("franchisee"));
-					data.setPayment(rs.getInt("payment"));
-					data.setBalance(rs.getInt("balance"));
-					data.setDate(rs.getString("date"));
-					data.setFCategory(rs.getInt("f_category"));
-					data.setIsIns(rs.getInt("is_ins")); 
-					data.setInsMonth(rs.getInt("ins_month"));
-					data.setCardType(rs.getString("card_type"));
-					
-					searchUserCardPayList.add(data);
+	            	cardHistory = CardHistory.builder()
+	            			.id(rs.getLong("id"))
+	                        .cardId(rs.getLong("card_id"))
+	                        .userId(rs.getString("user_id"))
+	                        .franchisee(rs.getString("franchisee"))
+	                        .payment(rs.getInt("payment"))
+	                        .balance(rs.getInt("balance"))
+	                        .date(rs.getString("date"))
+	                        .fCategory(rs.getInt("f_category"))
+	                        .isIns(rs.getInt("is_ins"))
+	                        .insMonth(rs.getInt("ins_month"))
+	                        .cardType(rs.getString("card_type"))
+	                        .build();
+//	            	CardHistoryResponseDto data = new CardHistoryResponseDto();
+//	            	data.setId(rs.getLong("id"));
+//	            	data.setCardId(rs.getLong("card_id"));
+//					data.setUserId(rs.getString("user_id"));
+//					data.setFranchisee(rs.getString("franchisee"));
+//					data.setPayment(rs.getInt("payment"));
+//					data.setBalance(rs.getInt("balance"));
+//					data.setDate(rs.getString("date"));
+//					data.setFCategory(rs.getInt("f_category"));
+//					data.setIsIns(rs.getInt("is_ins")); 
+//					data.setInsMonth(rs.getInt("ins_month"));
+//					data.setCardType(rs.getString("card_type"));
+////					
+					searchUserCardPayList.add(CardHistoryResponseDto.of(cardHistory));
+//					searchUserCardPayList.add(data);
 	            }
 	        } catch(Exception e) {
 	            e.printStackTrace();
@@ -135,35 +153,36 @@ public class CardHistoryDao {
 	    }
 		
 		
-	public static ArrayList<CardHistoryDto> showSearchCardList(long keyword) throws SQLException {
+	public ArrayList<CardHistoryResponseDto> showSearchCardList(long keyword) throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         
         long searchKeyword = keyword;
         
-        ArrayList<CardHistoryDto> searchCardPayList = new ArrayList<>();
-        
+        ArrayList<CardHistoryResponseDto> searchCardPayList = new ArrayList<>();
+        CardHistory cardHistory = new CardHistory();
         try {
             conn = dbUtil.getConnection();
             pstmt = conn.prepareStatement("select id, card_id, user_id, franchisee, payment, balance ,date, f_category, is_ins,ins_month,card_type from card_history where card_id = "+ searchKeyword +" order by date desc;");
 
             rs = pstmt.executeQuery();
             while (rs.next()) {
-            	CardHistoryDto data = new CardHistoryDto();
-            	data.setId(rs.getLong("id"));
-            	data.setCardId(rs.getLong("card_id"));
-				data.setUserId(rs.getString("user_id"));
-				data.setFranchisee(rs.getString("franchisee"));
-				data.setPayment(rs.getInt("payment"));
-				data.setBalance(rs.getInt("balance"));
-				data.setDate(rs.getString("date"));
-				data.setFCategory(rs.getInt("f_category"));
-				data.setIsIns(rs.getInt("is_ins")); 
-				data.setInsMonth(rs.getInt("ins_month"));
-				data.setCardType(rs.getString("card_type"));
-               
-                searchCardPayList.add(data);
+            	cardHistory = CardHistory.builder()
+            			.id(rs.getLong("id"))
+                        .cardId(rs.getLong("card_id"))
+                        .userId(rs.getString("user_id"))
+                        .franchisee(rs.getString("franchisee"))
+                        .payment(rs.getInt("payment"))
+                        .balance(rs.getInt("balance"))
+                        .date(rs.getString("date"))
+                        .fCategory(rs.getInt("f_category"))
+                        .isIns(rs.getInt("is_ins"))
+                        .insMonth(rs.getInt("ins_month"))
+                        .cardType(rs.getString("card_type"))
+                        .build();
+            	
+                searchCardPayList.add(CardHistoryResponseDto.of(cardHistory));
             }
         } catch(Exception e) {
             e.printStackTrace();
@@ -174,12 +193,12 @@ public class CardHistoryDao {
     }
 	
 
-		public static ArrayList<CardHistoryDto> showMonthlyCardList(String option) throws SQLException {
+		public ArrayList<CardHistoryResponseDto> showMonthlyCardList(String option) throws SQLException {
 	        Connection conn = null;
 	        PreparedStatement pstmt = null;
 	        ResultSet rs = null;
-	        ArrayList<CardHistoryDto> monthlyCardPayList = new ArrayList<>();
-	        
+	        ArrayList<CardHistoryResponseDto> monthlyCardPayList = new ArrayList<>();
+	        CardHistory cardHistory = new CardHistory();
 	        if (!option.isEmpty()) { 
 		        int searchPeriod = -(Integer.parseInt(option));
 		        
@@ -189,20 +208,21 @@ public class CardHistoryDao {
 	
 		            rs = pstmt.executeQuery();
 		            while (rs.next()) {
-		            	CardHistoryDto data = new CardHistoryDto();
-		            	data.setId(rs.getLong("id"));
-		            	data.setCardId(rs.getLong("card_id"));
-						data.setUserId(rs.getString("user_id"));
-						data.setFranchisee(rs.getString("franchisee"));
-						data.setPayment(rs.getInt("payment"));
-						data.setBalance(rs.getInt("balance"));
-						data.setDate(rs.getString("date"));
-						data.setFCategory(rs.getInt("f_category"));
-						data.setIsIns(rs.getInt("is_ins")); 
-						data.setInsMonth(rs.getInt("ins_month"));
-						data.setCardType(rs.getString("card_type"));
-		               
-						monthlyCardPayList.add(data);
+		            	cardHistory = CardHistory.builder()
+		            			.id(rs.getLong("id"))
+		                        .cardId(rs.getLong("card_id"))
+		                        .userId(rs.getString("user_id"))
+		                        .franchisee(rs.getString("franchisee"))
+		                        .payment(rs.getInt("payment"))
+		                        .balance(rs.getInt("balance"))
+		                        .date(rs.getString("date"))
+		                        .fCategory(rs.getInt("f_category"))
+		                        .isIns(rs.getInt("is_ins"))
+		                        .insMonth(rs.getInt("ins_month"))
+		                        .cardType(rs.getString("card_type"))
+		                        .build();
+						monthlyCardPayList.add(CardHistoryResponseDto.of(cardHistory));
+
 		            }
 		        } catch(Exception e) {
 		            e.printStackTrace();

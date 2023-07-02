@@ -1,1 +1,5 @@
-/db/
+/domain/
+/dao/
+/dto/
+/servlet/
+/service/

@@ -12,8 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import dto.CardHistoryDto;
+import dto.CardHistoryResponseDto;
 import dto.CardResponseDto;
+import service.CardHistoryService;
 import service.CardService;
 import dao.CardHistoryDao;
 import dao.UserDao;
@@ -26,16 +27,25 @@ public class CardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private String userId = null;
 	private final CardService cardService;
-
+	private final CardHistoryService cardHistoryService;
+	
 	public CardServlet() {
 		UserDao userDao = new UserDao();
 		AccountDao accountDao = new AccountDao();
 		CardDao cardDao = new CardDao();
+		CardHistoryDao cardHistoryDao = new CardHistoryDao();
 		this.cardService = new CardService(userDao, accountDao, cardDao);
+		this.cardHistoryService = new CardHistoryService(cardHistoryDao);
 	}
 
 	public CardServlet(CardService cardService) {
 		this.cardService = cardService;
+		this.cardHistoryService = null;
+	}
+	
+	public CardServlet(CardHistoryService cardHistoryService) {
+		this.cardService = null;
+		this.cardHistoryService = cardHistoryService;
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -102,14 +112,14 @@ public class CardServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");// ïúÍ∏ Íπ®Ïßê Î∞©Ï
+		request.setCharacterEncoding("utf-8");// ÔøΩÔøΩÔøΩ Íπ®Ïßê Î∞©ÔøΩ
 		doGet(request, response);
 	}
 
 	private String doList(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.setAttribute("list", CardHistoryDao.showPayCardList());
-		} catch (SQLException e) {
+			request.setAttribute("list", cardHistoryService.showPayCardList());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "cardList.jsp";
@@ -119,7 +129,7 @@ public class CardServlet extends HttpServlet {
 		try {
 			List<CardResponseDto> cardList = cardService.showCardList();
 			request.setAttribute("cardIssueHistoryList", cardList);
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "CardIssueHistory.jsp";
@@ -127,7 +137,7 @@ public class CardServlet extends HttpServlet {
 
 	private String doIdSearchList(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			ArrayList<CardHistoryDto> userList = CardHistoryDao.showSearchUidCardList(userId);
+			ArrayList<CardHistoryResponseDto> userList = cardHistoryService.showSearchUidCardList(userId);
 			if (userList != null && !userList.isEmpty()) {
 				request.setAttribute("searchId", userList);
 			}
@@ -139,7 +149,7 @@ public class CardServlet extends HttpServlet {
 
 	private String doSearchUserCardList(HttpServletRequest request, HttpServletResponse response, long keyword) {
 		try {
-			ArrayList<CardHistoryDto> userCardList = CardHistoryDao.showSearchUserCardList(userId, keyword);
+			ArrayList<CardHistoryResponseDto> userCardList = cardHistoryService.showSearchUserCardList(userId, keyword);
 			if (userCardList != null && !userCardList.isEmpty()) {
 				request.setAttribute("searchUserCardId", userCardList);
 			}
@@ -152,8 +162,8 @@ public class CardServlet extends HttpServlet {
 
 	private String doCardIdSearchList(HttpServletRequest request, HttpServletResponse response, long keyword) {
 		try {
-			request.setAttribute("searchCardId", CardHistoryDao.showSearchCardList(keyword));
-		} catch (SQLException e) {
+			request.setAttribute("searchCardId", cardHistoryService.showSearchCardList(keyword));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "cardSearchList.jsp";
@@ -161,8 +171,8 @@ public class CardServlet extends HttpServlet {
 
 	private String doPeriodSearchList(HttpServletRequest request, HttpServletResponse response, String option) {
 		try {
-			request.setAttribute("searchPeriod", CardHistoryDao.showMonthlyCardList(option));
-		} catch (SQLException e) {
+			request.setAttribute("searchPeriod", cardHistoryService.showMonthlyCardList(option));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -177,7 +187,7 @@ public class CardServlet extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		// ∫Ø∞Ê »ƒ ¥ŸΩ√ ∏Ò∑œ¿∏∑Œ µπæ∆∞• ºˆ ¿÷µµ∑œ Redirect URL¿ª º≥¡§
+		// ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩ ÔøΩŸΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩ∆∞ÔøΩ ÔøΩÔøΩ ÔøΩ÷µÔøΩÔøΩÔøΩ Redirect URLÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ
 		String redirectUrl = request.getContextPath() + "/CardServlet?action=cardIssueHistoryList";
 		return redirectUrl;
 	}
@@ -190,7 +200,7 @@ public class CardServlet extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		// ∫Ø∞Ê »ƒ ¥ŸΩ√ ∏Ò∑œ¿∏∑Œ µπæ∆∞• ºˆ ¿÷µµ∑œ Redirect URL¿ª º≥¡§
+		// ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩ ÔøΩŸΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩ∆∞ÔøΩ ÔøΩÔøΩ ÔøΩ÷µÔøΩÔøΩÔøΩ Redirect URLÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ
 		String redirectUrl = request.getContextPath() + "/CardServlet?action=cardIssueHistoryList";
 		return redirectUrl;
 	}
