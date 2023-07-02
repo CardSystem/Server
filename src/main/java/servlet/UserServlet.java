@@ -35,6 +35,10 @@ public class UserServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	    response.setHeader("Pragma", "no-cache");
+	    response.setHeader("Expires", "0");
+		
 		String order = request.getParameter("action");
 		String url;
 		switch (order) {
@@ -45,6 +49,9 @@ public class UserServlet extends HttpServlet {
 				dispatcher.forward(request, response);
 			}
 			break;
+		case "logout":
+		    doLogout(request, response);
+		    break;
 		case "userList":
 			url = doList(request, response);
 			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
@@ -79,6 +86,18 @@ public class UserServlet extends HttpServlet {
 		return null;
 	}
 
+	private void doLogout(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+	    try {
+	        userService.logout(request, response);
+	    } catch (BusinessException e) {
+	        e.printStackTrace();
+	    }
+	    if (!response.isCommitted()) {
+	        String contextPath = request.getContextPath();
+	        response.sendRedirect(contextPath + "/Login.jsp");
+	    }
+	}
+	
 	private String doList(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			List<UserResponseDto> userList = userService.showUserList();
