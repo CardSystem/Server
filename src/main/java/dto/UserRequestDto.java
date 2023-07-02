@@ -19,7 +19,6 @@ public class UserRequestDto {
 	private Integer delayBlock;
 	private String gender;
 	
-	// dto -> µµ¸ŞÀÎ
 	public User toEntity() {
 		return User.builder()
 				.id(id)

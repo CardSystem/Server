@@ -28,12 +28,12 @@ public class AccountService {
         String pattern = "^[1-9]\\d*$";
 
         if (balance.isEmpty()) {
-            throw new BusinessException(ErrorCode.NO_AMOUNT, "±İ¾×À» ÀÔ·ÂÇØÁÖ¼¼¿ä");
+            throw new BusinessException(ErrorCode.NO_AMOUNT, "ê¸ˆì•¡ì„ ì…ë ¥í•´ì£¼ì„¸ìš”");
         } else if (Pattern.matches(pattern, String.valueOf(balance))) {
         	long balanceToLong = Long.parseLong(balance);
             dao.depositAccount(accountNum, balanceToLong);
         } else {
-            throw new BusinessException(ErrorCode.WRONG_AMOUNT, "Àß¸øµÈ Çü½ÄÀÔ´Ï´Ù");
+            throw new BusinessException(ErrorCode.WRONG_AMOUNT, "ì˜ëª»ëœ ìˆ«ì í˜•ì‹ì…ë‹ˆë‹¤.");
         }
     }
 }

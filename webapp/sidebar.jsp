@@ -73,8 +73,8 @@
             <li class="nav-item active">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="bi bi-table" ></i>
-                    <span>조회</span>
+<i class="bi bi-person-circle"></i>
+                    <span>고객</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
@@ -82,27 +82,9 @@
                         <form method="GET" id="showUserList" action="UserServlet">
 							<input type="hidden" name="action" value="userList" />
 						</form>
-                        <a class="collapse-item" href="#" onclick="document.getElementById('showUserList').submit(); return false;">신상 정보 조회</a>
+                        <a class="collapse-item" href="#" onclick="document.getElementById('showUserList').submit(); return false;">신상 정보 조회/수정</a>
                         
-                        <form method="GET" id="cardIssueHistory" action="CardServlet">
-							<input type="hidden" name="action" value="cardIssueHistoryList" />
-						</form>
-                        <a class="collapse-item" href="#" onclick="document.getElementById('cardIssueHistory').submit(); return false;">카드 발급 내역 조회</a>
-                        
-                        <a class="collapse-item" >계좌 정보 조회</a>
-                        <h6 class="collapse-header">- 카드 상품 조회</h6>
-                        <form class="collapse-item" id="productForm" method="GET" action="product" style="display: none;">
-							 <input type="hidden" name="action" value="productList" />
-						</form>	
-                        <a class="collapse-item" href="#" onclick="document.getElementById('productForm').submit(); return false;">카드 상품 조회하기</a>
-                        
-                        <h6 class="collapse-header">- 카드 사용 내역 조회</h6>
-                        <form class="collapse-item" id="cardForm" method="GET" action="CardServlet" style="display: none;">
-							 <input type="hidden" name="action" value="list" />
-						</form>	
-						<a class="collapse-item" href="#" onclick="document.getElementById('cardForm').submit(); return false;">카드 사용 내역</a>
-                        <a class="collapse-item" >카드 월별 명세서</a>
-                        <a class="collapse-item" >할부 내역</a>
+                       
                     </div>
                 </div>
             </li>
@@ -111,19 +93,35 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="bi bi-pencil-square"></i>
-                    <span>수정</span>
+<i class="bi bi-credit-card-fill"></i>                    <span>카드</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">- 정보 수정</h6>
-                        <a class="collapse-item">고객 정보 수정</a>
+                        <h6 class="collapse-header">- 수정</h6>
                         <form class="collapse-item" id="productCrudForm" method="GET" action="product" style="display: none;">
 							 <input type="hidden" name="action" value="productCrud" />
 						</form>	
                         <a class="collapse-item" href="#" onclick="document.getElementById('productCrudForm').submit(); return false;">카드 정보 수정</a>
-                        <a class="collapse-item" >카드 정지</a>
+                        
+                        
+                        
+                        <h6 class="collapse-header">- 조회</h6>
+                         <form method="GET" id="cardIssueHistory" action="CardServlet">
+							<input type="hidden" name="action" value="cardIssueHistoryList" />
+						</form>
+                        <a class="collapse-item" href="#" onclick="document.getElementById('cardIssueHistory').submit(); return false;">카드 발급 내역 조회</a>
+                        <form class="collapse-item" id="productForm" method="GET" action="product" style="display: none;">
+							 <input type="hidden" name="action" value="productList" />
+						</form>	
+                        <a class="collapse-item" href="#" onclick="document.getElementById('productForm').submit(); return false;">카드 상품 조회</a>
+                        
+                        <form class="collapse-item" id="cardForm" method="GET" action="CardServlet" style="display: none;">
+							 <input type="hidden" name="action" value="list" />
+						</form>	
+						<a class="collapse-item" href="#" onclick="document.getElementById('cardForm').submit(); return false;">카드 사용 내역 조회</a>
+                        <a class="collapse-item" >카드 월별 명세서 조회</a>
+                        <a class="collapse-item" >할부 내역 조회</a>
                     </div>
                 </div>
             </li>
@@ -149,6 +147,9 @@
                     </div>
                 </nav>
                 <!-- End of Topbar -->
+                
+               
+                
         
 
     <!-- Bootstrap core JavaScript-->

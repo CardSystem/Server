@@ -180,32 +180,32 @@ public class CardServlet extends HttpServlet {
 	}
 
 
-	private String blockCard(HttpServletRequest request, HttpServletResponse response) {
-		long id = Long.parseLong(request.getParameter("id"));
-		Integer isStop = Integer.parseInt(request.getParameter("is_stopped"));
-		try {
-			cardService.block(isStop, id);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		// ���� �� �ٽ� ������� ���ư� �� �ֵ��� Redirect URL�� ����
-		String redirectUrl = request.getContextPath() + "/CardServlet?action=cardIssueHistoryList";
-		return redirectUrl;
-	}
-
-	private String cancelCard(HttpServletRequest request, HttpServletResponse response) {
-		long id = Long.parseLong(request.getParameter("id"));
-		Integer isStop = Integer.parseInt(request.getParameter("is_stopped"));
-		try {
-			cardService.cancel(isStop, id);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		// ���� �� �ٽ� ������� ���ư� �� �ֵ��� Redirect URL�� ����
-		String redirectUrl = request.getContextPath() + "/CardServlet?action=cardIssueHistoryList";
-		return redirectUrl;
-	
-	}
+//	private String blockCard(HttpServletRequest request, HttpServletResponse response) {
+//		long id = Long.parseLong(request.getParameter("id"));
+//		Integer isStop = Integer.parseInt(request.getParameter("is_stopped"));
+//		try {
+//			cardService.block(isStop, id);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		// ���� �� �ٽ� ������� ���ư� �� �ֵ��� Redirect URL�� ����
+//		String redirectUrl = request.getContextPath() + "/CardServlet?action=cardIssueHistoryList";
+//		return redirectUrl;
+//	}
+//
+//	private String cancelCard(HttpServletRequest request, HttpServletResponse response) {
+//		long id = Long.parseLong(request.getParameter("id"));
+//		Integer isStop = Integer.parseInt(request.getParameter("is_stopped"));
+//		try {
+//			cardService.cancel(isStop, id);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		// ���� �� �ٽ� ������� ���ư� �� �ֵ��� Redirect URL�� ����
+//		String redirectUrl = request.getContextPath() + "/CardServlet?action=cardIssueHistoryList";
+//		return redirectUrl;
+//	
+//	}
 }
 //	private String blockCard(HttpServletRequest request, HttpServletResponse response) {
 //		long id = Long.parseLong(request.getParameter("id"));

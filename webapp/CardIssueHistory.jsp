@@ -23,7 +23,7 @@
            <!-- 카드 사용 내역 datatable -->
              <div class="card shadow mb-4">
                  <div class="card-header py-3">
-                     <h4 class="m-0 font-weight-bold text-primary">카드 사용 내역</h4>
+                     <h4 class="m-0 font-weight-bold text-primary">카드 발급 내역 조회</h4>
                  </div>
              <div class="card-body">
 	<div class="table-responsive">

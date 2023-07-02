@@ -19,33 +19,33 @@
     var input = document.getElementById("inputField");
     
     if (selectOption === "custom") {
-    	input.value = null;
-    	inputField.style.display = "block";
+       input.value = null;
+       inputField.style.display = "block";
       
     } else {
       inputField.style.display = "none";
       if(selectOption !== "title"){
-    	input.value = selectOption;
-      	document.forms["periodOption"].submit();
+       input.value = selectOption;
+         document.forms["periodOption"].submit();
       }
      
     }
   }
   
   function changeInputField() {
-	    var keywordInput = document.getElementById("keywordInput");
-	    var selectElement = document.getElementById("searchForm").elements["searchType"];
-	    var selectedValue = selectElement.options[selectElement.selectedIndex].value;
+       var keywordInput = document.getElementById("keywordInput");
+       var selectElement = document.getElementById("searchForm").elements["searchType"];
+       var selectedValue = selectElement.options[selectElement.selectedIndex].value;
 
-	    if (selectedValue === "customerId") {
-	        keywordInput.placeholder = "고객 ID를 입력하세요.";
-	    	document.getElementById("searchForm").elements["action"].value = "searchId";
-	    } else if (selectedValue === "cardId") {
-	    	keywordInput.placeholder = "카드 ID를 입력하세요.";
-	      	document.getElementById("searchForm").elements["action"].value = "searchCardId";
-	    } else {
-	    	keywordInput.placeholder = "고객ID or 카드ID을 선택하세요.";
-	    }
+       if (selectedValue === "customerId") {
+           keywordInput.placeholder = "고객 ID를 입력하세요.";
+          document.getElementById("searchForm").elements["action"].value = "searchId";
+       } else if (selectedValue === "cardId") {
+          keywordInput.placeholder = "카드 ID를 입력하세요.";
+            document.getElementById("searchForm").elements["action"].value = "searchCardId";
+       } else {
+          keywordInput.placeholder = "고객ID or 카드ID을 선택하세요.";
+       }
   }
 </script>
 
@@ -72,39 +72,39 @@ $(document).ready(function() {
                      <h4 class="m-0 font-weight-bold text-primary">카드 사용 내역</h4>
                  </div>
              <div class="card-body">
-			<div id="inputContainer">
-			<form id="searchForm" method="GET" action="CardServlet">
-			  <select name="searchType" onchange="changeInputField()">
-			  	<option value="title">검색 조건</option>
-			    <option value="customerId">고객 ID</option>
-			    <option value="cardId">카드 ID</option>
-			  </select>
-			  <input id="keywordInput" type="text" name="keyword" placeholder="고객ID or 카드ID을 선택하세요.">
-			  <input type="hidden" name="action">
-			  <input class="btn btn-primary btn-sm" type="submit" value="검색">
-			</form>
-			
-			<form name="periodOption" method="GET" action="CardServlet">
-			  <div class ="selectBox">
-			 	  <div id="customPeriodInput" style="display: none;">
-					  <input type="text" id="inputField" name="keyword" placeholder="기간을 입력하세요.(개월단위)">
-					  <input type="hidden" name="action" value="searchPeriod" />
-					  <input class="btn btn-primary btn-sm" type="submit" value="조회하기">
-				  </div> 
-				  <select name="list" id="mySelect" onchange="handleInput()">
-				  	<option value="title">월별 조회하기</option>
-				    <option value="custom">직접입력</option>
-					<option value="1">1개월</option>
-					<option value="3">3개월</option>
-				  </select>
-			  </div>
-			</form>
-			</div>
-			<div class="table-responsive">
+         <div id="inputContainer">
+         <form id="searchForm" method="GET" action="CardServlet">
+           <select name="searchType" onchange="changeInputField()">
+              <option value="title">검색 조건</option>
+             <option value="customerId">고객 ID</option>
+             <option value="cardId">카드 ID</option>
+           </select>
+           <input id="keywordInput" type="text" name="keyword" placeholder="고객ID or 카드ID을 선택하세요.">
+           <input type="hidden" name="action">
+           <input class="btn btn-primary btn-sm" type="submit" value="검색">
+         </form>
+         
+         <form name="periodOption" method="GET" action="CardServlet">
+           <div class ="selectBox">
+               <div id="customPeriodInput" style="display: none;">
+                 <input type="text" id="inputField" name="keyword" placeholder="기간을 입력하세요.(개월단위)">
+                 <input type="hidden" name="action" value="searchPeriod" />
+                 <input class="btn btn-primary btn-sm" type="submit" value="조회하기">
+              </div> 
+              <select name="list" id="mySelect" onchange="handleInput()">
+                 <option value="title">월별 조회하기</option>
+                <option value="custom">직접입력</option>
+               <option value="1">1개월</option>
+               <option value="3">3개월</option>
+              </select>
+           </div>
+         </form>
+         </div>
+         <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                        	<th>결제 순번</th>
+                           <th>결제 순번</th>
                             <th>카드ID</th>
                             <th>사용자ID</th>
                             <th>가맹점명</th>
@@ -117,28 +117,28 @@ $(document).ready(function() {
                             <th>신용/체크</th>
                         </tr>
                     </thead>
-        			<tbody>
-			        <% ArrayList<CardHistoryResponseDto> list = (ArrayList<CardHistoryResponseDto>) request.getAttribute("list");
-			        for (CardHistoryResponseDto data : list) { %>
-			            <tr>
-			            	<td><%= data.getId() %></td>
-			                <td><%= data.getCardId() %></td>
-			                <td><%= data.getUserId() %></td>
-			                <td><%= data.getFranchisee() %></td>
-			                <td><%= data.getPayment() %></td>
-			                <td><%= data.getBalance() %></td>
-			                <td><%= data.getDate() %></td>
-			                <td><%= data.getFCategory() %></td>
-			                <td><%= data.getIsIns() %></td>
-			                <td><%= data.getInsMonth() %></td>
-			                <td><%= data.getCardType() %></td>
-			            </tr>
-			        <% } %>
+                 <tbody>
+                 <% ArrayList<CardHistoryResponseDto> list = (ArrayList<CardHistoryResponseDto>) request.getAttribute("list");
+                 for (CardHistoryResponseDto data : list) { %>
+                     <tr>
+                        <td><%= data.getId() %></td>
+                         <td><%= data.getCardId() %></td>
+                         <td><%= data.getUserId() %></td>
+                         <td><%= data.getFranchisee() %></td>
+                         <td><%= data.getPayment() %></td>
+                         <td><%= data.getBalance() %></td>
+                         <td><%= data.getDate() %></td>
+                         <td><%=data.getFCategory() %></td>
+                         <td><%=data.getIsIns() %></td>
+                         <td><%=data.getInsMonth() %></td>
+                         <td><%=data.getCardType() %></td>
+                     </tr>
+                 <%} %>
                          </tbody>
                        </table>
                        </div>
                 </div>
-     		</div>
+           </div>
 
    <!-- Footer -->
    <footer class="sticky-footer bg-white">

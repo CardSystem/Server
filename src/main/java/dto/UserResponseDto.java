@@ -17,7 +17,6 @@ public class UserResponseDto {
 	private Integer delayBlock;
 	private String gender;
 
-	//µµ¸ÞÀÎ -> dto
 	public static UserResponseDto of(User user) {
 		return UserResponseDto.builder()
 				.id(user.getId())

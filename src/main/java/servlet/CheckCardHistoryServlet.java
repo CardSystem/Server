@@ -47,13 +47,14 @@ public class CheckCardHistoryServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		System.out.println("�꽌釉붾┸ �젒洹�");
+		System.out.println("서블릿 접근");
+		System.out.println(request.getParameter("card_id"));
 		Long cardId = Long.parseLong(request.getParameter("card_id"));
 		String userId = request.getParameter("user_id");
 		Long payment = Long.parseLong(request.getParameter("payment"));
 		String franchisee = request.getParameter("franchisee");
 		Long fCategory = Long.parseLong(request.getParameter("f_category"));
-		System.out.println("/card/check/post �꽌釉붾┸ 吏꾩엯");
+		System.out.println("/card/check/post 서블릿 진입");
 		LocalDateTime date = LocalDateTime.now();
 		CheckCardRequestDto dto = new CheckCardRequestDto(cardId, userId, franchisee, payment, fCategory, date);
 		try {
@@ -61,20 +62,16 @@ public class CheckCardHistoryServlet extends HttpServlet {
 	            String message = responseDto.getStatusMsg();
 
 	            System.out.println(message);
-	            // JSP濡� 吏곸젒 硫붿떆吏��� �엯�젰媛믪쓣 �꽆源�
-	            request.setAttribute("message", message);
-	            request.setAttribute("cardId", cardId);
-	            request.setAttribute("userId", userId);
-	            request.setAttribute("payment", payment);
-	            request.setAttribute("franchisee", franchisee);
-	            request.setAttribute("fCategory", fCategory);
 
-	            // CheckCard.jsp濡� �떎�떆 �씠�룞
-	            RequestDispatcher dispatcher = request.getRequestDispatcher("/CheckCard.jsp");
+							request.setAttribute("data", responseDto);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/CheckCardResponse.jsp");
+				dispatcher.forward(request, response);
+				System.out.println(responseDto.getCardType());
+
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 }

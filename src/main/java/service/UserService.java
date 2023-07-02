@@ -18,75 +18,74 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class UserService {
-	
-	private UserDao dao = UserDao.getInstance();
-	
-	public List<UserResponseDto> showUserList() throws SQLException{
-		List<UserResponseDto> list = dao.showUserList();
-		return list;
-	}
-	
-	public String checkLogin(HttpServletRequest request, HttpServletResponse response, String id, String birth)
-			throws ServletException, IOException, SQLException, BusinessException {
-		int loginResult = dao.login(id, birth);
-		if (loginResult == 1) {
-			if (id.contains("Admin")) {
-				request.getSession().setAttribute("adminId", id);
-				request.getSession().setAttribute("adminBirth", birth);
-				response.sendRedirect("sidebar.jsp");
-				return null; // ¸®´ÙÀÌ·ºÆ® ÈÄ¿¡´Â ¸Ş¼­µå ½ÇÇà ÁßÁö
-			} else {
-				// ·Î±×ÀÎ ¼º°ø ½Ã »ç¿ëÀÚ Á¤º¸¸¦ ¼¼¼Ç¿¡ ÀúÀå
-				request.getSession().setAttribute("userId", id);
-				request.getSession().setAttribute("userBirth", birth);
-				response.sendRedirect("user.jsp");
-				return null; // ¸®´ÙÀÌ·ºÆ® ÈÄ¿¡´Â ¸Ş¼­µå ½ÇÇà ÁßÁö
-			}
-		} else if (loginResult == 0) { // ºñ¹Ğ¹øÈ£ ºÒÀÏÄ¡
-			// ·Î±×ÀÎ ½ÇÆĞÇÑ °æ¿ì ¼¼¼Ç¿¡¼­ »ç¿ëÀÚ Á¤º¸¸¦ Á¦°Å
-			request.getSession().removeAttribute("userId");
-			request.getSession().removeAttribute("userBirth");
-			request.getSession().removeAttribute("adminId");
-			request.getSession().removeAttribute("adminBirth");
-			response.sendRedirect("Login.jsp");
-			throw new BusinessException(ErrorCode.WORNG_PASSWORD, "Àß¸øµÈ ºñ¹Ğ¹øÈ£ÀÔ´Ï´Ù.");
-//            return null; // ¸®´ÙÀÌ·ºÆ® ÈÄ¿¡´Â ¸Ş¼­µå ½ÇÇà ÁßÁö
-		} else if (loginResult == -1) {// »ç¿ëÀÚ°¡ ¾øÀ½
-			request.getSession().removeAttribute("userId");
-			request.getSession().removeAttribute("userBirth");
-			request.getSession().removeAttribute("adminId");
-			request.getSession().removeAttribute("adminBirth");
-			response.sendRedirect("Login.jsp");
-			throw new BusinessException(ErrorCode.UNABLE_USER, "Á¸ÀçÇÏÁö ¾ÊÀº °èÁ¤ÀÔ´Ï´Ù.");
-//          return null; // ¸®´ÙÀÌ·ºÆ® ÈÄ¿¡´Â ¸Ş¼­µå ½ÇÇà ÁßÁö
-		} else { // ¿¹¿Ü
-			request.getSession().removeAttribute("userId");
-			request.getSession().removeAttribute("userBirth");
-			request.getSession().removeAttribute("adminId");
-			request.getSession().removeAttribute("adminBirth");
-			response.sendRedirect("Login.jsp");
-			throw new BusinessException(ErrorCode.LOGIN_ERROR, "·Î±×ÀÎ ¿¡·¯");
-		}
-	}
+   
+   private UserDao dao = UserDao.getInstance();
+   
+   public List<UserResponseDto> showUserList() throws SQLException{
+      List<UserResponseDto> list = dao.showUserList();
+      return list;
+   }
+   
+   public String checkLogin(HttpServletRequest request, HttpServletResponse response, String id, String birth)
+         throws ServletException, IOException, SQLException, BusinessException {
+      int loginResult = dao.login(id, birth);
+      if (loginResult == 1) {
+         if (id.contains("Admin")) {
+            request.getSession().setAttribute("adminId", id);
+            request.getSession().setAttribute("adminBirth", birth);
+            return "userList";
+         } else {
+            // ë¡œê·¸ì¸ ì„±ê³µ ì‹œ ì‚¬ìš©ì ì •ë³´ë¥¼ ì„¸ì…˜ì— ì €ì¥
+            request.getSession().setAttribute("userId", id);
+            request.getSession().setAttribute("userBirth", birth);
+            response.sendRedirect("user.jsp");
+            return null; // ë¦¬ë‹¤ì´ë ‰íŠ¸ í›„ì—ëŠ” ë©”ì„œë“œ ì‹¤í–‰ ì¤‘ì§€
+         }
+      } else if (loginResult == 0) { // ë¹„ë°€ë²ˆí˜¸ ë¶ˆì¼ì¹˜
+         // ë¡œê·¸ì¸ ì‹¤íŒ¨í•œ ê²½ìš° ì„¸ì…˜ì—ì„œ ì‚¬ìš©ì ì •ë³´ë¥¼ ì œê±°
+         request.getSession().removeAttribute("userId");
+         request.getSession().removeAttribute("userBirth");
+         request.getSession().removeAttribute("adminId");
+         request.getSession().removeAttribute("adminBirth");
+         response.sendRedirect("Login.jsp");
+         throw new BusinessException(ErrorCode.WORNG_PASSWORD, "ì˜ëª»ëœ ë¹„ë°€ë²ˆí˜¸ì…ë‹ˆë‹¤.");
+//            return null; // ë¦¬ë‹¤ì´ë ‰íŠ¸ í›„ì—ëŠ” ë©”ì„œë“œ ì‹¤í–‰ ì¤‘ì§€
+      } else if (loginResult == -1) {// ì‚¬ìš©ìê°€ ì—†ìŒ
+         request.getSession().removeAttribute("userId");
+         request.getSession().removeAttribute("userBirth");
+         request.getSession().removeAttribute("adminId");
+         request.getSession().removeAttribute("adminBirth");
+         response.sendRedirect("Login.jsp");
+         throw new BusinessException(ErrorCode.UNABLE_USER, "ì¡´ì¬í•˜ì§€ ì•Šì€ ê³„ì •ì…ë‹ˆë‹¤.");
+//          return null; // ë¦¬ë‹¤ì´ë ‰íŠ¸ í›„ì—ëŠ” ë©”ì„œë“œ ì‹¤í–‰ ì¤‘ì§€
+      } else { // ì˜ˆì™¸
+         request.getSession().removeAttribute("userId");
+         request.getSession().removeAttribute("userBirth");
+         request.getSession().removeAttribute("adminId");
+         request.getSession().removeAttribute("adminBirth");
+         response.sendRedirect("Login.jsp");
+         throw new BusinessException(ErrorCode.LOGIN_ERROR, "ë¡œê·¸ì¸ ì—ëŸ¬");
+      }
+   }
 
-	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException{
-		request.getSession().invalidate();
-		response.sendRedirect("Login.jsp");
-	}
-	
-	public void block(int isStop, String id) throws SQLException {
-		if(isStop == 0) {
-			isStop = 1;
-		}
-		
+   public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException{
+      request.getSession().invalidate();
+      response.sendRedirect("Login.jsp");
+   }
+   
+   public void block(int isStop, String id) throws SQLException {
+      if(isStop == 0) {
+         isStop = 1;
+      }
+      
         dao.changeIsBlock(isStop, id);
-	}
-	
-	public void cancel(int isStop, String id) throws SQLException {
-		if(isStop == 1) {
-			isStop = 0;
-		}
-		
+   }
+   
+   public void cancel(int isStop, String id) throws SQLException {
+      if(isStop == 1) {
+         isStop = 0;
+      }
+      
         dao.changeIsCancel(isStop, id);
-	}
+   }
 }
