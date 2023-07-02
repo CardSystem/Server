@@ -19,6 +19,38 @@ public class AccountDao {
     public static AccountDao getInstance() {
     	return dao;
     }
+    
+    public AccountDto selectAccountByUserId(String userId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        
+        Account account = null;
+        
+        try {
+            conn = dbUtil.getConnection();
+            pstmt = conn.prepareStatement("SELECT * FROM account WHERE user_id = ?");
+            pstmt.setString(1, userId);
+            rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                account = Account.builder()
+                		.id(rs.getLong("id"))
+                		.userId(rs.getString("user_id"))
+                		.accountNum(rs.getString("account_num"))
+                		.balance(rs.getLong("balance"))
+                		.bankName(rs.getString("bank_name"))
+                		.isStopped(rs.getInt("is_stopped"))
+                		.build();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            dbUtil.close(rs, pstmt, conn);
+        }
+        return new AccountDto(account);
+    }
+    
 	public AccountDto selectAccountByCardId(Long cardId) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -64,6 +96,23 @@ public class AccountDao {
 		}
 		return dto;
 	}
+	
+	public void updateAccountByAccountId(Long accountId, Long balance) throws SQLException {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = dbUtil.getConnection();
+            pstmt = conn.prepareStatement("UPDATE account SET balance = ? WHERE account_id = ?");
+            pstmt.setLong(1, balance);
+            pstmt.setLong(2, accountId);
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            dbUtil.close(pstmt, conn);
+        }
+    }
+	
 
 	public void updateBalance(Long accountId, Long money) throws SQLException {
 		Connection conn = null;
@@ -99,6 +148,8 @@ public class AccountDao {
 			}
 		}
 	}
+	
+	
 	
 	public List<AccountResponseDto> selectAccount(String userId) {
         Connection conn = null;

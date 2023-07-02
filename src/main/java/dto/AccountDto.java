@@ -16,18 +16,15 @@ import lombok.Setter;
 public class AccountDto {
 
 	private Long id;
+	private String userId;
 	private String accountNum;
 	private Long balance;
 	private String bankName;
 	private Integer isStopped;
 
-	public void makeBalance(Long payment) {
-		this.balance += payment;
-	}
-	
-	
 	public AccountDto(Account account) {
 		this.id = account.getId();
+		this.userId = account.getUserId();
 		this.accountNum = account.getAccountNum();
 		this.balance = account.getBalance();
 		this.bankName = account.getBankName();

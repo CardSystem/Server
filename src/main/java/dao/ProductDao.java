@@ -27,6 +27,39 @@ public class ProductDao {
 		return dao;
 	}
 
+	
+	public static ProductDto selectProductByProductId(Long productId) throws SQLException {
+		Product product=null;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = dbUtil.getConnection();
+			pstmt = conn.prepareStatement("select * from product where id=?");
+			pstmt.setLong(1,productId);
+			rs = pstmt.executeQuery();//select실행
+			
+			while(rs.next()) {
+				product = Product.builder()
+						.id(rs.getLong("id"))
+						.cardName(rs.getString("card_name"))
+						.cardType(rs.getString("card_type"))
+						.cardLimit(rs.getLong("card_limit"))
+						.categoryId(rs.getLong("category_id"))
+						.build();
+			
+			}
+		}finally {
+			dbUtil.close(rs, pstmt, conn);
+		}
+		
+		return new ProductDto(product);
+	}
+	
+	
+	
 
 	public Long selectOneProduct(final Long idx) throws SQLException{
 		Long result = null;
