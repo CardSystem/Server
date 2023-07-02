@@ -78,8 +78,12 @@
                         <a class="collapse-item" >신상 정보 조회</a>
                         <a class="collapse-item" >보유한 카드 내역 조회</a>
                         <a class="collapse-item" >계좌 정보 조회</a>
-                         <h6 class="collapse-header">- 카드 상품 조회</h6>
-                        <a class="collapse-item" >카드 상품 조회</a>
+                        <h6 class="collapse-header">- 카드 상품 조회</h6>
+                        <form class="collapse-item" id="productForm" method="GET" action="product" style="display: none;">
+							 <input type="hidden" name="action" value="productList" />
+						</form>	
+                        <a class="collapse-item" href="#" onclick="document.getElementById('productForm').submit(); return false;">카드 상품 조회하기</a>
+                        
                         <h6 class="collapse-header">- 카드 사용 내역 조회</h6>
                         <form class="collapse-item" id="cardForm" method="GET" action="CardServlet" style="display: none;">
 							 <input type="hidden" name="action" value="list" />
@@ -103,7 +107,10 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">- 정보 수정</h6>
                         <a class="collapse-item">고객 정보 수정</a>
-                        <a class="collapse-item">카드 정보 수정</a>
+                        <form class="collapse-item" id="productCrudForm" method="GET" action="product" style="display: none;">
+							 <input type="hidden" name="action" value="productCrud" />
+						</form>	
+                        <a class="collapse-item" href="#" onclick="document.getElementById('productCrudForm').submit(); return false;">카드 정보 수정</a>
                         <a class="collapse-item" >카드 정지</a>
                     </div>
                 </div>
