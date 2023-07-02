@@ -36,15 +36,16 @@
 								<div class="card-front">
 									<div class="center-wrap">
 										<div class="section-text-center">
+										<form method="POST" action="card/check">
 											<div class="form-group">
 												<i style="color: white;"> 카드ID </i> <input type="number"
-													name="cardid" class="form-style"
+													name="card_id" class="form-style"
 													placeholder="카드ID를 입력해주세요." id="cardid" autocomplete="off">
 											</div>
 											<br />
 											<div class="form-group">
 												<i style="color: white;"> 유저ID </i> <input type="text"
-													name="userid" class="form-style"
+													name="user_id" class="form-style"
 													placeholder="유저ID를 입력해주세요." id="cardid" autocomplete="off">
 											</div>
 											<br />
@@ -56,7 +57,7 @@
 												</div>
 												<div class="col-6">
 													<i style="color: white;"> 제휴카테고리 </i> <input type="number"
-														name="fcategory" class="form-style" id="fcategory"
+														name="f_category" class="form-style" id="fcategory"
 														autocomplete="off">
 												</div>
 											</div>
@@ -64,7 +65,7 @@
 											<div class="row">
 												<div class="col-6">
 													<i style="color: white;"> 가격 </i> <input type="number"
-														name="cost" class="form-style" id="cost"
+														name="payment" class="form-style" id="cost"
 														autocomplete="off">
 												</div>
 												<div class="col-6">
@@ -73,8 +74,10 @@
 														autocomplete="off">
 												</div>
 											</div>
+											
 											<br />
 											<input type="submit" class="btn mt-4" value="결제하기">
+											</form>
 										</div>
 									</div>
 								</div>

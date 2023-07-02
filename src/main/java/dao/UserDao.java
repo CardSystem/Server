@@ -33,19 +33,19 @@ public class UserDao {
 			if (rs.next()) {
 				String dbUserBirth = rs.getString("user_birth");
 				if (dbUserBirth.equals(userBirth)) {
-					return 1; // ·Î±×ÀÎ ¼º°ø
+					return 1; // ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 				} else {
-					return 0; // ºñ¹Ð¹øÈ£ ºÒÀÏÄ¡
+					return 0; // ï¿½ï¿½Ð¹ï¿½È£ ï¿½ï¿½ï¿½ï¿½Ä¡
 				}
 			} else {
-				return -1; // »ç¿ëÀÚ°¡ Á¸ÀçÇÏÁö ¾ÊÀ½
+				return -1; // ï¿½ï¿½ï¿½ï¿½Ú°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			dbUtil.close(rs, pstmt, conn);
 		}
-		return -2; // ¿¹¿Ü ¹ß»ý
+		return -2; // ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½
 	}
 
 	public List<UserResponseDto> showUserList() throws SQLException {
@@ -91,15 +91,15 @@ public class UserDao {
 		try {
 			conn = dbUtil.getConnection();
 
-			// Ã¹ ¹øÂ° pstmt ½ÇÇà
+			// Ã¹ ï¿½ï¿½Â° pstmt ï¿½ï¿½ï¿½ï¿½
 			pstmt1 = conn.prepareStatement("update user set admin_block=? where id=?");
 			pstmt1.setInt(1, isBlocked);
 			pstmt1.setString(2, id);
 			pstmt1.executeUpdate();
 
-			// µÎ ¹øÂ° pstmt ½ÇÇà
+			// ï¿½ï¿½ ï¿½ï¿½Â° pstmt ï¿½ï¿½ï¿½ï¿½
 			pstmt2 = conn.prepareStatement(
-					"UPDATE ACCOUNT A , CARD B SET B.IS_STOPPED = B.IS_STOPPED + 1 WHERE A.USER_ID = ? AND B.ACCOUNT_ID = A.ID");
+					"update account A , card B set B.is_stopped = B.is_stopped + 1 WHERE A.user_id = ? and B.account_id = A.id");
 			pstmt2.setString(1, id);
 			pstmt2.executeUpdate();
 
@@ -119,15 +119,15 @@ public class UserDao {
 		try {
 			conn = dbUtil.getConnection();
 
-			// Ã¹ ¹øÂ° pstmt ½ÇÇà
+			// Ã¹ ï¿½ï¿½Â° pstmt ï¿½ï¿½ï¿½ï¿½
 			pstmt1 = conn.prepareStatement("update user set admin_block=? where id=?");
 			pstmt1.setInt(1, isBlocked);
 			pstmt1.setString(2, id);
 			pstmt1.executeUpdate();
 
-			// µÎ ¹øÂ° pstmt ½ÇÇà
+			// ï¿½ï¿½ ï¿½ï¿½Â° pstmt ï¿½ï¿½ï¿½ï¿½
 			pstmt2 = conn.prepareStatement(
-					"UPDATE ACCOUNT A , CARD B SET B.IS_STOPPED = B.IS_STOPPED - 1 WHERE A.USER_ID = ? AND B.ACCOUNT_ID = A.ID");
+					"update account A , card B set B.is_stopped = B.is_stopped - 1 WHERE A.user_id = ? and B.account_id = A.id");
 			pstmt2.setString(1, id);
 			pstmt2.executeUpdate();
 
