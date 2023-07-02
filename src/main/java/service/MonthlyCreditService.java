@@ -43,8 +43,7 @@ public class MonthlyCreditService {
 		ArrayList<CreditCardHistoryDto> creditCardHistoryList = null;
 		ArrayList<InstallmentDto> installmentList = null;
 		
-		CreditCardHistoryDto creditCardHistoryDto = null;
-		InstallmentDto installmentDto = null;
+
 		CreditCardDaoToServiceDto creditCardDaoToServiceDto = null;
 		MonthlyCreditCreateDto monthlyCreditCreateDto = null;
 		MonthlyCreditUpdateDto monthlyCreditUpdateDto = null;
@@ -53,20 +52,22 @@ public class MonthlyCreditService {
 		LocalDate date = LocalDateTime.now().toLocalDate();
 		String month = date.getMonth().toString();
 		
+		System.out.println("월 명세서 작성 함수 입장!!");
 		try {
 			// 정지되지 않은 신용카드 목록을 가져온다.
 			cardList = cardDao.selectAllNonStopedCreditCard();
 			
 			// 각 카드의 월별 명세서 생성하여 신용카드 월별명세서에 추가
 			for (int i=0; i<cardList.size(); i++) {
-				// 지불할 금액 초기화
-				Long realPay = 0L;
-				// 할인 총 금액
+				// 총 결제 금액 초기화
+				Long totalPay = 0L;
+				// 총 할인 금액
 				Long discount = 0L;
+				// 실제 납부할 금액
+				Long realPay = 0L;
 				// 해당 카드의 결제에 필요한 데이터를 가진 dto
 				creditCardDaoToServiceDto = cardDao.selectCreditCardByProductId(cardList.get(i).getProductId());
-				// 
-				
+
 				// 해당 카드의 할부를 진행하지 않은 카드 사용내역리스트 get
 				creditCardHistoryList = creditCardHistoryDao.selectAllNonInstallmentCrditCardHistoryByCardId(cardList.get(i).getId());
 				// 해당 카드의 할부를 진행하지 않은 카드 사용내역 항목마다 카드의 제휴와 같다면 할인적용, 아니면 전액을 총 금액에 더한다.
@@ -74,11 +75,11 @@ public class MonthlyCreditService {
 					Long money = creditCardHistoryList.get(j).getPayment();
 					// 결제한 가맹점과 카드의 제휴 카테고리가 일치하면
 					if (creditCardHistoryList.get(j).getFCategory() == creditCardDaoToServiceDto.getCategoryId()) {
-						// 해당 결제금액 - 할인금액
-						money = money - Math.round(money * (0.01 * creditCardDaoToServiceDto.getDiscount()));
+						// 총 할인금액 업데이트
+						discount = discount + Math.round(money * (0.01 * creditCardDaoToServiceDto.getDiscount()));
 					}
 					// 카드 월 사용금액에 결제금액 추가
-					realPay = realPay + money;
+					totalPay = totalPay + money;
 				}
 				// 해당 카드의 납부완료되지 않은 할부리스트 get
 				installmentList = installmentDao.selectAllNonIsInspayedInstallmentByCardId(cardList.get(i).getId());
@@ -96,12 +97,12 @@ public class MonthlyCreditService {
 						money = delayTotalMoney - ((insMonth - 1)*money);
 					}
 					// 월 지불금액에 할부액 추가
-					realPay = realPay + money;
+					totalPay = totalPay + money;
 				}
-				// 총 할인금액 계산
-				discount = cardList.get(i).getTotalPayment() - realPay;
+				// 실제 납부할 금액 계산
+				realPay = totalPay - discount;
 				// 신용카드 월별명세서 테이블에 데이터 추가
-				monthlyCreditCreateDto = new MonthlyCreditCreateDto(creditCardHistoryList.get(0).getUserId(), creditCardHistoryList.get(0).getCardId(), discount, cardList.get(i).getTotalPayment(), realPay, 0, 0, 0L, LocalDateTime.now().toLocalDate(), null, month+"월 명세서");
+				monthlyCreditCreateDto = new MonthlyCreditCreateDto(creditCardHistoryList.get(0).getUserId(), creditCardHistoryList.get(0).getCardId(), discount, totalPay, realPay, 0, 0, 0L, LocalDateTime.now().toLocalDate(), LocalDateTime.now().toLocalDate(), month+"월 명세서");
 				monthlyCreditDao.insertMonthlyCredit(monthlyCreditCreateDto);
 			}
 			

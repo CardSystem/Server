@@ -10,7 +10,7 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   <listener>
-    <listener-class>scheduler.CalculateScheduler</listener-class>
+    <listener-class>controller.listener.Scheduler</listener-class>
   </listener>
   
 </web-app>

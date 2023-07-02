@@ -27,7 +27,7 @@ public class MonthlyCreditDao {
         	//3. sql문 실행
 			conn = dbUtil.getConnection();
 			StringBuilder d = new StringBuilder();
-			d.append("insert into MonthlyCredit (user_id, card_id, discount, total, pay, is_payed, delay_days, delay_price, start_date, end_date, title) \n");
+			d.append("insert into monthly_credit (user_id, card_id, discount, total, pay, is_payed, delay_days, delay_price, start_date, end_date, title) \n");
 			d.append("values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			pstmt = conn.prepareStatement(d.toString());
 			pstmt.setString(1, monthlyCredit.getUserId());
@@ -208,7 +208,7 @@ public class MonthlyCreditDao {
 			
 			try {
 				conn = dbUtil.getConnection();
-				pstmt = conn.prepareStatement("select * from monthly_credit where delay_days > 0, is_payed=0;");
+				pstmt = conn.prepareStatement("select * from monthly_credit where delay_days > 0 and is_payed=0;");
 				rs = pstmt.executeQuery();//select실행
 
 				while(rs.next()) {

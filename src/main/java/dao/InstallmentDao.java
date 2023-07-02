@@ -82,7 +82,7 @@ public class InstallmentDao {
 		
 		try {
 			conn = dbUtil.getConnection();
-			pstmt = conn.prepareStatement("select * from installment where id=?, remain_month >0");
+			pstmt = conn.prepareStatement("select * from installment where id=? and remain_month >0");
 			pstmt.setLong(1, cardId);
 			rs = pstmt.executeQuery();//select실행
 			

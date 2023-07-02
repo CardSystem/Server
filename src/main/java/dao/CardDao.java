@@ -27,7 +27,7 @@ public class CardDao {
 		try {
 			conn = dbUtil.getConnection();
 			pstmt = conn.prepareStatement (
-					"select * from cards where id=?");
+					"select * from card where id=?");
 			pstmt.setLong(1, cardId);
 			
 			rs = pstmt.executeQuery();
@@ -72,7 +72,7 @@ public class CardDao {
 			ArrayList<CardDto> cardList = new ArrayList<>();
 			try {
 				conn = dbUtil.getConnection();
-				pstmt = conn.prepareStatement ("select * from card where is_stopped=0, card_type like '신용%' order by id");
+				pstmt = conn.prepareStatement ("select * from card where is_stopped=0 and card_type like '신용%' order by id");
 				rs = pstmt.executeQuery();
 				
 				
@@ -81,7 +81,7 @@ public class CardDao {
 					Card card = Card.builder()
 							.id(rs.getLong("id"))
 							.productId(rs.getLong("product_id"))
-							.accountId(rs.getLong("accpimt_id"))
+							.accountId(rs.getLong("account_id"))
 							.issuedDate(rs.getString("issued_date"))
 							.cardType(rs.getString("card_type"))
 							.validity(rs.getString("validity"))
@@ -259,7 +259,7 @@ public class CardDao {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}	
+		}
 		return cardList;
 	}
 }

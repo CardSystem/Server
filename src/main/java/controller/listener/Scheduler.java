@@ -1,4 +1,4 @@
-package scheduler;
+package controller.listener;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -9,7 +9,6 @@ import dao.CreditCardHistoryDao;
 import dao.InstallmentDao;
 import dao.MonthlyCreditDao;
 import dao.UserDao;
-import exception.BusinessException;
 import service.DelayPaymentService;
 import service.MonthlyCreditService;
 
@@ -18,14 +17,12 @@ import service.MonthlyCreditService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 
 // 방법1. 월 스케줄링을 열고 연체가 발생할때마다 일 스케줄링을 생성한다.
 // 방법2. 월 스케줄링과 일 스케줄링을 서버시작과 함께 시작하도록 한다.  (이 방법으로 선택)
 
 
-public class CalculateScheduler implements ServletContextListener {
+public class Scheduler implements ServletContextListener {
 	// volatile 형식으로 설정하여 main memory에 저장하고 읽어오도록함.
 	private volatile ScheduledExecutorService executor;
 	private volatile ScheduledExecutorService executor2;
@@ -36,18 +33,19 @@ public class CalculateScheduler implements ServletContextListener {
 		System.out.println("서버 켜지면 작동되는 메서드 입성!!!");
 		// 일정 시간 뒤 혹은 주기적으로 실행되어야 하는 작업을 위한 쓰레드 풀을 생성함
 		// ScheduledExecutorService 인터페이스를 구현한 ScheduledThreadPoolExecutor 객체가 생성됨
-		executor = Executors.newScheduledThreadPool(10);
+		executor = Executors.newScheduledThreadPool(3);
+		executor2 = Executors.newScheduledThreadPool(3);
 		// scheduleAtFixedRate(Runnable, Delay, Period, Timeunit)
 		// runnable에 있는 코드들을 delay 이후 처음 작업실행하고
 		// period(특정시간)마다 작업을 실행시킨다.
 		System.out.println("월 스케줄러 시작!!!");
 		// 1분마다 월 명세서 정산 실행
-		executor.scheduleAtFixedRate(run1, 0, 1, TimeUnit.MINUTES);
+		executor.scheduleAtFixedRate(run1, 0, 50, TimeUnit.MINUTES);
 		System.out.println("월 스케쥴러 실행 완료!!!");
 		
 		System.out.println("연체 일정산 시작!");
 		// 10초마다 연체 일정산 실행
-		executor2.scheduleAtFixedRate(run2, 0,10,TimeUnit.SECONDS);
+		executor2.scheduleAtFixedRate(run2, 10,1,TimeUnit.SECONDS);
 		System.out.println("연체 일정산 완료!");
 	}
 
@@ -80,39 +78,18 @@ public class CalculateScheduler implements ServletContextListener {
 		public MonthlyCreditService monthlyCreditService = new MonthlyCreditService(monthlyCreditDao, accountDao, userDao, cardDao, creditCardHistoryDao, installmentDao);
 		
 		@Override
-		public void run() throws RuntimeException {
+		public void run() {
+			System.out.println("월명세서 런함수 입장!! ");
 			
 			try {
+				System.out.println("월명세서 런함수 try 입장!! ");
 				monthlyCreditService.MonthlyCalculation();
+				System.out.println("월명세서 런함수 try 퇴장!! ");
 			} catch (Exception e) {
 				System.out.println("월정산 스케줄링에서 에러발생: " + e.getMessage());
 				e.printStackTrace();
-				//throw new RuntimeException("NPE를 RuntimeException으로 감싸서 던지기", e);
 			}
 			
-			
-			/*
-			if (test_num > 50) {
-				test_num -= 1;
-				System.out.println("run1의 run() 메서드 의 if문 입장");
-				System.out.println(test_num);
-			}
-			else if(test_num >=1) {
-				executor2 = Executors.newScheduledThreadPool(10);
-				executor2.scheduleAtFixedRate(run2, 0, 100, TimeUnit.MILLISECONDS);
-				System.out.println("run1의 run() 메서드 의 else if문 입장");
-				System.out.println(test_num);
-			}
-			else {
-				System.out.println("run1의 run() 메서드 의 else문 입장");
-				System.out.println(test_num);
-			}
-			
-			*/
-			
-			//LocalDateTime now = LocalDateTime.now();
-
-			//System.out.println("TimeStamp1 : " + new SimpleDateFormat("MM-dd-yyyy / hh:mm:ss").format(now));
 		}
 	};
 	
@@ -128,33 +105,16 @@ public class CalculateScheduler implements ServletContextListener {
 		public DelayPaymentService delayPaymentService = new DelayPaymentService(monthlyCreditDao, accountDao, userDao, cardDao, creditCardHistoryDao, installmentDao);
 		
 		@Override
-		public void run() throws RuntimeException {
+		public void run() {
 			
 			try {
+				System.out.println("연체 일명세서 런함수 try 입장!! ");
 				delayPaymentService.DelayCalculation();
+				System.out.println("연체 일명세서 런함수 try 입장!! ");
 			} catch (Exception e) {
 				System.out.println("연체 일정산 스케줄링에서 에러발생: " + e.getMessage());
 				e.printStackTrace();
-				//throw new RuntimeException("NPE를 RuntimeException으로 감싸서 던지기", e);
 			}
-			/*
-			if (test_num >= 1) {
-				test_num -= 1;
-				System.out.println("run2의 run() 메서드 의 if문 입장");
-				System.out.println(test_num);
-			}
-			else {
-				executor2.shutdown();
-				executor2 = null;
-				System.out.println("run2의 run() 메서드 의 else문 입장");
-			}
-			
-			*/
-			
-			
-			//LocalDateTime now = LocalDateTime.now();
-
-			//System.out.println("TimeStamp1 : " + new SimpleDateFormat("MM-dd-yyyy / hh:mm:ss").format(now));
 		}
 	};
 }
