@@ -72,7 +72,7 @@ public class CardDao {
 			ArrayList<CardDto> cardList = new ArrayList<>();
 			try {
 				conn = dbUtil.getConnection();
-				pstmt = conn.prepareStatement ("select * from cards where is_stoped=0, card_type like '신용%' order by id");
+				pstmt = conn.prepareStatement ("select * from card where is_stopped=0, card_type like '신용%' order by id");
 				rs = pstmt.executeQuery();
 				
 				
