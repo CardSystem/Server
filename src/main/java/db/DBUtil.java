@@ -112,15 +112,15 @@ import java.sql.SQLException;
 
 public class DBUtil {
 	private final String driverName = "com.mysql.cj.jdbc.Driver";
-	private final String url = "jdbc:mysql://localhost:3306/card_system?serverTimezone=UTC";//databaseÀÌ¸§ = testdb
-	private final String user = "root";//ÀÚ½ÅÀÇ workbench ¾ÆÀÌµð
-	private final String pass = "1234";//ÀÚ½ÅÀÇ workbench ºñ¹ø
+	private final String url = "jdbc:mysql://localhost:3306/card_system?serverTimezone=UTC";//databaseï¿½Ì¸ï¿½ = testdb
+	private final String user = "root";//ï¿½Ú½ï¿½ï¿½ï¿½ workbench ï¿½ï¿½ï¿½Ìµï¿½
+	private final String pass = "1248";//ï¿½Ú½ï¿½ï¿½ï¿½ workbench ï¿½ï¿½ï¿½
 	
 	private static DBUtil instance = new DBUtil();
 	
 	private DBUtil(){
 		try {
-			//1. DB Driver¸¦ ·Îµù
+			//1. DB Driverï¿½ï¿½ ï¿½Îµï¿½
 			Class.forName(driverName);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -132,11 +132,11 @@ public class DBUtil {
 	}
 	
 	public Connection getConnection() throws SQLException {
-		//2. DB(MySQL)¿¡ Á¢¼ÓÇÏ±â
+		//2. DB(MySQL)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
 		return DriverManager.getConnection(url, user, pass);
 	}
 	
-    //DBÀÛ¾÷ ÈÄ, ¿©·¯ Å¬·¡½º closeÇÒ ¶§ »ç¿ë
+    //DBï¿½Û¾ï¿½ ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ closeï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½
 	public void close(AutoCloseable... closeables) {
 		for(AutoCloseable c : closeables) {
 			if(c!=null) {
