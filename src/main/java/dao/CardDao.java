@@ -11,7 +11,7 @@ import db.DBUtil;
 import domain.Card;
 import domain.Product;
 import dto.CardResponseDto;
-import dto.CardHistoryDto;
+import dto.CardHistoryResponseDto;
 import dto.CardInsertDto;
 import dto.CheckCardDaoToServiceDto;
 import dto.ProductDto;
@@ -25,11 +25,11 @@ private static CardDao dao = new CardDao();
 	public static CardDao getInstance() {
 		return dao;
 	}
-	public static ArrayList<CardHistoryDto> showPayCardList() throws SQLException {
+	public static ArrayList<CardHistoryResponseDto> showPayCardList() throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        ArrayList<CardHistoryDto> cardPayList = new ArrayList<>();
+        ArrayList<CardHistoryResponseDto> cardPayList = new ArrayList<>();
         
         try {
             conn = dbUtil.getConnection();
@@ -37,7 +37,7 @@ private static CardDao dao = new CardDao();
 
             rs = pstmt.executeQuery();
             while (rs.next()) {
-            	CardHistoryDto data = new CardHistoryDto();
+            	CardHistoryResponseDto data = new CardHistoryResponseDto();
             	data.setCardId(rs.getLong("card_id"));
 				data.setUserId(rs.getString("user_id"));
 				data.setFranchisee(rs.getString("franchisee"));
@@ -59,11 +59,11 @@ private static CardDao dao = new CardDao();
         return cardPayList;
     }
 	
-	public static ArrayList<CardHistoryDto> showRecentPayCardList() throws SQLException {
+	public static ArrayList<CardHistoryResponseDto> showRecentPayCardList() throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        ArrayList<CardHistoryDto> recentCardPayList = new ArrayList<>();
+        ArrayList<CardHistoryResponseDto> recentCardPayList = new ArrayList<>();
         
         try {
             conn = dbUtil.getConnection();
@@ -71,7 +71,7 @@ private static CardDao dao = new CardDao();
 
             rs = pstmt.executeQuery();
             while (rs.next()) {
-            	CardHistoryDto data = new CardHistoryDto();
+            	CardHistoryResponseDto data = new CardHistoryResponseDto();
             	data.setCardId(rs.getLong("card_id"));
 				data.setUserId(rs.getString("user_id"));
 				data.setFranchisee(rs.getString("franchisee"));
@@ -93,12 +93,12 @@ private static CardDao dao = new CardDao();
         return recentCardPayList;
     }
 	
-	public static ArrayList<CardHistoryDto> showSearchUidCardList(String keyword) throws SQLException {
+	public static ArrayList<CardHistoryResponseDto> showSearchUidCardList(String keyword) throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         
-        ArrayList<CardHistoryDto> searchUidCardPayList = new ArrayList<>();
+        ArrayList<CardHistoryResponseDto> searchUidCardPayList = new ArrayList<>();
         
         try {
             conn = dbUtil.getConnection();
@@ -106,7 +106,7 @@ private static CardDao dao = new CardDao();
             pstmt.setString(1, keyword);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-            	CardHistoryDto data = new CardHistoryDto();
+            	CardHistoryResponseDto data = new CardHistoryResponseDto();
             	data.setCardId(rs.getLong("card_id"));
 				data.setUserId(rs.getString("user_id"));
 				data.setFranchisee(rs.getString("franchisee"));
@@ -129,12 +129,12 @@ private static CardDao dao = new CardDao();
     }
 	
 	//占쎈립 user揶쏉옙 占쎈꺖占쎌�占쎈립燁삳�諭� 野껉퀣�젫占쎄땀占쎈열鈺곌퀬�돳
-		public static ArrayList<CardHistoryDto> showSearchUserCardList(String userId, String keyword) throws SQLException {
+		public static ArrayList<CardHistoryResponseDto> showSearchUserCardList(String userId, String keyword) throws SQLException {
 	        Connection conn = null;
 	        PreparedStatement pstmt = null;
 	        ResultSet rs = null;
 	        
-	        ArrayList<CardHistoryDto> searchUserCardPayList = new ArrayList<>();
+	        ArrayList<CardHistoryResponseDto> searchUserCardPayList = new ArrayList<>();
 	        
 	        try {
 	            conn = dbUtil.getConnection();
@@ -143,7 +143,7 @@ private static CardDao dao = new CardDao();
 	            pstmt.setString(2, keyword);
 	            rs = pstmt.executeQuery();
 	            while (rs.next()) {
-	            	CardHistoryDto data = new CardHistoryDto();
+	            	CardHistoryResponseDto data = new CardHistoryResponseDto();
 	            	data.setCardId(rs.getLong("card_id"));
 					data.setUserId(rs.getString("user_id"));
 					data.setFranchisee(rs.getString("franchisee"));
@@ -167,14 +167,14 @@ private static CardDao dao = new CardDao();
 		
 		
 	//燁삳�諭띰옙湲쏙옙萸배퉪占� 野껉퀣�젫占쎄땀占쎈열鈺곌퀬�돳
-	public static ArrayList<CardHistoryDto> showSearchCardList(long keyword) throws SQLException {
+	public static ArrayList<CardHistoryResponseDto> showSearchCardList(long keyword) throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         
         long searchKeyword = keyword;
         
-        ArrayList<CardHistoryDto> searchCardPayList = new ArrayList<>();
+        ArrayList<CardHistoryResponseDto> searchCardPayList = new ArrayList<>();
         
         try {
             conn = dbUtil.getConnection();
@@ -182,7 +182,7 @@ private static CardDao dao = new CardDao();
 
             rs = pstmt.executeQuery();
             while (rs.next()) {
-            	CardHistoryDto data = new CardHistoryDto();
+            	CardHistoryResponseDto data = new CardHistoryResponseDto();
             	data.setCardId(rs.getLong("card_id"));
 				data.setUserId(rs.getString("user_id"));
 				data.setFranchisee(rs.getString("franchisee"));
@@ -207,14 +207,14 @@ private static CardDao dao = new CardDao();
 
 	
 	//占쎌뜞癰귨옙 野껉퀣�젫占쎄땀占쎈열鈺곌퀬�돳(1揶쏆뮇�뜞,3揶쏆뮇�뜞,筌욊낯�젔占쎌뿯占쎌젾)
-		public static ArrayList<CardHistoryDto> showMonthlyCardList(String option) throws SQLException {
+		public static ArrayList<CardHistoryResponseDto> showMonthlyCardList(String option) throws SQLException {
 	        Connection conn = null;
 	        PreparedStatement pstmt = null;
 	        ResultSet rs = null;
 	        
 	        int searchPeriod = -(Integer.parseInt(option));
 	        
-	        ArrayList<CardHistoryDto> monthlyCardPayList = new ArrayList<>();
+	        ArrayList<CardHistoryResponseDto> monthlyCardPayList = new ArrayList<>();
 	        
 	        try {
 	            conn = dbUtil.getConnection();
@@ -222,7 +222,7 @@ private static CardDao dao = new CardDao();
 
 	            rs = pstmt.executeQuery();
 	            while (rs.next()) {
-	            	CardHistoryDto data = new CardHistoryDto();
+	            	CardHistoryResponseDto data = new CardHistoryResponseDto();
 	            	data.setCardId(rs.getLong("card_id"));
 					data.setUserId(rs.getString("user_id"));
 					data.setFranchisee(rs.getString("franchisee"));

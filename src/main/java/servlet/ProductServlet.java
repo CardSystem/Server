@@ -33,28 +33,49 @@ public class ProductServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<ProductResponseDto> productList = productService.getProductList();
-
-		request.setAttribute("productList", productList);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("CardProductList.jsp");
-		dispatcher.forward(request, response);
+		String order = request.getParameter("action");
+		String url;
+		
+		if(order!= null) {
+			switch(order) {
+			case "productList":
+				url=doList(request,response);
+				RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+				dispatcher.forward(request, response);
+				break;
+			case "productCrud":
+				url=doCrud(request, response);
+				RequestDispatcher crudDispatcher = request.getRequestDispatcher(url);
+				crudDispatcher.forward(request, response);
+				break;
+			}
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		String order = request.getParameter("action");
-		
+		String url = doCrud(request,response);
 		if(order.equals("register")) {
 			doRegister(request,response);
-			doGet(request,response);
+			response.sendRedirect(url);
 		}else if (order.equals("update")) {
 			doUpdate(request, response);
-			doGet(request,response);
+			response.sendRedirect(url);
 		} else if (order.equals("delete")) {
 			doDeleteProduct(request, response);
-			doGet(request,response);
+			response.sendRedirect(url);
 		}
+	}
+	
+	public String doList(HttpServletRequest request, HttpServletResponse response) {
+		request.setAttribute("productList", productService.getProductList());
+		return "CardProductList.jsp";
+	}
+	
+	public String doCrud(HttpServletRequest request, HttpServletResponse response) {
+		return "CardProductCRUD.jsp";
 	}
 
 	public void doRegister(HttpServletRequest request, HttpServletResponse response) throws IOException {

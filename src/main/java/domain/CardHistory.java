@@ -1,11 +1,15 @@
-package dto;
+package domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
-public class CardHistoryDto{
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class CardHistory {
 	private long id;
 	private long cardId;
 	private String userId;
@@ -18,9 +22,4 @@ public class CardHistoryDto{
 	private int isIns;
 	private int insMonth;
 	private String cardType;
-	
-	public CardHistoryDto() {
-		
-	}
-
 }
