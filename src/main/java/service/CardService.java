@@ -21,47 +21,47 @@ public class CardService {
 		return list;
 	}
 	
-	public void block(int isStop, long id) throws SQLException {
-		long accountId = cardDao.getAccountIdByCardId(id);
-		String userId = accountDao.getUserIdByAccountId(accountId);
-		if(userDao.checkUserBlock(userId) == 1) {
-			if(isStop == 2) {
-				isStop = 2;
-			} else if(isStop == 1){
-				isStop = 1;
-			} else {
-				isStop = 0;
-			}
-		} else {
-			if(isStop == 2) {
-				isStop = 2;
-			} else if(isStop == 0){
-				isStop += 1;
-			}
-		}
-
-		cardDao.changeIsStopped(isStop, id);
-	}
-	
-	public void cancel(int isStop, long id) throws SQLException {
-		long accountId = cardDao.getAccountIdByCardId(id);
-		String userId = accountDao.getUserIdByAccountId(accountId);
-		if(userDao.checkUserBlock(userId) == 1) {
-			if(isStop == 2) {
-				isStop = 2;
-			} else if(isStop == 1){
-				isStop = 1;
-			} else {
-				isStop = 0;
-			}
-		} else {
-			if(isStop == 0) {
-				isStop = 0;
-			} else if(isStop == 1){
-				isStop -= 1;
-			}
-		}
-		
-		cardDao.changeIsStopped(isStop, id);
-	}
+//	public void block(int isStop, long id) throws SQLException {
+//		long accountId = cardDao.getAccountIdByCardId(id);
+//		String userId = accountDao.getUserIdByAccountId(accountId);
+//		if(userDao.checkUserBlock(userId) == 1) {
+//			if(isStop == 2) {
+//				isStop = 2;
+//			} else if(isStop == 1){
+//				isStop = 1;
+//			} else {
+//				isStop = 0;
+//			}
+//		} else {
+//			if(isStop == 2) {
+//				isStop = 2;
+//			} else if(isStop == 0){
+//				isStop += 1;
+//			}
+//		}
+//
+//		cardDao.changeIsStopped(isStop, id);
+//	}
+//	
+//	public void cancel(int isStop, long id) throws SQLException {
+//		long accountId = cardDao.getAccountIdByCardId(id);
+//		String userId = accountDao.getUserIdByAccountId(accountId);
+//		if(userDao.checkUserBlock(userId) == 1) {
+//			if(isStop == 2) {
+//				isStop = 2;
+//			} else if(isStop == 1){
+//				isStop = 1;
+//			} else {
+//				isStop = 0;
+//			}
+//		} else {
+//			if(isStop == 0) {
+//				isStop = 0;
+//			} else if(isStop == 1){
+//				isStop -= 1;
+//			}
+//		}
+//		
+//		cardDao.changeIsStopped(isStop, id);
+//	}
 }

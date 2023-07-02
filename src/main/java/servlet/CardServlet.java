@@ -98,14 +98,14 @@ public class CardServlet extends HttpServlet {
 				RequestDispatcher dispatcherSearchPeriod = request.getRequestDispatcher(url);
 				dispatcherSearchPeriod.forward(request, response);
 				break;
-			case "block":
-				url = blockCard(request, response);
-				response.sendRedirect(url);
-				break;
-			case "cancel":
-				url = cancelCard(request, response);
-				response.sendRedirect(url);
-				break;
+//			case "block":
+//				url = blockCard(request, response);
+//				response.sendRedirect(url);
+//				break;
+//			case "cancel":
+//				url = cancelCard(request, response);
+//				response.sendRedirect(url);
+//				break;
 			}
 		}
 	}
@@ -179,6 +179,7 @@ public class CardServlet extends HttpServlet {
 		return "monthlyPaymentList.jsp";
 	}
 
+
 	private String blockCard(HttpServletRequest request, HttpServletResponse response) {
 		long id = Long.parseLong(request.getParameter("id"));
 		Integer isStop = Integer.parseInt(request.getParameter("is_stopped"));
@@ -203,5 +204,31 @@ public class CardServlet extends HttpServlet {
 		// ���� �� �ٽ� ������� ���ư� �� �ֵ��� Redirect URL�� ����
 		String redirectUrl = request.getContextPath() + "/CardServlet?action=cardIssueHistoryList";
 		return redirectUrl;
+	
 	}
 }
+//	private String blockCard(HttpServletRequest request, HttpServletResponse response) {
+//		long id = Long.parseLong(request.getParameter("id"));
+//		Integer isStop = Integer.parseInt(request.getParameter("is_stopped"));
+//		try {
+//			cardService.block(isStop, id);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		// ���� �� �ٽ� ������� ���ư� �� �ֵ��� Redirect URL�� ����
+//		String redirectUrl = request.getContextPath() + "/CardServlet?action=cardIssueHistoryList";
+//		return redirectUrl;
+//	}
+//
+//	private String cancelCard(HttpServletRequest request, HttpServletResponse response) {
+//		long id = Long.parseLong(request.getParameter("id"));
+//		Integer isStop = Integer.parseInt(request.getParameter("is_stopped"));
+//		try {
+//			cardService.cancel(isStop, id);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		// ���� �� �ٽ� ������� ���ư� �� �ֵ��� Redirect URL�� ����
+//		String redirectUrl = request.getContextPath() + "/CardServlet?action=cardIssueHistoryList";
+//		return redirectUrl;
+//	}

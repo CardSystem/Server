@@ -14,18 +14,34 @@
 </style>
 </head>
 <body>
-	<table class="table">
+<%@ include file="sidebar.jsp" %>
+
+
+       <!-- Begin Page Content -->
+       <div class="container-fluid">
+           
+           <!-- 카드 사용 내역 datatable -->
+             <div class="card shadow mb-4">
+                 <div class="card-header py-3">
+                     <h4 class="m-0 font-weight-bold text-primary">카드 사용 내역</h4>
+                 </div>
+             <div class="card-body">
+	<div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 		<thead>
 			<tr>
-				<th width="5%">번호</th>
-				<th width="20%">카드번호</th>
-				<th width="15%">발급일</th>
-				<th width="10%">발급지점</th>
-				<th width="10%">발급자</th>
-				<th width="5%">체크/신용</th>
-				<th width="15%">유효기간</th>
-				<th width="5%">정지여부</th>
-				<th width="15%">총결제</th>
+				<th>번호</th>
+				<th>카드번호</th>
+				<th>발급일</th>
+				<th>발급지점</th>
+				<th>발급자</th>
+				<th>체크/신용</th>
+				<th>유효기간</th>
+				<th>정지여부</th>
+				<th>총결제</th>
+				<%--
+				<th>정지처리</th>
+				--%>
 			</tr>
 		</thead>
 		<tbody>
@@ -41,7 +57,10 @@
 				<td><%=data.getIssuer()%></td>
 				<td><%=data.getCardType()%></td>
 				<td><%=data.getValidity()%></td>
-				<td><%=data.getIsStopped()%>
+				<td><%=data.getIsStopped()%></td>
+				<td><%=data.getTotalPayment()%></td>
+				<%-- 
+				<td>
 					<form method="post" action="CardServlet">
 						<input type="hidden" name="action" value="block" />
 						<input type="hidden" name="id" value="<%=data.getId()%>" />
@@ -55,12 +74,26 @@
 						<input type="submit" value="해제" />
 					</form>
 				</td>
-				<td><%=data.getTotalPayment()%></td>
+				--%>
 			</tr>
 			<%
 			}
 			%>
 		</tbody>
 	</table>
+	</div>
+                </div>
+     		</div>
+
+   <!-- Footer -->
+   <footer class="sticky-footer bg-white">
+       <div class="container my-auto">
+           <div class="copyright text-center my-auto">
+               <span>digital Hana路 &copy; card Tracker </span>
+           </div>
+       </div>
+   </footer>
+   <!-- End of Footer -->
+</div>
 </body>
 </html>

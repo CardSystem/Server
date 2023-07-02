@@ -3,6 +3,7 @@ package service;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import javax.servlet.http.HttpSession;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,13 +33,13 @@ public class UserService {
 			if (id.contains("Admin")) {
 				request.getSession().setAttribute("adminId", id);
 				request.getSession().setAttribute("adminBirth", birth);
-				response.sendRedirect("SearchButton.jsp");
+				response.sendRedirect("sidebar.jsp");
 				return null; // 리다이렉트 후에는 메서드 실행 중지
 			} else {
 				// 로그인 성공 시 사용자 정보를 세션에 저장
 				request.getSession().setAttribute("userId", id);
 				request.getSession().setAttribute("userBirth", birth);
-				response.sendRedirect("ShowMyAccount.jsp");
+				response.sendRedirect("user.jsp");
 				return null; // 리다이렉트 후에는 메서드 실행 중지
 			}
 		} else if (loginResult == 0) { // 비밀번호 불일치
@@ -68,6 +69,11 @@ public class UserService {
 		}
 	}
 
+	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		request.getSession().invalidate();
+		response.sendRedirect("Login.jsp");
+	}
+	
 	public void block(int isStop, String id) throws SQLException {
 		if(isStop == 0) {
 			isStop = 1;

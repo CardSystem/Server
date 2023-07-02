@@ -459,22 +459,22 @@ private static CardDao dao = new CardDao();
 	        return cardList;
 	    }
 		
-		public void changeIsStopped(int isStopped, long id) throws SQLException {
-			Connection conn = null;
-			PreparedStatement pstmt = null;
-			try {
-				conn = dbUtil.getConnection();
-	            pstmt = conn.prepareStatement("update card set is_stopped=? where id=?");
-	            // 이부분 처리 애매함 -> boolean인지 int인지
-				pstmt.setInt(1, isStopped);
-				pstmt.setLong(2, id);
-				pstmt.executeUpdate();//insert실행
-			} catch(Exception e) {
-		         e.printStackTrace();
-		    } finally {
-				dbUtil.close(pstmt, conn);
-			}
-		}
+//		public void changeIsStopped(int isStopped, long id) throws SQLException {
+//			Connection conn = null;
+//			PreparedStatement pstmt = null;
+//			try {
+//				conn = dbUtil.getConnection();
+//	            pstmt = conn.prepareStatement("update card set is_stopped=? where id=?");
+//	            // 이부분 처리 애매함 -> boolean인지 int인지
+//				pstmt.setInt(1, isStopped);
+//				pstmt.setLong(2, id);
+//				pstmt.executeUpdate();//insert실행
+//			} catch(Exception e) {
+//		         e.printStackTrace();
+//		    } finally {
+//				dbUtil.close(pstmt, conn);
+//			}
+//		}
 
 		public long getAccountIdByCardId(long id) {
 			Connection conn = null;
