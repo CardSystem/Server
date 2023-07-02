@@ -1,7 +1,7 @@
 package dto;
 
 
-import domain.Cards;
+import domain.Card;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,10 +21,9 @@ public class CheckCardDaoToServiceDto {
 	private Long accountId;
 	private Long discount;
 	
-	public CheckCardDaoToServiceDto(Cards checkcard,Long accountId,Long discount)
+	public CheckCardDaoToServiceDto(Card checkcard,Long accountId,Long discount)
 	{
-		this.id=checkcard.getId();
-		this.cardId=checkcard.getCardId();
+		this.cardId=checkcard.getId();
 		this.cardType=checkcard.getCardType();
 		this.validity=checkcard.getValidity();
 		this.agency=checkcard.getAgency();

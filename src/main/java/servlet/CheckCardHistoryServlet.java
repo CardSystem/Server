@@ -10,9 +10,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.CheckCardHistoryDao;
+import org.redisson.api.RedissonClient;
+
+import dao.CardHistoryDao;
 import dto.CheckCardRequestDto;
 import dto.CheckCardResponseDto;
+import redis.RedissonExam;
 import service.CheckCardService;
 
 /**
@@ -22,16 +25,18 @@ import service.CheckCardService;
 @WebServlet("/card/check")
 public class CheckCardHistoryServlet extends HttpServlet {
 
-	private final CheckCardService checkCardService;
-	public static CheckCardHistoryDao dao = new CheckCardHistoryDao();
+//	private CheckCardService checkCardService = null;
+	private final RedissonExam redisson;
+
+	public static CardHistoryDao dao = new CardHistoryDao();
 
 	public CheckCardHistoryServlet() {
-		// 기본 생성자
-		this.checkCardService = new CheckCardService(dao);
+		// 湲곕낯 �깮�꽦�옄
+		this.redisson=new RedissonExam();
 	}
-
-	public CheckCardHistoryServlet(CheckCardService checkCardService) {
-		this.checkCardService = checkCardService;
+//
+	public CheckCardHistoryServlet(RedissonExam redisson) {
+		this.redisson=redisson;
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -42,22 +47,31 @@ public class CheckCardHistoryServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		System.out.println("서블릿 접근");
+		System.out.println("�꽌釉붾┸ �젒洹�");
 		Long cardId = Long.parseLong(request.getParameter("card_id"));
 		String userId = request.getParameter("user_id");
 		Long payment = Long.parseLong(request.getParameter("payment"));
 		String franchisee = request.getParameter("franchisee");
 		Long fCategory = Long.parseLong(request.getParameter("f_category"));
-		System.out.println("post 서블릿 진입");
+		System.out.println("/card/check/post �꽌釉붾┸ 吏꾩엯");
 		LocalDateTime date = LocalDateTime.now();
 		CheckCardRequestDto dto = new CheckCardRequestDto(cardId, userId, franchisee, payment, fCategory, date);
 		try {
-			CheckCardResponseDto responseDto = checkCardService.checkCardPayment(dto);
-			request.setAttribute("data", responseDto);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/CheckCardResponse.jsp");
-			dispatcher.forward(request, response);
+			  CheckCardResponseDto responseDto = RedissonExam.cardLock(dto);
+	            String message = responseDto.getStatusMsg();
+
+	            System.out.println(message);
+	            // JSP濡� 吏곸젒 硫붿떆吏��� �엯�젰媛믪쓣 �꽆源�
+	            request.setAttribute("message", message);
+	            request.setAttribute("cardId", cardId);
+	            request.setAttribute("userId", userId);
+	            request.setAttribute("payment", payment);
+	            request.setAttribute("franchisee", franchisee);
+	            request.setAttribute("fCategory", fCategory);
+
+	            // CheckCard.jsp濡� �떎�떆 �씠�룞
+	            RequestDispatcher dispatcher = request.getRequestDispatcher("/CheckCard.jsp");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

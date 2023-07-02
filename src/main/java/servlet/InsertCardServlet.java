@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.InsertCardDao;
+import dao.CardDao;
 import dto.CardRequestDto;
 import service.InsertCardService;
 
@@ -20,7 +20,7 @@ public class InsertCardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private final InsertCardService insertCardService;
-	public static InsertCardDao dao = new InsertCardDao();
+	public static CardDao dao = new CardDao();
 
 	public InsertCardServlet() {
 		// 기본 생성자

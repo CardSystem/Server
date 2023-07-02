@@ -6,15 +6,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
 
-import dao.InsertCardDao;
+import dao.CardDao;
 import dto.CardInsertDto;
 import dto.CardRequestDto;
 import exception.BusinessException;
+import exception.ErrorCode;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class InsertCardService {
-	public final InsertCardDao dao;
+	public final CardDao dao;
 
 	private static final int RANDOM_STRING_LENGTH = 16;
 
@@ -28,8 +29,17 @@ public class InsertCardService {
 
 		return new String(randomChars);
 	}
+	
+	
+	
 
-	public void insertCard(CardRequestDto dto) throws SQLException {
+	public void insertCard(CardRequestDto dto) throws Exception {
+		Long count=dao.countCardNum(dto.getAccountId());
+		if(count>=3)
+		{
+			throw new BusinessException(ErrorCode.TOO_MANY_CARDS, "한 계좌에 카드는 3개까지 등록할 수 있습니다.");
+		}
+			
 		Long cardId = dto.getCardId();
 		Long accountId = dto.getAccountId();
 		String agency = dto.getAgency();
@@ -42,10 +52,8 @@ public class InsertCardService {
 		calendar.setTime(new Date());
 		Date today = calendar.getTime();
 		String issuedDate = format.format(today);
-		// 5년을 더함
 		calendar.add(Calendar.YEAR, 5);
 
-		// 일을 01로 설정
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 
 		Date modifiedDate = calendar.getTime();
@@ -63,7 +71,5 @@ public class InsertCardService {
 
 		}
 
-//		insert into cards(card_id,issued_date,card_type,validity,agency,issuer,is_stopped,card_num,account_id)
-//	    -> values(1,"2023-06-21","체크","26-06","하나은행 성수역점","홍길동",0,"45644564",1);
 	}
 }
