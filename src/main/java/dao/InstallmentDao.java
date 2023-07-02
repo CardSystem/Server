@@ -12,6 +12,7 @@ import db.DBUtil;
 import domain.Installment;
 import dto.InstallmentCreateDto;
 import dto.InstallmentDto;
+import dto.InstallmentUpdateDto;
 
 public class InstallmentDao {
 	static DBUtil dbUtil = DBUtil.getInstance();
@@ -46,16 +47,16 @@ public class InstallmentDao {
 	}
 	
 	// 할부 내역 업데이트 (매월 정기 결제일에 진행)
-	public void updateInstallment(int remainMonth, int isInspayed, Long installmentId) throws SQLException {
+	public void updateInstallment(InstallmentUpdateDto installmentUpdateDto) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
 		try {
 			conn = dbUtil.getConnection();
 			pstmt = conn.prepareStatement("update installment set reamin_month = ?, is_inspayed=? where id=?");
-			pstmt.setInt(1, remainMonth);
-			pstmt.setInt(2, isInspayed);
-			pstmt.setLong(3, installmentId);
+			pstmt.setInt(1, installmentUpdateDto.getRemainMonth());
+			pstmt.setInt(2, installmentUpdateDto.getIsInspayed());
+			pstmt.setLong(3, installmentUpdateDto.getId());
 			
 			pstmt.executeUpdate();
 			
@@ -72,7 +73,7 @@ public class InstallmentDao {
 	}
 	
 	// cardId로 해당카드로 결제한 모든 할부내역 반환
-	public ArrayList<InstallmentDto> selectInstallmentByCardId(Long cardId) throws SQLException {
+	public ArrayList<InstallmentDto> selectAllNonIsInspayedInstallmentByCardId(Long cardId) throws SQLException {
 		ArrayList<InstallmentDto> list = new ArrayList<>();
 
 		Connection conn = null;
@@ -81,7 +82,7 @@ public class InstallmentDao {
 		
 		try {
 			conn = dbUtil.getConnection();
-			pstmt = conn.prepareStatement("select * from installment where id=?");
+			pstmt = conn.prepareStatement("select * from installment where id=?, remain_month >0");
 			pstmt.setLong(1, cardId);
 			rs = pstmt.executeQuery();//select실행
 			

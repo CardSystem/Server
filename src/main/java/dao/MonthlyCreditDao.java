@@ -62,7 +62,7 @@ public class MonthlyCreditDao {
 			pstmt.setLong(1,monthlyCreditId);
 			rs = pstmt.executeQuery();//select실행
 
-			if(rs.next()) {				
+			if(rs.next()) {
 				monthlyCredit = MonthlyCredit.builder()
 						.id(rs.getLong("id"))
 						.userId(rs.getString("user_id"))
@@ -145,6 +145,107 @@ public class MonthlyCreditDao {
 		//return monthlyCreditList;
 		return monthlyCreditList;
 	}
+	
+	// 연체되지 않고 납부완료되지 않은 명세서 리스트 반환
+	public ArrayList<MonthlyCreditDto> selectAllNonDelayMonthlyCredit() throws SQLException {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		MonthlyCredit monthlyCredit = null;
+		ArrayList<MonthlyCreditDto> monthlyCreditList = new ArrayList<>();
+		
+		try {
+			conn = dbUtil.getConnection();
+			pstmt = conn.prepareStatement("select * from monthly_credit where delay_days = 0, is_payed=0");
+			rs = pstmt.executeQuery();//select실행
+
+			while(rs.next()) {
+				monthlyCredit = MonthlyCredit.builder()
+						.id(rs.getLong("id"))
+						.userId(rs.getString("user_id"))
+						.cardId(rs.getLong("card_id"))
+						.discount(rs.getLong("discount"))
+						.total(rs.getLong("total"))
+						.pay(rs.getLong("pay"))
+						.isPayed(rs.getInt("is_payed"))
+						.delayDays(rs.getInt("delay_days"))
+						.delayPrice(rs.getLong("delay_price"))
+						.startDate(rs.getTimestamp("start_date").toLocalDateTime().toLocalDate())
+						.endDate(rs.getTimestamp("end_date").toLocalDateTime().toLocalDate())
+						.title(rs.getString("title"))
+						.build();
+				
+				monthlyCreditList.add(new MonthlyCreditDto(monthlyCredit));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("존재하지않음");
+		}
+
+		finally {
+			try {
+				pstmt.close();
+				dbUtil.close(pstmt);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		//return monthlyCreditList;
+		return monthlyCreditList;
+	}
+	
+	
+	// 연체되고 납부완료되지 않은 명세서 리스트 반환
+		public ArrayList<MonthlyCreditDto> selectAllDelayMonthlyCredit() throws SQLException {
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+
+			MonthlyCredit monthlyCredit = null;
+			ArrayList<MonthlyCreditDto> monthlyCreditList = new ArrayList<>();
+			
+			try {
+				conn = dbUtil.getConnection();
+				pstmt = conn.prepareStatement("select * from monthly_credit where delay_days > 0, is_payed=0;");
+				rs = pstmt.executeQuery();//select실행
+
+				while(rs.next()) {
+					monthlyCredit = MonthlyCredit.builder()
+							.id(rs.getLong("id"))
+							.userId(rs.getString("user_id"))
+							.cardId(rs.getLong("card_id"))
+							.discount(rs.getLong("discount"))
+							.total(rs.getLong("total"))
+							.pay(rs.getLong("pay"))
+							.isPayed(rs.getInt("is_payed"))
+							.delayDays(rs.getInt("delay_days"))
+							.delayPrice(rs.getLong("delay_price"))
+							.startDate(rs.getTimestamp("start_date").toLocalDateTime().toLocalDate())
+							.endDate(rs.getTimestamp("end_date").toLocalDateTime().toLocalDate())
+							.title(rs.getString("title"))
+							.build();
+					
+					monthlyCreditList.add(new MonthlyCreditDto(monthlyCredit));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("존재하지않음");
+			}
+
+			finally {
+				try {
+					pstmt.close();
+					dbUtil.close(pstmt);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+			//return monthlyCreditList;
+			return monthlyCreditList;
+		}
 	
 	// 명세서 정산 업데이트
 	public void updateMonthlyCreditByMonthlyCreditId(MonthlyCreditUpdateDto monthlyCreditUpdateDto) throws SQLException {

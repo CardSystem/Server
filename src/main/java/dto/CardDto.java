@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 public class CardDto {
 	
+	private Long id;
 	private Long productId;
 	private Long accountId;
 	
@@ -23,6 +24,7 @@ public class CardDto {
 	private Long totalPayment;
 	
 	public CardDto(Card card) {
+		this.id = card.getId();
 		this.productId = card.getProductId();
 		this.accountId = card.getAccountId();
 		this.issuedDate = card.getIssuedDate();

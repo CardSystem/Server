@@ -38,7 +38,7 @@ public class CreditCardService {
 		// 결제한 카드 id
 		Long cardId = creditCardRequestDto.getCardId();
 		// 카드정보 get
-		CardDto cardDto = creditCardHistoryDao.selectCardByCardId(cardId);
+		CardDto cardDto = cardDao.selectCardByCardId(cardId);
 		// 카드상품정보 get
 		ProductDto productDto = productDao.selectProductByProductId(cardDto.getProductId());
 		

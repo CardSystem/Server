@@ -12,9 +12,13 @@ import lombok.NoArgsConstructor;
 public class Account {
 	
 	private Long id;
-	private Card card;
+	private String userId;
 	private String accountNum;
 	private Long balance;
 	private String bankName;
 	private Integer isStopped;
+
+	public void makeBalance(Long payment) {
+		this.balance += payment;
+	}
 }
