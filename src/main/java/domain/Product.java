@@ -15,6 +15,4 @@ public class Product {
 	private String cardType;
 	private Long cardLimit;
 	private Long categoryId;
-	private String categoryName;
-	private Long discount;
 }
