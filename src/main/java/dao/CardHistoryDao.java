@@ -17,6 +17,8 @@ import domain.CardHistory;
 import dto.AccountDto;
 import dto.CheckCardDaoToServiceDto;
 import dto.CheckCardHistoryDto;
+import dto.CreditCardHistoryCreateDto;
+import dto.CreditCardHistoryDto;
 import dto.CardHistoryResponseDto;
 
 import exception.BusinessException;
@@ -40,17 +42,18 @@ public class CardHistoryDao {
             while (rs.next()) {
             	cardHistory = CardHistory.builder()
             			.id(rs.getLong("id"))
-                        .cardId(rs.getLong("card_id"))
-                        .userId(rs.getString("user_id"))
-                        .franchisee(rs.getString("franchisee"))
-                        .payment(rs.getInt("payment"))
-                        .balance(rs.getInt("balance"))
-                        .date(rs.getString("date"))
-                        .fCategory(rs.getInt("f_category"))
-                        .isIns(rs.getInt("is_ins"))
-                        .insMonth(rs.getInt("ins_month"))
-                        .cardType(rs.getString("card_type"))
-                        .build();
+						.cardId(rs.getLong("card_id"))
+						.userId(rs.getString("user_id"))
+						.franchisee(rs.getString("franchisee"))
+						.payment(rs.getLong("payment"))
+						.balance(rs.getLong("balance"))
+						.isSuccess(rs.getInt("is_success"))
+						.date(rs.getTimestamp("date").toLocalDateTime())
+						.fCategory(rs.getLong("f_category"))
+						.isIns(rs.getInt("is_ins"))
+						.insMonth(rs.getInt("ins_month"))
+						.cardType(rs.getString("card_type"))
+						.build();
                 cardPayList.add(CardHistoryResponseDto.of(cardHistory));
             }
         } catch(Exception e) {
@@ -79,7 +82,7 @@ public class CardHistoryDao {
 					rs = pstmt.executeQuery();//select실행
 					
 					while (rs.next()) {
-						CreditCardHistory creditCardHistory = CreditCardHistory.builder()
+						CardHistory creditCardHistory = CardHistory.builder()
 								.id(rs.getLong("id"))
 								.cardId(rs.getLong("card_id"))
 								.userId(rs.getString("user_id"))
@@ -118,7 +121,7 @@ public class CardHistoryDao {
 				Connection conn = null;
 				PreparedStatement pstmt = null;
 				
-				CreditCardHistory creditCardHistory = creditCardHistoryCreateDto.toEntity();
+				CardHistory creditCardHistory = creditCardHistoryCreateDto.toEntity();
 				
 				try {
 		        	//3. sql문 실행
@@ -161,7 +164,7 @@ public class CardHistoryDao {
 					rs = pstmt.executeQuery();//select실행
 					
 					while(rs.next()) {
-						CreditCardHistory creditCardHistory = CreditCardHistory.builder()
+						CardHistory creditCardHistory = CardHistory.builder()
 								.id(rs.getLong("id"))
 								.cardId(rs.getLong("card_id"))
 								.userId(rs.getString("user_id"))
@@ -212,17 +215,18 @@ public class CardHistoryDao {
             	
             	cardHistory = CardHistory.builder()
             			.id(rs.getLong("id"))
-                        .cardId(rs.getLong("card_id"))
-                        .userId(rs.getString("user_id"))
-                        .franchisee(rs.getString("franchisee"))
-                        .payment(rs.getInt("payment"))
-                        .balance(rs.getInt("balance"))
-                        .date(rs.getString("date"))
-                        .fCategory(rs.getInt("f_category"))
-                        .isIns(rs.getInt("is_ins"))
-                        .insMonth(rs.getInt("ins_month"))
-                        .cardType(rs.getString("card_type"))
-                        .build();
+						.cardId(rs.getLong("card_id"))
+						.userId(rs.getString("user_id"))
+						.franchisee(rs.getString("franchisee"))
+						.payment(rs.getLong("payment"))
+						.balance(rs.getLong("balance"))
+						.isSuccess(rs.getInt("is_success"))
+						.date(rs.getTimestamp("date").toLocalDateTime())
+						.fCategory(rs.getLong("f_category"))
+						.isIns(rs.getInt("is_ins"))
+						.insMonth(rs.getInt("ins_month"))
+						.cardType(rs.getString("card_type"))
+						.build();
                 searchUidCardPayList.add(CardHistoryResponseDto.of(cardHistory));
 
             }
@@ -250,17 +254,18 @@ public class CardHistoryDao {
 	            while (rs.next()) {
 	            	cardHistory = CardHistory.builder()
 	            			.id(rs.getLong("id"))
-	                        .cardId(rs.getLong("card_id"))
-	                        .userId(rs.getString("user_id"))
-	                        .franchisee(rs.getString("franchisee"))
-	                        .payment(rs.getInt("payment"))
-	                        .balance(rs.getInt("balance"))
-	                        .date(rs.getString("date"))
-	                        .fCategory(rs.getInt("f_category"))
-	                        .isIns(rs.getInt("is_ins"))
-	                        .insMonth(rs.getInt("ins_month"))
-	                        .cardType(rs.getString("card_type"))
-	                        .build();
+							.cardId(rs.getLong("card_id"))
+							.userId(rs.getString("user_id"))
+							.franchisee(rs.getString("franchisee"))
+							.payment(rs.getLong("payment"))
+							.balance(rs.getLong("balance"))
+							.isSuccess(rs.getInt("is_success"))
+							.date(rs.getTimestamp("date").toLocalDateTime())
+							.fCategory(rs.getLong("f_category"))
+							.isIns(rs.getInt("is_ins"))
+							.insMonth(rs.getInt("ins_month"))
+							.cardType(rs.getString("card_type"))
+							.build();
 //	            	CardHistoryResponseDto data = new CardHistoryResponseDto();
 //	            	data.setId(rs.getLong("id"));
 //	            	data.setCardId(rs.getLong("card_id"));
@@ -303,17 +308,18 @@ public class CardHistoryDao {
             while (rs.next()) {
             	cardHistory = CardHistory.builder()
             			.id(rs.getLong("id"))
-                        .cardId(rs.getLong("card_id"))
-                        .userId(rs.getString("user_id"))
-                        .franchisee(rs.getString("franchisee"))
-                        .payment(rs.getInt("payment"))
-                        .balance(rs.getInt("balance"))
-                        .date(rs.getString("date"))
-                        .fCategory(rs.getInt("f_category"))
-                        .isIns(rs.getInt("is_ins"))
-                        .insMonth(rs.getInt("ins_month"))
-                        .cardType(rs.getString("card_type"))
-                        .build();
+						.cardId(rs.getLong("card_id"))
+						.userId(rs.getString("user_id"))
+						.franchisee(rs.getString("franchisee"))
+						.payment(rs.getLong("payment"))
+						.balance(rs.getLong("balance"))
+						.isSuccess(rs.getInt("is_success"))
+						.date(rs.getTimestamp("date").toLocalDateTime())
+						.fCategory(rs.getLong("f_category"))
+						.isIns(rs.getInt("is_ins"))
+						.insMonth(rs.getInt("ins_month"))
+						.cardType(rs.getString("card_type"))
+						.build();
             	
                 searchCardPayList.add(CardHistoryResponseDto.of(cardHistory));
             }
@@ -343,17 +349,18 @@ public class CardHistoryDao {
 		            while (rs.next()) {
 		            	cardHistory = CardHistory.builder()
 		            			.id(rs.getLong("id"))
-		                        .cardId(rs.getLong("card_id"))
-		                        .userId(rs.getString("user_id"))
-		                        .franchisee(rs.getString("franchisee"))
-		                        .payment(rs.getInt("payment"))
-		                        .balance(rs.getInt("balance"))
-		                        .date(rs.getString("date"))
-		                        .fCategory(rs.getInt("f_category"))
-		                        .isIns(rs.getInt("is_ins"))
-		                        .insMonth(rs.getInt("ins_month"))
-		                        .cardType(rs.getString("card_type"))
-		                        .build();
+								.cardId(rs.getLong("card_id"))
+								.userId(rs.getString("user_id"))
+								.franchisee(rs.getString("franchisee"))
+								.payment(rs.getLong("payment"))
+								.balance(rs.getLong("balance"))
+								.isSuccess(rs.getInt("is_success"))
+								.date(rs.getTimestamp("date").toLocalDateTime())
+								.fCategory(rs.getLong("f_category"))
+								.isIns(rs.getInt("is_ins"))
+								.insMonth(rs.getInt("ins_month"))
+								.cardType(rs.getString("card_type"))
+								.build();
 						monthlyCardPayList.add(CardHistoryResponseDto.of(cardHistory));
 
 		            }

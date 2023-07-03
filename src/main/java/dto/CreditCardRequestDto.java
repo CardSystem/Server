@@ -1,27 +1,22 @@
-package domain;
+package dto;
 
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-@Builder
-public class CardHistory {
-	private Long id;
+@AllArgsConstructor
+public class CreditCardRequestDto {
 	private Long cardId;
 	private String userId;
 	private String franchisee;
 	private Long payment;
-	private Long balance;
-	private Integer isSuccess;
-	private LocalDateTime date;
 	private Long fCategory;
-	private Integer isIns;
 	private int insMonth;
-	private String cardType;
+	private LocalDateTime date;
 }

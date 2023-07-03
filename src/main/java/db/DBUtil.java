@@ -17,7 +17,7 @@ public class DBUtil {
 
 	
     private static final String DB_URL = "jdbc:mysql://localhost:3306/jsptest?serverTimezone=UTC";
-    private static final String DB_USERNAME = "admin";
+    private static final String DB_USERNAME = "root";
     private static final String DB_PASSWORD = "cjswo159";
 //	  String dbName = System.getProperty("cardsystemdatabase");
 //	  String userName = System.getProperty("admin");
