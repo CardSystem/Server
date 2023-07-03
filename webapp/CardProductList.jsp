@@ -58,7 +58,7 @@ $(document).ready(function() {
             		<td><%=product.getCardLimit()%></td>
             		<td><%=product.getCategoryId()%></td>
             		<td><%=product.getCategoryName()%></td>
-            		<td><%=product.getDiscount()%>%</td>
+                    <td><%=product.getDiscount()%>%</td>
 			            <% 
 		 				}
         			} else {

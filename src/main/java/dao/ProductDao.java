@@ -12,6 +12,8 @@ import db.DBUtil;
 import domain.Account;
 import domain.Product;
 import dto.AccountDto;
+import dto.ProductCreateDto;
+import dto.ProductDto;
 import dto.ProductRequestDto;
 import dto.ProductResponseDto;
 import exception.BusinessException;
@@ -91,8 +93,6 @@ public class ProductDao {
 						.cardType(rs.getString("card_type"))
 						.cardLimit(rs.getLong("card_limit"))
 						.categoryId(rs.getLong("category_id"))
-						.categoryName(rs.getString("category_name"))
-						.discount(rs.getLong("discount"))
 						.build();
 				searchProduct.add(dto);
 			}
@@ -106,33 +106,35 @@ public class ProductDao {
 	}
 
 	public Optional<List<ProductResponseDto>> getProductList(){
-		List<ProductResponseDto> list = new ArrayList<>();
-		
-		try {
-			conn = dbUtil.getConnection();
-			final String query = "SELECT p.id AS product_id, p.card_name, p.card_limit, p.card_type, s.id AS category_id, s.category_name, s.discount FROM product p JOIN sale_category s ON p.category_id = s.id ORDER BY p.id DESC";
-			ps = conn.prepareStatement(query);
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				Product product = Product.builder()
-						.id(rs.getLong("product_id"))
-						.cardName(rs.getString("card_name"))
-						.cardType(rs.getString("card_type"))
-						.cardLimit(rs.getLong("card_limit"))
-						.categoryId(rs.getLong("category_id"))
-						.categoryName(rs.getString("category_name"))
-						.discount(rs.getLong("discount"))
-						.build();
-				
-				list.add(ProductResponseDto.of(product));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			dbUtil.close(ps, conn);
-		}
-		return Optional.ofNullable(list);
-	}
+	      List<ProductResponseDto> list = new ArrayList<>();
+	      
+	      try {
+	         conn = dbUtil.getConnection();
+	         final String query = "SELECT p.id AS product_id, p.card_name, p.card_limit, p.card_type, s.id AS category_id, s.category_name, s.discount FROM product p JOIN sale_category s ON p.category_id = s.id ORDER BY p.id DESC";
+	         ps = conn.prepareStatement(query);
+	         ResultSet rs = ps.executeQuery();
+	         while (rs.next()) {
+	            Product product = Product.builder()
+	                  .id(rs.getLong("product_id"))
+	                  .cardName(rs.getString("card_name"))
+	                  .cardType(rs.getString("card_type"))
+	                  .cardLimit(rs.getLong("card_limit"))
+	                  .categoryId(rs.getLong("category_id"))
+	                  .build();
+	            
+	            String str = rs.getString("category_name");
+	            Long num = rs.getLong("discount");
+	            
+	            
+	            list.add(new ProductResponseDto(product.getId(), product.getCardName(), product.getCardType(), product.getCardLimit(), product.getCategoryId(), str, num));
+	         }
+	      } catch (SQLException e) {
+	         e.printStackTrace();
+	      } finally {
+	         dbUtil.close(ps, conn);
+	      }
+	      return Optional.ofNullable(list);
+	   }
 
 	public void registerProduct(final ProductRequestDto dto) throws SQLException {
 		
@@ -193,6 +195,93 @@ public class ProductDao {
 		} finally {
 			dbUtil.close(ps, conn);
 		}
+	}
+	
+	public static ProductDto selectProductByProductId(Long productId) throws SQLException {
+		Product product=null;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = dbUtil.getConnection();
+			pstmt = conn.prepareStatement("select * from product where id=?");
+			pstmt.setLong(1,productId);
+			rs = pstmt.executeQuery();//select실행
+			
+			while(rs.next()) {
+				product = Product.builder()
+						.id(rs.getLong("id"))
+						.cardName(rs.getString("card_name"))
+						.cardType(rs.getString("card_type"))
+						.cardLimit(rs.getLong("card_limit"))
+						.categoryId(rs.getLong("category_id"))
+						.build();
+			
+			}
+		}finally {
+			dbUtil.close(rs, pstmt, conn);
+		}
+		
+		return new ProductDto(product);
+	}
+	
+	public static void insertData(ProductCreateDto productCreateDto) throws SQLException {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+        	//3. sql문 실행
+			conn = dbUtil.getConnection();
+			StringBuilder d = new StringBuilder();
+			d.append("insert into product(card_name,card_type,card_limit,category_id) \n");
+			d.append("values(?,?,?,?)");
+			pstmt = conn.prepareStatement(d.toString());
+			pstmt.setString(1,productCreateDto.getCardName());
+			pstmt.setString(2, productCreateDto.getCardType());
+			pstmt.setLong(3, productCreateDto.getCardLimit());
+			pstmt.setLong(4,productCreateDto.getCategoryId());
+
+			pstmt.executeUpdate();//insert실행
+		} finally {
+			dbUtil.close(pstmt, conn);
+		}
+	}
+
+	public static ArrayList<ProductDto> selectAllData() throws SQLException {
+		ArrayList<ProductDto> productList = new ArrayList<>();
+		System.out.println("dao 진입!");
+
+		Product product=null;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = dbUtil.getConnection();
+			pstmt = conn.prepareStatement("select * from product");
+			rs = pstmt.executeQuery();//select실행
+			
+			while(rs.next()) {
+				product = Product.builder()
+						.id(rs.getLong("id"))
+						.cardName(rs.getString("card_name"))
+						.cardType(rs.getString("card_type"))
+						.cardLimit(rs.getLong("card_limit"))
+						.categoryId(rs.getLong("category_id"))
+						.build();
+				
+
+				productList.add(new ProductDto(product));
+			}
+		}finally {
+			dbUtil.close(rs, pstmt, conn);
+		}
+		System.out.println("길이:"+productList.size());
+		
+		return productList;
 	}
 
 

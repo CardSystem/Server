@@ -16,8 +16,7 @@ public class ProductRequestDto {
 	private String cardType;
 	private Long cardLimit;
 	private Long categoryId;
-	private String categoryName;
-	private Long discount;
+
 	
 	public Product toEntity() {
 		return Product.builder()
@@ -26,8 +25,6 @@ public class ProductRequestDto {
 				.cardLimit(cardLimit)
 				.cardType(cardType)
 				.categoryId(categoryId)
-				.categoryName(categoryName)
-				.discount(discount)
 				.build();
 	}	
 }

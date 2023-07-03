@@ -27,7 +27,7 @@
 					<h1>Card Tracker (user)</h1>
 					<div class="section pb-5 pt-5 pt-sm-2 text-center">
 						<h6 class="mb-0 pb-3">
-							<span>결제하기</span><span>계좌충전</span>
+							<span>체크카드</span><span>신용카드</span>
 						</h6>
 						<input class="checkbox" type="checkbox" id="reg-log"
 							name="reg-log" /> <label for="reg-log"></label>
@@ -70,7 +70,7 @@
 												</div>
 												<div class="col-6">
 													<i style="color: white;"> 할부 개월 </i> <input type="number"
-														name="franchisee" class="form-style" id="franchisee"
+														name="ins_month" class="form-style" id="ins_month"
 														autocomplete="off">
 												</div>
 											</div>
@@ -84,12 +84,48 @@
 								<div class="card-back">
 									<div class="center-wrap">
 										<div class="section-text-center">
+											<form method="POST" action="card/credit">
 											<div class="form-group">
-												<form method="GET" action="AccountServlet">
-													<input type="hidden" name="action" value="list" /> <input
-														type="submit" class="btn mt-4" value="계좌보기" />
-												</form>
+												<i style="color: white;"> 카드ID </i> <input type="number"
+													name="card_id" class="form-style"
+													placeholder="카드ID를 입력해주세요." id="cardid" autocomplete="off">
 											</div>
+											<br />
+											<div class="form-group">
+												<i style="color: white;"> 유저ID </i> <input type="text"
+													name="user_id" class="form-style"
+													placeholder="유저ID를 입력해주세요." id="cardid" autocomplete="off">
+											</div>
+											<br />
+											<div class="row">
+												<div class="col-6">
+													<i style="color: white;"> 가맹점 명 </i> <input type="text"
+														name="franchisee" class="form-style" id="franchisee"
+														autocomplete="off">
+												</div>
+												<div class="col-6">
+													<i style="color: white;"> 제휴카테고리 </i> <input type="number"
+														name="f_category" class="form-style" id="fcategory"
+														autocomplete="off">
+												</div>
+											</div>
+											<br />
+											<div class="row">
+												<div class="col-6">
+													<i style="color: white;"> 가격 </i> <input type="number"
+														name="payment" class="form-style" id="cost"
+														autocomplete="off">
+												</div>
+												<div class="col-6">
+													<i style="color: white;"> 할부 개월 </i> <input type="number"
+														name="ins_month" class="form-style" id="ins_month"
+														autocomplete="off">
+												</div>
+											</div>
+											
+											<br />
+											<input type="submit" class="btn mt-4" value="결제하기">
+											</form>
 										</div>
 									</div>
 								</div>
@@ -108,5 +144,11 @@
 		onclick="document.getElementById('logout').submit(); return false;"
 		style="margin-top: 100px;">로그아웃</button>
 
+<div class="form-group">
+												<form method="GET" action="AccountServlet">
+													<input type="hidden" name="action" value="list" /> <input
+														type="submit" class="btn mt-4" value="계좌보기" />
+												</form>
+											</div>
 </body>
 </html>
