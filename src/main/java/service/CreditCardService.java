@@ -48,6 +48,8 @@ public class CreditCardService {
 		
 		// 할부 개월 수
 		int insMonth = 0;
+		// 할부 여부 true/false
+		int isIns = 0;
 		// 이번달 총 결제액 + 결제금액
 		Long totalPayment = cardDto.getTotalPayment() + creditCardRequestDto.getPayment();
 		
@@ -55,6 +57,10 @@ public class CreditCardService {
 		try {
 			
 			insMonth = creditCardRequestDto.getInsMonth();
+			
+			if (insMonth != 0) {
+				isIns = 1;
+			}
 			
 			// 카드 정지여부 확인
 			if (cardDto.getIsStopped() == 1) {
@@ -68,7 +74,7 @@ public class CreditCardService {
 			
 			// 카드 결제 내역 Dto로 정리
 			creditCardHistoryCreateDto = new CreditCardHistoryCreateDto(creditCardRequestDto.getCardId(), creditCardRequestDto.getUserId(), creditCardRequestDto.getFranchisee(),
-					creditCardRequestDto.getPayment(), 0L, 1, creditCardRequestDto.getDate(), creditCardRequestDto.getFCategory(), 1, 0,
+					creditCardRequestDto.getPayment(), 0L, 1, creditCardRequestDto.getDate(), creditCardRequestDto.getFCategory(), isIns, insMonth,
 					cardDto.getCardType());
 			
 			// 카드사용내역 디비 테이블에 저장
@@ -90,6 +96,7 @@ public class CreditCardService {
 			
 		} catch (BusinessException e) {
 			System.out.println("에러발생: " + e.getMessage());
+			// 거절된 결제기록을 카드사용내역에 추가
 			creditCardHistoryCreateDto = new CreditCardHistoryCreateDto(creditCardRequestDto.getCardId(), creditCardRequestDto.getUserId(), creditCardRequestDto.getFranchisee(),
 					creditCardRequestDto.getPayment(), null, 0, creditCardRequestDto.getDate(), creditCardRequestDto.getFCategory(), 1, 0,
 					cardDto.getCardType());
