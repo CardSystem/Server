@@ -16,9 +16,9 @@ public class DBUtil {
 	String driverName = "com.mysql.cj.jdbc.Driver";
 
 	
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/jsptest?serverTimezone=UTC";
-    private static final String DB_USERNAME = "root";
-    private static final String DB_PASSWORD = "cjswo159";
+    private static final String DB_URL = "jdbc:mysql://cardsystemdatabase.cdvfrfzlq3nb.us-east-1.rds.amazonaws.com:3306/cardsystemdatabase";
+    private static final String DB_USERNAME = "admin";
+    private static final String DB_PASSWORD = "12341234";
 //	  String dbName = System.getProperty("cardsystemdatabase");
 //	  String userName = System.getProperty("admin");
 //	  String password = System.getProperty("12341234");

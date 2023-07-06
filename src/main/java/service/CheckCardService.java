@@ -34,7 +34,7 @@ public class CheckCardService {
 		CheckCardDaoToServiceDto carddto = cardDao.selectCardByCardId(cardId);
 		AccountDto responseDto=null;
 		
-		
+		System.out.println(carddto.getCardNum());
 		int statusCode = 0;
 		String statusMsg = null;
 

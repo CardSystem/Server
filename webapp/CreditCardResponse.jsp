@@ -7,10 +7,9 @@
 <head>
 <meta charset="EUC-KR">
 <title>Insert title here</title>
+
 </head>
-
 <body>
-
 <%
 CreditCardResponseDto dto=(CreditCardResponseDto)request.getAttribute("data");
 int code=dto.getStatusCode();
@@ -21,11 +20,10 @@ PrintWriter script = response.getWriter();
 	%>
 	
 	<script>
+	console.log("<%=dto.getStatusMsg() %>")
 	alert("<%=dto.getStatusMsg() %>");
-	<%-- location.href='/cardsys-0.0.1-SNAPSHOT/user.jsp' --%>
-	location.href='user.jsp'
+	location.href='/testpro/user.jsp'
 	</script>
-
 
 
 
