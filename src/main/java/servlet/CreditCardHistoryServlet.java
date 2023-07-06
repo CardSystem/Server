@@ -84,8 +84,10 @@ public class CreditCardHistoryServlet extends HttpServlet {
 		
 		try {
 			CreditCardResponseDto creditCardResponseDto = creditCardService.payCreditCard(creditCardRequestDto);
+			System.out.println("신카메세지:"+creditCardResponseDto.getStatusMsg());
 			request.setAttribute("data", creditCardResponseDto);
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/CreditCardResponse.jsp");
+			requestDispatcher.forward(request, response);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

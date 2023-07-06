@@ -21,7 +21,7 @@ PrintWriter script = response.getWriter();
 	
 	<script>
 	alert("<%=dto.getStatusMsg() %>");
-	location.href='/cardsys-0.0.1-SNAPSHOT/user.jsp'
+	location.href='/testpro/user.jsp'
 	</script>
 
 

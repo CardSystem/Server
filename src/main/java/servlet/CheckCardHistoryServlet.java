@@ -63,7 +63,7 @@ public class CheckCardHistoryServlet extends HttpServlet {
 
 	            System.out.println(message);
 
-							request.setAttribute("data", responseDto);
+				request.setAttribute("data", responseDto);
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/CheckCardResponse.jsp");
 				dispatcher.forward(request, response);
 				System.out.println(responseDto.getCardType());

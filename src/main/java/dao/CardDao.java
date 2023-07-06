@@ -387,7 +387,7 @@ private static CardDao dao = new CardDao();
 						"SELECT c.id,c.product_id,c.card_type,c.validity,c.agency,c.issuer,c.is_stopped,c.card_num, c.account_id,sc.discount FROM card c "
 						+ "JOIN product p ON c.product_id = p.id "
 						+ "JOIN sale_category sc ON p.category_id = sc.id "
-						+ "WHERE c.product_id =?;");
+						+ "WHERE c.id =?;");
 				pstmt.setLong(1, cardId);
 
 				rs = pstmt.executeQuery();
