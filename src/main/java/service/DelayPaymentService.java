@@ -33,7 +33,7 @@ public class DelayPaymentService {
 	
 	public void DelayCalculation() throws Exception {
 		
-		System.out.println("월 명세서 작성 함수 입장!!");
+		System.out.println("연체 정산 메서드 입장!!");
 		try {
 			
 			AccountDto accountDto = null;
@@ -52,6 +52,7 @@ public class DelayPaymentService {
 			// 신용카드 월별명세서 테이블에서 연체되고 완납되지 않은 데이터들을 가져온다.
 			monthlyCreditList = monthlyCreditDao.selectAllDelayMonthlyCredit();
 						
+			//System.out.println("연체된 월 명세서 리스트 수 = " + monthlyCreditList.size());
 			// 연제되고 완납되지 않은 모든 신용카드 월별명세서 정산
 			for (int i=0; i<monthlyCreditList.size(); i++) {
 				// 해당 카드의 계좌 데이터를 가져온다.
@@ -85,6 +86,7 @@ public class DelayPaymentService {
 				}
 			}
 			
+			//System.out.println("연체 정산 후 블랙리스트 갱신 처리!!");
 			// 연체로 블랙리스트 처리된 유저목록
 			userList = userDao.selectAllNonBlockUser();
 			// 연체로 블랙리스트 처리된 유저의 모든 연체 납부 확인시 블랙리스트 해제, 카드 정지 해제

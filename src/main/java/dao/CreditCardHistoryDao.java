@@ -77,7 +77,9 @@ public class CreditCardHistoryDao {
 				conn = dbUtil.getConnection();
 				// 해당 월 명세서는 다음달로 넘어가는 자정에 생성하므로
 				// 조건에 맞는 이전달 모든 결제 목록을 가져온다.
-				pstmt = conn.prepareStatement("SELECT * FROM card_history WHERE is_success=1 and card_id=? and is_ins=0 and DATE_FORMAT(date, '%Y-%m') = CASE WHEN MONTH(CURDATE()) = 1 THEN CONCAT(YEAR(CURDATE()) - 1, '-12') ELSE DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH), '%Y-%m') END;");
+				//pstmt = conn.prepareStatement("SELECT * FROM card_history WHERE is_success=1 and card_id=? and is_ins=0 and DATE_FORMAT(date, '%Y-%m') = CASE WHEN MONTH(CURDATE()) = 1 THEN CONCAT(YEAR(CURDATE()) - 1, '-12') ELSE DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH), '%Y-%m') END;");
+				// 현재 달의 결제 목록을 가져오는 쿼리문
+				pstmt = conn.prepareStatement("SELECT * FROM card_history WHERE DATE_FORMAT(date, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m');");
 				pstmt.setLong(1,cardId);
 				rs = pstmt.executeQuery();//select실행
 				

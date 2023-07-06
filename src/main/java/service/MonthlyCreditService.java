@@ -56,7 +56,7 @@ public class MonthlyCreditService {
 		try {
 			// 정지되지 않은 신용카드 목록을 가져온다.
 			cardList = cardDao.selectAllNonStopedCreditCard();
-			
+			//System.out.println("try 입장!!");
 			// 각 카드의 월별 명세서 생성하여 신용카드 월별명세서에 추가
 			for (int i=0; i<cardList.size(); i++) {
 				// 총 결제 금액 초기화
@@ -70,8 +70,8 @@ public class MonthlyCreditService {
 
 				// 해당 카드의 할부를 진행하지 않은 카드 사용내역리스트 get
 				creditCardHistoryList = creditCardHistoryDao.selectAllNonInstallmentCrditCardHistoryByCardId(cardList.get(i).getId());
-				System.out.println("할부가 아닌 결제 리스트의 개수 = " + creditCardHistoryList.size());
-				System.out.println("해당 사용내역리스트의 id값 = " + creditCardHistoryList.get(0).getId());
+				//System.out.println("할부가 아닌 결제 리스트의 개수 = " + creditCardHistoryList.size());
+				//System.out.println("해당 사용내역리스트의 id값 = " + creditCardHistoryList.get(0).getId());
 				// 해당 카드의 할부를 진행하지 않은 카드 사용내역 항목마다 카드의 제휴와 같다면 할인적용, 아니면 전액을 총 금액에 더한다.
 				for(int j = 0; j<creditCardHistoryList.size(); j++) {
 					Long money = creditCardHistoryList.get(j).getPayment();
@@ -85,11 +85,12 @@ public class MonthlyCreditService {
 				}
 				// 해당 카드의 납부완료되지 않은 할부리스트 get
 				installmentList = installmentDao.selectAllNonIsInspayedInstallmentByCardId(cardList.get(i).getId());
-				System.out.println("할부 리스트의 수 = " + installmentList.size());
+				//System.out.println("할부 리스트의 수 = " + installmentList.size());
 				// 지불할 금액에 해당 월에 정산할 할부액 추가
 				for(int j = 0; j<installmentList.size(); j++) {
-					// 할부를 모두 합한 총 결제액
+					// 총 결제액
 					Long delayTotalMoney = installmentList.get(j).getPayment();
+					// 할부 개월 수
 					int insMonth = installmentList.get(j).getInsMonth();
 					// 이번달 지불해야할 할부액
 					Long money = delayTotalMoney / insMonth;
@@ -99,8 +100,10 @@ public class MonthlyCreditService {
 					if (remainMonth == 1) {
 						money = delayTotalMoney - ((insMonth - 1)*money);
 					}
-					// 월 지불금액에 할부액 추가
-					totalPay = totalPay + money;
+					else {
+						// 월 지불금액에 할부액 추가
+						totalPay = totalPay + money;
+					}
 				}
 				// 실제 납부할 금액 계산
 				realPay = totalPay - discount;
@@ -120,6 +123,7 @@ public class MonthlyCreditService {
 				// 해당 카드의 완납되지 않은 할부내역을 모두 get
 				installmentList = installmentDao.selectAllNonIsInspayedInstallmentByCardId(monthlyCreditList.get(i).getCardId());
 				
+				//System.out.println("완납되지 않은 할부 개수 = " + installmentList.size());
 				// 계좌의 잔액이 월 정산할 금액 이상일경우 (완전히 정산 가능할 때)
 				if (accountDto.getBalance() >= monthlyCreditList.get(i).getPay()) {
 					// 계좌에서 월 명세서 지불 처리
@@ -133,17 +137,21 @@ public class MonthlyCreditService {
 						if (installmentList.get(j).getRemainMonth()-1 == 0) {
 							isInspayed = 1;
 						}
+						//System.out.println("해당 월 명세서에 해당하는 할부 결제 업데이트!");
 						installmentUpdateDto = new InstallmentUpdateDto(installmentList.get(j).getId(), installmentList.get(j).getRemainMonth()-1, isInspayed);
 						installmentDao.updateInstallment(installmentUpdateDto);
 					}
+					//System.out.println("해당 카드의 총 결제를 0으로 초기화");
 					// 해당 카드의 총 결제 0으로 초기화
 					cardDao.updateTotalPaymentByCardId(0L, monthlyCreditList.get(i).getCardId());
 				}
 				// 정산 불가능할 경우
 				else {
+					//System.out.println("==== 정산 불가로 인한 연체 처리 진행===!!");
 					// 해당 카드의 월 명세서 연체처리
 					monthlyCreditUpdateDto = new MonthlyCreditUpdateDto(monthlyCreditList.get(i).getId(), 0, 1, monthlyCreditList.get(i).getPay(), null);
 					monthlyCreditDao.updateMonthlyCreditByMonthlyCreditId(monthlyCreditUpdateDto);
+					System.out.println("해당 유저 블랙리스트 처리!");
 					// 해당 유저 블랙리스트 처리
 					userDao.updateDelayBlockUserByUserId(monthlyCreditList.get(i).getUserId(), 1);
 					// 해당 유저의 계좌정보를 불러와 발급받은 카드 목록을 가져온다.
@@ -151,6 +159,7 @@ public class MonthlyCreditService {
 					// 해당 유저의 모든 카드 정지처리
 					cardList = cardDao.selectAllCardByAccountId(stopAccountDto.getId());
 					for (int j = 0; j<cardList.size(); j++) {
+						//System.out.println("카드정지처리!!");
 						cardDao.updateIsStoppedByCardId(cardList.get(j).getId(), 1);
 					}
 				}
