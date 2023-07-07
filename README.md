@@ -68,6 +68,7 @@ DB :<img src="https://i0.wp.com/thinkground.studio/wp-content/uploads/2019/04/19
    ![Untitled (6)](https://github.com/CardSystem/Server/assets/86733856/e795eb69-a8ab-415d-8201-05897198e6ad)
 
     분산락 적용 시에는 데이터의 정합성이 유지되며 계좌 잔액이 올바르게 유지되는 것을 알 수 있다.
+
     
 
 ### 🔨DB 설계
@@ -80,14 +81,20 @@ DB :<img src="https://i0.wp.com/thinkground.studio/wp-content/uploads/2019/04/19
     - 계좌-카드갯수를 저장하는 새로운 테이블 생성
     - 카드를 추가할 때마다 전체 카드 테이블을 COUNT 함수로 조회해 그 값을 기준으로 예외 처리 → **채택 ✅**
 
+
+
 ### 🔨배포 시 SSL 인증
 
 - SSL 인증을 위해 AWS의 Route 53, Certificate Manager를 사용했다. 도메인은 가비아에서 구매했다.
+
+
 
 ### 🔨BusinessException 처리
 
 - enum으로 ErrorCode를 만들어서 statusCode, statusMessage, message를 관리
 - business custom exception을 손쉽게 관리하기 위함
+
+
 
 ### 🔨유닛테스트 (feat, JUnit5, Mockito)
 
