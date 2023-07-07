@@ -1,10 +1,10 @@
-![image](https://github.com/CardSystem/Server/assets/86733856/03ccd606-b1fd-43b8-9042-03b1afa78399)## 프로젝트 소개
+)## 프로젝트 소개
 
 ‘**CardTracker**’ 는 미니 카드사 시스템이다. 유저는 보유한 카드로 결제를 진행할 수 있고 계좌에 잔액을 충전할 수 있다. 시스템 관리자는 여러 데이터를 바탕으로 결제 내역을 조회하고 관리한다. 평소 국민 대부분이 사용하는 카드 시스템을 프로토타입으로 만들어보며 DB 설계와 시스템 구현 등에 대해 고민해보고자 개발하게 되었다.
 
 ## 기술스택
 
-개발환경 : <imf src="https://cdn.devinflearn.com/public/files/posts/45a25c80-b53e-4631-b9b9-210ff1daeeec/Java-Logo.png" height="50px">
+개발환경 : <img src="https://cdn.devinflearn.com/public/files/posts/45a25c80-b53e-4631-b9b9-210ff1daeeec/Java-Logo.png" height="50px">
 
 사용한 기술스택 : Redis, maven, JSP, Servlet, CSS, JS, Bootstrap
 
