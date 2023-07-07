@@ -19,15 +19,15 @@
 배포환경 : 
 <img src="https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png" height="50px">
 <img src="https://i0.wp.com/bespin-wordpress-bucket.s3.ap-northeast-2.amazonaws.com/wp-content/uploads/2022/01/image.png?resize=410%2C449&ssl=1" height="50px">
-<img src="https://images.velog.io/images/banjjoknim/post/eaccd9c2-f6b6-47a4-8136-d562edebe76a/Amazon%20EC2.png" height="50px">
+<img src="https://lh3.googleusercontent.com/4Quj4qB7UEu3FQu6fsRXzY5M1Kr8vXqUj1JUQIh5ZyCE3B70lClHHvNXbDyog-39Ce8ib8AGi26PITD9Kk8SO1fKQ_1Dal1Sqd-swunWGjzYz2vaR81X48XdqExCiw0r8mTOO-Hv" height="50px">
 <img src="https://www.yamamanx.com/wp-content/uploads/2020/06/acm-icon.png" height="50px">
-<img src="https://res.cloudinary.com/hevo/image/upload/c_scale,w_360,h_229,dpr_2/f_auto,q_auto/v1686889950/hevo-learn-1/24f52ffe0ccbd746c2103814e50fe009_174922824eb.png?_i=AA" height="50px">
+<img src="https://inceptivetechnologies.com/wp-content/uploads/2022/09/amazon-rds.png" height="50px">
 
 
 DB :<img src="https://i0.wp.com/thinkground.studio/wp-content/uploads/2019/04/190419_MySQL-Logo.png?resize=363%2C224" height="50px">
 
 
-협업 : <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/GitHub_Invertocat_Logo.svg" height="50px">
+협업 : <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" height="50px">
 <img src="https://play-lh.googleusercontent.com/ht8BdWPiUAsAeVx9SKVtFOX774DgRNYov896FM-fgYVPBvzze6_KgM2nRhO1OUQbVY8=w600-h300-pc0xffffff-pd" height="50px">
 
 ## ☁️시스템 아키텍쳐
