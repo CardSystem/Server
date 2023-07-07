@@ -8,7 +8,7 @@
 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2hdDmVLdRKwnPkPLPTLR88XgFPTz3CQkNeA&usqp=CAU" height="50px">
 
 
-사용한 기술스택 :<img src="https://miro.medium.com/v2/resize:fit:512/0*X9ZtftD7LUqjD6PW" height="50px"> 
+사용한 기술스택 :<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSvulUF7KX4JzUa9BtsqiuKdTRPwbjLit3PA&usqp=CAU" height="50px"> 
 <img src="https://images.velog.io/images/co_der/post/6e06267d-ef83-448e-a7db-191c9a3ea981/Apache-maven.jpg" height="50px">
 <img src="https://velog.velcdn.com/images/suyyeon/post/b5f4087d-ef66-43e7-82f6-94ec53674453/image.png" height="50px">
 <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg" height="50px">
