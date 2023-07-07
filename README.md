@@ -31,13 +31,13 @@ DB :<img src="https://i0.wp.com/thinkground.studio/wp-content/uploads/2019/04/19
 
 협업 : <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" height="50px">
 <img src="https://play-lh.googleusercontent.com/ht8BdWPiUAsAeVx9SKVtFOX774DgRNYov896FM-fgYVPBvzze6_KgM2nRhO1OUQbVY8=w600-h300-pc0xffffff-pd" height="50px">
-
+<br><br>
 ## ☁️시스템 아키텍쳐
 
 
 ![KakaoTalk_20230703_005550521](https://github.com/CardSystem/Server/assets/86733856/fc913133-0ee9-48e5-9d00-86fd04a55660)
 
-
+<br><br>
 
 ## ⚒️기술적 고려 사항
 
