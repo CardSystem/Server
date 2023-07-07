@@ -103,3 +103,56 @@ DB :<img src="https://i0.wp.com/thinkground.studio/wp-content/uploads/2019/04/19
 - Mock 객체를 이용해 레이어 간 결합성을 끊고 DB에 의존하지 않는 순수 Service 로직을 테스트 하고자 했다.
 - 실제 운영하는 DB 서버에 문제가 생기더라도 테스트는 성공할 수 있도록 했다.
 - 실패 케이스와 성공 케이스를 모두 작성했다. 실패 케이스를 작성한 이유는 위에서 언급했듯이 FK를 연결하지 않았기 때문에 어플리케이션 단에서 꼼꼼하게 예외처리를 해서 무결성을 유지하도록 했는데 실패 시 서버단에서 예외를 잘 처리하는지도 테스트해야하기 때문이다.
+
+
+## 참여자
+<table>
+    <tr align="center">
+        <td><B>팀장/백엔드<B></td>
+        <td><B>백엔드<B></td>
+        <td><B>백엔드<B></td>
+        <td><B>백엔드<B></td>
+        <td><B>프론트/백엔드<B></td>
+    </tr>
+    <tr align="center">
+        <td><B>정재헌<B></td>
+        <td><B>김익환<B></td>
+        <td><B>곽동현<B></td>
+        <td><B>박윤주<B></td>
+        <td><B>서예진<B></td>
+    </tr>
+    <tr align="center">
+        <td>
+            <img src="https://github.com/CardSystem/Server/assets/76608338/59c3e5d1-ceda-45e8-8779-4470a8283935" width="100">
+            <br>
+            <a href="https://github.com/drdd1120"><I>drdd1120</I></a>
+        </td>
+        <td>
+            <img src="https://github.com/CardSystem/Server/assets/76608338배/54a25d4f-19bb-4612-ac62-46f3ce03d608" width="100">
+            <br>
+            <a href="https://github.com/dlrghks2090"><I>dlrghks2090</I></a>
+        </td>
+        <td>
+            <img src="https://github.com/CardSystem/Server/assets/76608338/3c06601b-dcf5-4fc6-9334-bbc235806c69" width="100">
+            <br>
+            <a href="https://github.com/alivejuicy"><I>alivejuicy</I></a>
+        </td>
+        <td>
+            <img src="https://github.com/CardSystem/Server/assets/76608338/5a748605-4cec-4d0b-920b-9ea13c1f20da" width="100">
+            <br>
+            <a href="https://github.com/PARKYUNJU"><I>PARKYUNJU</I></a>
+        </td>
+        <td>
+            <img src="https://user-images.githubusercontent.com/76608338/155061207-bf97c0e8-95c9-4cf8-8875-9f70238853ec.png" width="100">
+            <br>
+            <a href="https://github.com/Jordizzin"><I>Jordizzin</I></a>
+        </td>
+    </tr>
+    <tr align="center">
+        <td>로그인, 카드 발급 이력 조회, 카드 정지 처리 기능 구현</td>
+        <td>신용카드 결제, 할부 처리, 연체(블랙리스트 처리) 기능 구현</td>
+        <td>카드 상품 조회, 등록, 수정, 삭제 기능 구현</td>
+        <td>체크 카드 결제 기능 구현, 서버 배포, 코드 테스팅 및 에러 핸들링</td>
+        <td>페이지 view 구현, 카드 결제 내역 조회(+검색 필터) 기능 구현</td>
+    </tr>
+</table>
