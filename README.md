@@ -4,7 +4,7 @@
 
 ## 기술스택
 
-|개발환경    | ![Eclipse](https://img2.freepng.es/20180404/zww/kisspng-eclipse-computer-icons-integrated-development-envi-eclipse-5ac531e02a77f0.157488451522872800174.jpg), ![java](https://cdn.devinflearn.com/public/files/posts/45a25c80-b53e-4631-b9b9-210ff1daeeec/Java-Logo.png)
+개발환경 : <imf src="https://cdn.devinflearn.com/public/files/posts/45a25c80-b53e-4631-b9b9-210ff1daeeec/Java-Logo.png" height="50px">
 
 사용한 기술스택 : Redis, maven, JSP, Servlet, CSS, JS, Bootstrap
 
