@@ -7,10 +7,10 @@
 개발환경 : <img src="https://cdn.devinflearn.com/public/files/posts/45a25c80-b53e-4631-b9b9-210ff1daeeec/Java-Logo.png" height="50px">
 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2hdDmVLdRKwnPkPLPTLR88XgFPTz3CQkNeA&usqp=CAU" height="50px">
 
-사용한 기술스택 :<img src="[https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2hdDmVLdRKwnPkPLPTLR88XgFPTz3CQkNeA&usqp=CAU](https://blog.kakaocdn.net/dn/bKM6uc/btrT0SBFAY9/7mk1sCjHDy7tLqB0JnmJak/img.png)" height="50px"> 
-<img src="[[https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2hdDmVLdRKwnPkPLPTLR88XgFPTz3CQkNeA&usqp=CAU](https://blog.kakaocdn.net/dn/bKM6uc/btrT0SBFAY9/7mk1sCjHDy7tLqB0JnmJak/img.png)](https://images.velog.io/images/co_der/post/6e06267d-ef83-448e-a7db-191c9a3ea981/Apache-maven.jpg)" height="50px">
+사용한 기술스택 :<img src="https://miro.medium.com/v2/resize:fit:512/0*X9ZtftD7LUqjD6PW" height="50px"> 
+<img src="https://images.velog.io/images/co_der/post/6e06267d-ef83-448e-a7db-191c9a3ea981/Apache-maven.jpg" height="50px">
 <img src="https://velog.velcdn.com/images/suyyeon/post/b5f4087d-ef66-43e7-82f6-94ec53674453/image.png" height="50px">
-<img src="[https://velog.velcdn.com/images/suyyeon/post/b5f4087d-ef66-43e7-82f6-94ec53674453/image.png](https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg)" height="50px">
+<img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg" height="50px">
 <img src="https://images.velog.io/images/reveloper-1311/post/0b1dbd85-4a78-4d50-9923-e1113eb279c1/JS.png" height="50px">
 <img src="https://www.earlysoft.co.kr/wp-content/uploads/2019/05/bootstrap-tutorial.png" height="50px">
 
