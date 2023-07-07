@@ -72,7 +72,7 @@ DB :<img src="https://i0.wp.com/thinkground.studio/wp-content/uploads/2019/04/19
     분산락 적용 시에는 데이터의 정합성이 유지되며 계좌 잔액이 올바르게 유지되는 것을 알 수 있다.
 
     
-
+<br><br>
 ### 🔨DB 설계
 
 1. 외래키 지양 이유
@@ -84,20 +84,20 @@ DB :<img src="https://i0.wp.com/thinkground.studio/wp-content/uploads/2019/04/19
     - 카드를 추가할 때마다 전체 카드 테이블을 COUNT 함수로 조회해 그 값을 기준으로 예외 처리 → **채택 ✅**
 
 
-
+<br><br>
 ### 🔨배포 시 SSL 인증
 
 - SSL 인증을 위해 AWS의 Route 53, Certificate Manager를 사용했다. 도메인은 가비아에서 구매했다.
 
 
-
+<br><br>
 ### 🔨BusinessException 처리
 
 - enum으로 ErrorCode를 만들어서 statusCode, statusMessage, message를 관리
 - business custom exception을 손쉽게 관리하기 위함
 
 
-
+<br><br>
 ### 🔨유닛테스트 (feat, JUnit5, Mockito)
 
 - Mock 객체를 이용해 레이어 간 결합성을 끊고 DB에 의존하지 않는 순수 Service 로직을 테스트 하고자 했다.
