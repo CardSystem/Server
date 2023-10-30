@@ -79,7 +79,13 @@ public class UserServlet extends HttpServlet {
 		id = request.getParameter("id");
 		String birth = request.getParameter("userBirth");
 		try {
-			return userService.checkLogin(request, response, id, birth);
+			String url = userService.checkLogin(request, response, id, birth);
+	        if (url != null) {
+	            // url이 "userList"인 경우 UserServlet의 doList 메서드 호출
+	            if (url.equals("userList")) {
+	                return doList(request, response);
+	            }
+	        }
 		} catch (SQLException | BusinessException e) {
 			e.printStackTrace();
 		}

@@ -33,8 +33,7 @@ public class UserService {
 			if (id.contains("Admin")) {
 				request.getSession().setAttribute("adminId", id);
 				request.getSession().setAttribute("adminBirth", birth);
-				response.sendRedirect("sidebar.jsp");
-				return null; // 리다이렉트 후에는 메서드 실행 중지
+				return "userList";
 			} else {
 				// 로그인 성공 시 사용자 정보를 세션에 저장
 				request.getSession().setAttribute("userId", id);
